@@ -92,7 +92,7 @@ function CinematicPhoto({
   return (
     <motion.div
       ref={ref}
-      className={`home-photo home-glow-area ${className} ${immersive ? "min-h-[82vh]" : tall ? "min-h-[72vh]" : "min-h-[52vh]"} relative overflow-hidden rounded-lg border border-white/10`}
+      className={`home-photo home-glow-area ${className} ${immersive ? "min-h-[88vh]" : tall ? "min-h-[72vh]" : "min-h-[52vh]"} relative overflow-hidden rounded-lg border border-white/10`}
       onMouseMove={setGlowPosition}
       whileHover={{ rotateX: 1.5, rotateY: -1.5, scale: 1.012 }}
       transition={{ duration: 0.45, ease: softEase }}
@@ -182,10 +182,10 @@ function DocumentaryPhotoScene({
   photoCaption: string;
 }) {
   return (
-    <section className="home-scene px-4 py-6 md:px-6 md:py-8">
+    <section className="home-scene scroll-mt-28 px-4 py-12 md:px-6 md:py-14 lg:py-16">
       <div className="relative mx-auto max-w-7xl overflow-hidden rounded-[18px]">
         <CinematicPhoto className={photoClass} label={photoLabel} caption={photoCaption} immersive showCaption={false} />
-        <div className="pointer-events-none absolute inset-0 z-20 flex items-end">
+        <div className="pointer-events-none absolute inset-0 z-20 flex items-center">
           <div className="max-w-3xl p-7 md:p-12 lg:p-16">
             <SceneLabel>{label}</SceneLabel>
             <motion.p
@@ -197,7 +197,7 @@ function DocumentaryPhotoScene({
             >
               {question}
             </motion.p>
-            <LineReveal className="home-heading mt-6 text-4xl font-extrabold leading-[1.04] text-bone md:text-6xl lg:text-7xl" lines={lines} />
+            <LineReveal className="home-heading mt-6 text-4xl font-extrabold leading-[1.04] text-bone md:text-5xl lg:text-6xl" lines={lines} />
             <motion.p
               className="home-copy mt-8 max-w-xl text-lg leading-8 text-bone/72 md:text-xl"
               initial={{ opacity: 0, y: 18 }}
@@ -329,6 +329,48 @@ function StickyCuriosityScene() {
             </p>
           </motion.div>
         </div>
+      </div>
+    </section>
+  );
+}
+
+function TimelineScene() {
+  const timeline = [
+    ["Economics", "The language I use to study incentives, markets, and institutions."],
+    ["Guitar", "The discipline that taught me repetition before results."],
+    ["Projects", "Questions that became scripts, dashboards, and research systems."],
+    ["Work & Travel USA", "A summer of independence, money, people, and adaptation."],
+    ["Korea Exchange", "The next chapter in language, culture, and observation."],
+    ["LTCL Goal", "A long musical target that will take patience, not shortcuts."],
+    ["Future Products", "Systems that are useful because they come from lived questions."]
+  ];
+
+  return (
+    <section className="home-scene text-bone">
+      <div className="mx-auto flex min-h-screen max-w-6xl flex-col justify-center px-5 py-24 md:px-8">
+        <SceneLabel>Scene 17</SceneLabel>
+        <LineReveal className="home-heading mt-6 max-w-4xl text-4xl font-extrabold leading-[1.02] md:text-6xl lg:text-7xl" lines={["The story is not", "one straight line."]} />
+        <motion.div
+          className="mt-12 grid gap-3 border-y border-bone/10 py-6"
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-15% 0px" }}
+          transition={{ duration: 0.75, delay: 0.2, ease: softEase }}
+        >
+          {timeline.map(([title, note], index) => (
+            <motion.div
+              className="grid gap-3 border-b border-bone/8 pb-3 last:border-b-0 last:pb-0 md:grid-cols-[0.24fr_0.76fr]"
+              initial={{ opacity: 0, y: 14 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-12% 0px" }}
+              transition={{ duration: 0.65, delay: index * 0.05, ease: softEase }}
+              key={title}
+            >
+              <p className="home-label text-xs uppercase tracking-[0.2em] text-ember/80">{title}</p>
+              <p className="home-copy text-base leading-7 text-bone/62 md:text-lg">{note}</p>
+            </motion.div>
+          ))}
+        </motion.div>
       </div>
     </section>
   );
@@ -500,6 +542,90 @@ export function HomeExperience() {
           label="Scene 11"
           lines={["Some questions became projects.", "Some projects became systems."]}
           subtext="The lab is not separate from the story. It is what happened when the questions needed somewhere to live."
+          tone="dark"
+        >
+          <motion.div
+            className="mt-10 flex flex-wrap gap-3"
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-15% 0px" }}
+            transition={{ duration: 0.75, delay: 0.2, ease: softEase }}
+          >
+            <ButtonLink href="/lab">Explore Chainstox Lab</ButtonLink>
+          </motion.div>
+        </TextScene>
+
+        <TextScene
+          label="Scene 12"
+          lines={["Music came", "before systems."]}
+          subtext="Many people know me through research systems. A smaller group knows me through a guitar. Before I learned how to build models, I learned how to repeat the same passage hundreds of times until it became music. That habit never left."
+          tone="dark"
+        >
+          <motion.div
+            className="mt-10 grid gap-3 border-y border-bone/10 py-5 text-sm text-bone/58 md:grid-cols-2"
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-15% 0px" }}
+            transition={{ duration: 0.75, delay: 0.24, ease: softEase }}
+          >
+            {["Trinity Grade 5 Distinction", "Working toward Grade 8", "Long-term LTCL goal", "Practice as a daily discipline"].map((item) => (
+              <p className="home-label border-b border-bone/8 pb-3 uppercase tracking-[0.16em]" key={item}>
+                {item}
+              </p>
+            ))}
+          </motion.div>
+        </TextScene>
+
+        <DocumentaryPhotoScene
+          label="Scene 13"
+          question="What does practice teach that projects cannot?"
+          lines={["The other discipline", "was quieter."]}
+          subtext="Classical guitar is not a side note. It is the part of the story that taught me patience, precision, and how slow improvement can still be real improvement."
+          project="Future placeholders: performance, practice, recital photos"
+          photoClass="guitar-photo"
+          photoLabel="music-placeholder"
+          photoCaption="Performance photos, practice photos, and recital photos will live here."
+        />
+
+        <DocumentaryPhotoScene
+          label="Scene 14"
+          question="What do systems feel like when people are standing in front of you?"
+          lines={["Behind the stage,", "the theory gets tested."]}
+          subtext="Working live events taught me something software never could. Systems only matter when real people are depending on them. When hundreds of people arrive at the same place, execution matters more than theory."
+          project="Future placeholders: concert, backstage, event operations"
+          photoClass="building-projects-photo"
+          photoLabel="live-events-placeholder"
+          photoCaption="Concert photos, backstage photos, and event operations will live here."
+        />
+
+        <DocumentaryPhotoScene
+          label="Scene 15"
+          question="What happens outside the plan?"
+          lines={["Some chapters", "were never planned."]}
+          subtext="Background acting and temporary performance work gave me another way to think about people, stories, and perspective. Not every useful experience arrives with a neat explanation."
+          project="Future placeholders: set days, performance work, unexpected rooms"
+          photoClass="student-election-photo"
+          photoLabel="performance-placeholder"
+          photoCaption="Background acting and performance placeholders will live here."
+        />
+
+        <DocumentaryPhotoScene
+          label="Scene 16"
+          question="Was America only a trip?"
+          lines={["Three months", "became a mirror."]}
+          subtext="Work & Travel was never only about travel. Atlantic City, New York, daily routines, and work shifts became lessons in independence, systems, money, people, and uncertainty."
+          project="Future placeholders: Atlantic City, New York, daily life, work"
+          photoClass="wat-america-photo"
+          photoLabel="work-travel-placeholder"
+          photoCaption="Atlantic City, New York, daily life, and work experience photos will live here."
+        />
+
+        <TimelineScene />
+
+        <TextScene
+          label="Scene 18"
+          lines={["What I'm", "building toward."]}
+          subtext="Not only software. Korea exchange, Grade 8 guitar, the LTCL path, research systems, Chainstox Lab, and the quieter work of growing into a person who can hold all of it with care."
           tone="dark"
         >
           <motion.div
