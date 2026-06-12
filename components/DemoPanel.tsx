@@ -397,6 +397,27 @@ function friendlyMarketError(status: number) {
   return "Market Intelligence API is temporarily unavailable. Please try again later.";
 }
 
+async function readMarketResponse(response: Response): Promise<ValuationApiResponse> {
+  const text = await response.text();
+  if (!text.trim()) {
+    return {
+      ok: false,
+      cached: false,
+      error: "Market Intelligence API returned an empty response."
+    };
+  }
+
+  try {
+    return JSON.parse(text) as ValuationApiResponse;
+  } catch {
+    return {
+      ok: false,
+      cached: false,
+      error: "Market Intelligence API returned an unreadable response."
+    };
+  }
+}
+
 export function DemoPanel({ project }: { project: Project }) {
   const [scenario, setScenario] = useState(() => scenarioDefault(project));
   const [submittedScenario, setSubmittedScenario] = useState(() => scenarioDefault(project));
@@ -441,7 +462,7 @@ export function DemoPanel({ project }: { project: Project }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ mode: marketMode, input })
       });
-      const payload = (await response.json()) as ValuationApiResponse;
+      const payload = await readMarketResponse(response);
 
       setResponseMeta({
         cached: Boolean(payload.cached),

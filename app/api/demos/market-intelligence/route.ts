@@ -9,6 +9,7 @@ const TICKER_PATTERN = /^[A-Z]{1,6}$/;
 const SECTOR_PATTERN = /^[a-z0-9-]{1,32}$/;
 
 type MarketMode = "macro" | "full" | "sectors" | "sectors_all" | "sector" | "company" | "risk" | "overheat" | "conclusion";
+type JsonRecord = Record<string, unknown>;
 
 function friendlyError(status: number) {
   if (status === 400) return "Check the selected mode and input, then try again.";
@@ -50,6 +51,40 @@ function validateInput(mode: MarketMode, input: string) {
   return "";
 }
 
+function jsonPayload(value: unknown): JsonRecord {
+  return value && typeof value === "object" && !Array.isArray(value) ? (value as JsonRecord) : {};
+}
+
+async function readJsonResponse(response: Response) {
+  const text = await response.text();
+  if (!text.trim()) {
+    return {
+      payload: {},
+      parseError: "Market Intelligence API returned an empty response."
+    };
+  }
+
+  try {
+    return {
+      payload: jsonPayload(JSON.parse(text)),
+      parseError: ""
+    };
+  } catch {
+    return {
+      payload: {},
+      parseError: "Market Intelligence API returned an unreadable response."
+    };
+  }
+}
+
+function stringValue(value: unknown) {
+  return typeof value === "string" ? value : undefined;
+}
+
+function numberValue(value: unknown) {
+  return typeof value === "number" ? value : undefined;
+}
+
 export async function POST(request: Request) {
   let mode = "";
   let input = "";
@@ -82,30 +117,42 @@ export async function POST(request: Request) {
       body: JSON.stringify({ mode, input }),
       signal: controller.signal
     });
-    const payload = await response.json().catch(() => ({}));
+    const { payload, parseError } = await readJsonResponse(response);
 
     if (!response.ok) {
       return NextResponse.json(
         {
           ok: false,
           cached: Boolean(payload.cached),
-          duration_ms: payload.duration_ms,
-          timestamp_utc: payload.timestamp_utc,
-          error: payload.error || friendlyError(response.status)
+          duration_ms: numberValue(payload.duration_ms),
+          timestamp_utc: stringValue(payload.timestamp_utc),
+          error: stringValue(payload.error) || parseError || friendlyError(response.status)
         },
         { status: response.status }
       );
     }
 
+    if (parseError) {
+      return NextResponse.json(
+        {
+          ok: false,
+          cached: false,
+          error: parseError
+        },
+        { status: 502 }
+      );
+    }
+
     return NextResponse.json(payload, { status: response.status });
-  } catch {
+  } catch (error) {
+    const isAbort = error instanceof Error && error.name === "AbortError";
     return NextResponse.json(
       {
         ok: false,
         cached: false,
-        error: "Market Intelligence API is temporarily unavailable. Please try again later."
+        error: isAbort ? "Analysis timed out. Please try again." : "Market Intelligence API is temporarily unavailable. Please try again later."
       },
-      { status: 503 }
+      { status: isAbort ? 504 : 503 }
     );
   } finally {
     clearTimeout(timeout);
