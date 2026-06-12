@@ -44,7 +44,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   return (
     <main className="lab-shell lab-grid min-h-screen px-4 pb-24 pt-4 text-bone md:px-8">
       <nav className="lab-topbar sticky top-4 z-20 mx-auto flex max-w-7xl items-center justify-between rounded-lg px-3 py-3 text-sm text-bone/62">
-        <Link className="lab-focus-ring flex items-center gap-3 rounded-md px-2 py-1.5 font-semibold tracking-[0.16em] text-bone" href="/lab">
+        <Link className="lab-focus-ring lab-wordmark flex items-center gap-3 rounded-md px-2 py-1.5 font-semibold text-bone" href="/lab">
           <span className="flex h-7 w-7 items-center justify-center rounded-md border border-white/12 bg-white/[0.04] font-mono text-xs text-bone">CL</span>
           <span className="hidden sm:inline">CHAINSTOX LAB</span>
         </Link>
@@ -65,8 +65,8 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
             <span className="rounded-md border border-moss/20 bg-moss/10 px-2.5 py-1 text-moss/90">{project.status}</span>
             <span className="lab-chip rounded-md px-2.5 py-1 text-bone/60">{project.demoType}</span>
           </div>
-          <h1 className="mt-7 max-w-5xl text-5xl font-semibold leading-[0.98] tracking-[-0.02em] text-bone md:text-7xl">{project.name}</h1>
-          <p className="mt-6 max-w-3xl text-xl leading-8 text-bone/62">{project.description}</p>
+          <h1 className="lab-hero-title mt-7 max-w-5xl text-[2.55rem] text-bone md:text-[4.35rem]">{project.name}</h1>
+          <p className="lab-copy mt-6 max-w-3xl text-lg text-bone/62 md:text-xl">{project.description}</p>
           <div className="mt-8 flex flex-wrap gap-3">
             {isExternalApp ? (
               project.liveUrl ? (
@@ -101,7 +101,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
         <aside className="lab-console rounded-lg p-5">
           <div className="flex items-center justify-between gap-4">
-            <p className="font-mono text-xs uppercase tracking-[0.18em] text-bone/36">system card</p>
+            <p className="lab-eyebrow text-xs text-bone/36">system card</p>
             <span className="rounded-md border border-white/10 bg-white/[0.03] px-2 py-1 font-mono text-[11px] text-bone/44">v0</span>
           </div>
           <div className="mt-5 divide-y divide-white/8 text-sm">
@@ -126,10 +126,10 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         <MotionSection className="mx-auto max-w-7xl py-12" id="demo">
           <div className="mb-5 flex flex-col justify-between gap-3 md:flex-row md:items-end">
             <div>
-              <p className="font-mono text-xs uppercase tracking-[0.18em] text-bone/38">Embedded Surface</p>
-              <h2 className="mt-3 text-3xl font-semibold tracking-[-0.01em] text-bone">Market Intelligence console.</h2>
+              <p className="lab-eyebrow text-xs text-bone/38">Embedded Surface</p>
+              <h2 className="lab-section-title mt-3 text-3xl text-bone">Market Intelligence console.</h2>
             </div>
-            <p className="max-w-md text-sm leading-6 text-bone/48">This is the only project console currently embedded in alvin-lim.com.</p>
+            <p className="lab-copy max-w-md text-sm text-bone/48">This is the only project console currently embedded in alvin-lim.com.</p>
           </div>
           <DemoPanel project={project} />
         </MotionSection>
@@ -138,27 +138,27 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           <div className="grid gap-4 lg:grid-cols-[0.72fr_0.28fr]">
             <section className="lab-console min-w-0 overflow-hidden rounded-lg p-5">
               <div className="flex items-center justify-between gap-4">
-                <p className="font-mono text-xs uppercase tracking-[0.18em] text-bone/36">
+                <p className="lab-eyebrow text-xs text-bone/36">
                   {isExternalApp ? "External App Surface" : "Pending Surface"}
                 </p>
-                <span className="rounded-md border border-white/10 bg-white/[0.03] px-2.5 py-1 font-mono text-[11px] uppercase tracking-[0.14em] text-bone/42">
+                <span className="lab-eyebrow rounded-md border border-white/10 bg-white/[0.03] px-2.5 py-1 text-[11px] text-bone/42">
                   {project.status}
                 </span>
               </div>
               <div className="mt-6 rounded-lg border border-white/10 bg-black/24 p-4">
                 <div className="grid min-h-64 place-items-center rounded-md border border-white/8 bg-[linear-gradient(135deg,rgba(236,228,215,0.07),rgba(100,127,145,0.06)),linear-gradient(90deg,rgba(236,228,215,0.04)_1px,transparent_1px)] bg-[size:100%_100%,32px_32px] p-6 text-center">
                   <div>
-                    <p className="font-mono text-xs uppercase tracking-[0.18em] text-bone/36">Static Preview</p>
-                    <h2 className="mt-3 text-2xl font-semibold tracking-[-0.01em] text-bone">{project.name}</h2>
-                    <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-bone/52">
-                      The full UI belongs to its own deployed app and codebase. This hub only links out and documents the system.
+                    <p className="lab-eyebrow text-xs text-bone/36">Static Preview</p>
+                    <h2 className="lab-section-title mt-3 text-2xl text-bone">{project.name}</h2>
+                    <p className="lab-copy mx-auto mt-3 max-w-md text-sm text-bone/52">
+                      The analytical interface is maintained in its own deployment and codebase. This page records the system boundary, source, and launch state.
                     </p>
                   </div>
                 </div>
               </div>
             </section>
             <aside className="lab-surface rounded-lg p-5">
-              <p className="font-mono text-xs uppercase tracking-[0.18em] text-bone/38">Actions</p>
+              <p className="lab-eyebrow text-xs text-bone/38">Actions</p>
               <div className="mt-5 flex flex-col gap-3">
                 {isExternalApp && project.liveUrl ? (
                   <a className="lab-button-primary lab-focus-ring rounded-md px-4 py-3 text-center font-medium transition hover:bg-white" href={project.liveUrl} rel="noreferrer" target="_blank">
@@ -179,10 +179,10 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                   </span>
                 )}
               </div>
-              <p className="mt-5 text-sm leading-6 text-bone/50">
+              <p className="lab-copy mt-5 text-sm text-bone/50">
                 {isExternalApp
-                  ? "This project has its own UI. Add a deployment URL in project metadata to activate the launch button."
-                  : "This project is listed in the lab while its source or demo surface is still being prepared."}
+                  ? "This project has its own analytical interface. Add a deployment URL in project metadata to activate the launch button."
+                  : "This system is indexed in the lab while its source or demo surface is still being prepared."}
               </p>
             </aside>
           </div>
@@ -197,8 +197,8 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           ["Limitations", project.limitations]
         ].map(([title, copy]) => (
           <section className="lab-surface rounded-lg p-5" key={title}>
-            <p className="font-mono text-xs uppercase tracking-[0.16em] text-bone/38">{title}</p>
-            <p className="mt-4 leading-7 text-bone/62">{copy}</p>
+            <p className="lab-eyebrow text-xs text-bone/38">{title}</p>
+            <p className="lab-copy mt-4 text-bone/62">{copy}</p>
           </section>
         ))}
       </MotionSection>
@@ -206,8 +206,8 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
       <MotionSection className="mx-auto max-w-7xl border-t border-white/10 pt-10">
         <div className="flex flex-col justify-between gap-5 md:flex-row md:items-end">
           <div>
-            <p className="font-mono text-xs uppercase tracking-[0.18em] text-bone/38">Continue Research</p>
-            <h2 className="mt-3 text-3xl font-semibold tracking-[-0.01em] text-bone">Adjacent systems.</h2>
+            <p className="lab-eyebrow text-xs text-bone/38">Continue Research</p>
+            <h2 className="lab-section-title mt-3 text-3xl text-bone">Adjacent systems.</h2>
           </div>
           <Link className="lab-focus-ring rounded-md px-3 py-2 text-sm font-medium text-bone/60 transition hover:bg-white/[0.05] hover:text-bone" href="/lab">
             Back to lab
@@ -217,8 +217,8 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           {relatedProjects.map((item) => (
             <Link className="lab-surface rounded-lg p-4 transition hover:-translate-y-0.5 hover:border-bone/22" href={`/lab/projects/${item.slug}`} key={item.slug}>
               <p className="font-mono text-xs uppercase tracking-[0.14em] text-bone/35">{item.status}</p>
-              <h3 className="mt-3 font-semibold leading-tight text-bone">{item.name}</h3>
-              <p className="mt-2 text-sm leading-6 text-bone/48">{item.type}</p>
+              <h3 className="lab-section-title mt-3 text-base text-bone">{item.name}</h3>
+              <p className="lab-copy mt-2 text-sm text-bone/48">{item.type}</p>
             </Link>
           ))}
         </div>

@@ -451,8 +451,8 @@ export function DemoPanel({ project }: { project: Project }) {
   return (
     <div className="grid min-w-0 gap-4 lg:grid-cols-[0.82fr_1.18fr]">
       <div className="lab-surface min-w-0 rounded-lg p-5">
-        <p className="font-mono text-xs uppercase tracking-[0.18em] text-bone/38">Input Console</p>
-        <h2 className="mt-4 text-2xl font-semibold tracking-[-0.01em] text-bone">
+        <p className="lab-eyebrow text-xs text-bone/38">Input Console</p>
+        <h2 className="lab-section-title mt-4 text-2xl text-bone">
           {isValuationDemo ? "Market Intelligence Console" : "Simulated Research Input"}
         </h2>
         <div className="mt-6 space-y-4">
@@ -530,7 +530,7 @@ export function DemoPanel({ project }: { project: Project }) {
             {isLoading ? "Running analysis..." : isValuationDemo ? "Generate Output" : "Generate Sample Output"}
           </button>
         </div>
-        <p className="mt-5 text-sm leading-6 text-bone/55">
+        <p className="lab-copy mt-5 text-sm text-bone/55">
           {isValuationDemo
             ? "Runs predefined Valuation-model CLI modes with sanitized inputs, timeout protection, and fallback output."
             : "Simulated demo based on original project output format. Demo output is simulated for presentation purposes."}
@@ -546,10 +546,10 @@ export function DemoPanel({ project }: { project: Project }) {
       </div>
       <div className="lab-console min-w-0 rounded-lg p-5">
         <div className="flex items-center justify-between gap-4">
-          <p className="font-mono text-xs uppercase tracking-[0.18em] text-bone/38">Output Panel</p>
-          <span className="rounded-md border border-moss/25 bg-moss/10 px-2.5 py-1 font-mono text-[11px] uppercase tracking-[0.14em] text-moss/85">research</span>
+          <p className="lab-eyebrow text-xs text-bone/38">Output Panel</p>
+          <span className="lab-eyebrow rounded-md border border-moss/25 bg-moss/10 px-2.5 py-1 text-[11px] text-moss/85">research</span>
         </div>
-        <h2 className="mt-3 text-2xl font-semibold tracking-[-0.01em] text-bone">{demo.heading}</h2>
+        <h2 className="lab-section-title mt-3 text-2xl text-bone">{demo.heading}</h2>
         {isValuationDemo ? (
           <>
             <p className="mt-2 text-xs text-bone/45">

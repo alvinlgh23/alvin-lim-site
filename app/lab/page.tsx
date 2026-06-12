@@ -11,10 +11,10 @@ const featuredSlugs = [
 ];
 
 const thesisBySlug: Record<string, string> = {
-  "on-chain-market-intelligence": "On-chain, liquidity, flow, and narrative signals compressed into a regime map.",
-  "market-valuation-engine": "Macro conditions, sector heat, and company chase risk in one inspectable output.",
-  "sgd-neer-shadow-model": "A transparent SGD basket proxy for studying MAS-style policy pressure.",
-  "kospi-signal-monitor": "Korea equity intelligence across semiconductors, FX, exports, and volatility."
+  "on-chain-market-intelligence": "Regime research across on-chain behavior, liquidity conditions, capital flow, and narrative rotation.",
+  "market-valuation-engine": "Macro, sector, valuation, and positioning signals organized into a market-structure read.",
+  "sgd-neer-shadow-model": "A transparent SGD basket proxy for studying Singapore exchange-rate policy pressure.",
+  "kospi-signal-monitor": "Korea equity signal research across semiconductors, FX, exports, and volatility."
 };
 
 const labMetrics = [
@@ -25,10 +25,10 @@ const labMetrics = [
 ];
 
 const consoleRows = [
-  ["hub", "Central index for separate research apps", "online"],
-  ["market", "Embedded console retained in this site", "preview"],
-  ["ui apps", "Launch out to deployed project surfaces", "external"],
-  ["source", "GitHub remains the project record", "linked"]
+  ["hub", "Central index for independent research systems", "online"],
+  ["market", "Embedded market-intelligence console", "preview"],
+  ["ui apps", "Separate deployed analytical interfaces", "external"],
+  ["source", "Repository records and implementation notes", "linked"]
 ];
 
 export default function LabPage() {
@@ -41,7 +41,7 @@ export default function LabPage() {
   return (
     <main className="lab-shell lab-grid min-h-screen px-4 pb-24 pt-4 text-bone md:px-8">
       <nav className="lab-topbar sticky top-4 z-20 mx-auto flex max-w-7xl items-center justify-between rounded-lg px-3 py-3 text-sm text-bone/62">
-        <Link className="lab-focus-ring flex items-center gap-3 rounded-md px-2 py-1.5 font-semibold tracking-[0.16em] text-bone" href="/">
+        <Link className="lab-focus-ring lab-wordmark flex items-center gap-3 rounded-md px-2 py-1.5 font-semibold text-bone" href="/">
           <span className="flex h-7 w-7 items-center justify-center rounded-md border border-white/12 bg-white/[0.04] font-mono text-xs text-bone">CL</span>
           <span className="hidden sm:inline">CHAINSTOX LAB</span>
         </Link>
@@ -60,15 +60,15 @@ export default function LabPage() {
 
       <MotionSection className="mx-auto grid max-w-7xl gap-8 pb-14 pt-16 lg:grid-cols-[1.02fr_0.98fr] lg:items-end">
         <div>
-          <div className="inline-flex items-center gap-2 rounded-md border border-moss/20 bg-moss/10 px-2.5 py-1 font-mono text-xs uppercase tracking-[0.16em] text-moss/90">
+          <div className="lab-eyebrow inline-flex items-center gap-2 rounded-md border border-moss/20 bg-moss/10 px-2.5 py-1 text-xs text-moss/90">
             <span className="h-1.5 w-1.5 rounded-full bg-moss" />
-            Central Lab Hub
+            Research Systems Group
           </div>
-          <h1 className="mt-7 max-w-5xl text-5xl font-semibold leading-[0.97] tracking-[-0.02em] text-bone md:text-7xl">
-            A launch hub for research systems and deployed project apps.
+          <h1 className="lab-hero-title mt-7 max-w-4xl text-[2.6rem] text-bone md:text-[4.8rem]">
+            Market Intelligence Infrastructure
           </h1>
-          <p className="mt-7 max-w-2xl text-lg leading-8 text-bone/62">
-            Chainstox Lab now acts as the central map. UI-heavy projects live in their own codebases and deployments; Market Intelligence stays embedded here while the backend runner evolves.
+          <p className="lab-copy mt-7 max-w-2xl text-lg text-bone/62">
+            Chainstox Lab develops research systems for market structure, macro intelligence, valuation analysis, signal generation, and decision frameworks across public markets and digital assets.
           </p>
           <div className="mt-9 flex flex-wrap gap-3">
             {primaryProject ? (
@@ -85,23 +85,23 @@ export default function LabPage() {
         <div className="lab-console overflow-hidden rounded-lg">
           <div className="flex items-center justify-between border-b border-white/8 px-5 py-4">
             <div>
-              <p className="font-mono text-xs uppercase tracking-[0.18em] text-bone/36">chainstox://lab</p>
+              <p className="lab-eyebrow text-xs text-bone/36">chainstox://lab</p>
               <p className="mt-1 text-sm text-bone/60">Hub and deployment map</p>
             </div>
-            <span className="rounded-md border border-moss/25 bg-moss/10 px-2.5 py-1 font-mono text-[11px] uppercase tracking-[0.14em] text-moss/85">
+            <span className="lab-eyebrow rounded-md border border-moss/25 bg-moss/10 px-2.5 py-1 text-[11px] text-moss/85">
               online
             </span>
           </div>
           <div className="grid grid-cols-2 border-b border-white/8 md:grid-cols-4">
             {labMetrics.map(([label, value]) => (
               <div className="border-r border-white/8 p-4 last:border-r-0" key={label}>
-                <p className="font-mono text-2xl font-semibold text-bone">{value}</p>
-                <p className="mt-1 text-xs uppercase tracking-[0.14em] text-bone/36">{label}</p>
+                <p className="font-mono text-2xl font-medium text-bone">{value}</p>
+                <p className="lab-eyebrow mt-1 text-xs text-bone/36">{label}</p>
               </div>
             ))}
           </div>
           <div className="p-5">
-            <div className="grid grid-cols-[0.45fr_1fr_0.34fr] border-b border-white/8 pb-2 font-mono text-[11px] uppercase tracking-[0.14em] text-bone/34">
+            <div className="lab-eyebrow grid grid-cols-[0.45fr_1fr_0.34fr] border-b border-white/8 pb-2 text-[11px] text-bone/34">
               <span>signal</span>
               <span>read</span>
               <span className="text-right">state</span>
@@ -111,7 +111,7 @@ export default function LabPage() {
                 <div className="grid grid-cols-[0.45fr_1fr_0.34fr] gap-3 py-3 text-sm" key={signal}>
                   <span className="font-mono text-bone/70">{signal}</span>
                   <span className="text-bone/68">{read}</span>
-                  <span className="text-right font-mono text-xs uppercase tracking-[0.12em] text-moss/85">{state}</span>
+                  <span className="lab-eyebrow text-right text-xs text-moss/85">{state}</span>
                 </div>
               ))}
             </div>
@@ -124,13 +124,13 @@ export default function LabPage() {
       <MotionSection className="mx-auto max-w-7xl py-14" id="projects">
         <div className="mb-8 grid gap-5 md:grid-cols-[0.72fr_0.28fr] md:items-end">
           <div>
-            <p className="font-mono text-xs uppercase tracking-[0.18em] text-bone/38">Featured Systems</p>
-            <h2 className="mt-3 max-w-3xl text-3xl font-semibold tracking-[-0.01em] text-bone md:text-5xl">
-              Project apps stay separate; this hub points to them.
+            <p className="lab-eyebrow text-xs text-bone/38">Featured Systems</p>
+            <h2 className="lab-section-title mt-3 max-w-3xl text-3xl text-bone md:text-[2.65rem]">
+              Independent systems for market research and signal evaluation.
             </h2>
           </div>
-          <p className="text-sm leading-6 text-bone/50">
-            External UI projects launch out to their own deployments and source repos. The embedded console is reserved for Market Intelligence.
+          <p className="lab-copy text-sm text-bone/50">
+            Each interface is maintained as a separate project surface. This hub provides the research index, source links, and the embedded Market Intelligence console.
           </p>
         </div>
         <div className="grid gap-4 lg:grid-cols-2">
@@ -146,8 +146,8 @@ export default function LabPage() {
                 </div>
                 <span className="font-mono text-xs text-bone/28">0{index + 1}</span>
               </div>
-              <h3 className="mt-9 max-w-xl text-2xl font-semibold leading-tight tracking-[-0.01em] text-bone md:text-3xl">{project.name}</h3>
-              <p className="mt-4 max-w-2xl text-base leading-7 text-bone/60">{thesisBySlug[project.slug]}</p>
+              <h3 className="lab-section-title mt-9 max-w-xl text-2xl text-bone md:text-[1.8rem]">{project.name}</h3>
+              <p className="lab-copy mt-4 max-w-2xl text-base text-bone/60">{thesisBySlug[project.slug]}</p>
               <div className="mt-7 grid gap-2 border-y border-white/8 py-4 font-mono text-xs text-bone/42 sm:grid-cols-2">
                 <span>category / {project.category}</span>
                 <span>surface / {project.demoType}</span>
@@ -178,10 +178,10 @@ export default function LabPage() {
       <MotionSection className="mx-auto max-w-7xl py-14" id="index">
         <div className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-end">
           <div>
-            <p className="font-mono text-xs uppercase tracking-[0.18em] text-bone/38">Project Index</p>
-            <h2 className="mt-3 text-3xl font-semibold tracking-[-0.01em] text-bone md:text-5xl">Current lab surface.</h2>
+            <p className="lab-eyebrow text-xs text-bone/38">Project Index</p>
+            <h2 className="lab-section-title mt-3 text-3xl text-bone md:text-[2.65rem]">Current research surface.</h2>
           </div>
-          <p className="font-mono text-xs uppercase tracking-[0.16em] text-bone/34">external apps / embedded console / source</p>
+          <p className="lab-eyebrow text-xs text-bone/34">external apps / embedded console / source</p>
         </div>
         <div className="grid gap-4 md:grid-cols-2">
           {labProjects.map((project) => (
@@ -192,19 +192,19 @@ export default function LabPage() {
 
       <MotionSection className="mx-auto max-w-7xl py-12">
         <div className="lab-console rounded-lg p-6 md:p-8">
-          <p className="font-mono text-xs uppercase tracking-[0.18em] text-bone/38">Operating Principles</p>
+          <p className="lab-eyebrow text-xs text-bone/38">Operating Principles</p>
           <div className="mt-7 grid gap-3 md:grid-cols-3">
             {["Regimes over predictions", "Probabilities over certainty", "Systems over isolated signals"].map((principle) => (
               <div className="rounded-lg border border-white/10 bg-white/[0.025] p-5" key={principle}>
-                <h3 className="text-lg font-semibold text-bone">{principle}</h3>
+                <h3 className="lab-section-title text-lg text-bone">{principle}</h3>
               </div>
             ))}
           </div>
         </div>
       </MotionSection>
 
-      <section className="mx-auto max-w-7xl border-t border-white/10 pt-8 text-sm leading-6 text-bone/42">
-        Chainstox Lab is a hub. External apps are deployed separately; embedded outputs are experimental and are not financial advice.
+      <section className="lab-copy mx-auto max-w-7xl border-t border-white/10 pt-8 text-sm text-bone/42">
+        Chainstox Lab is a research hub. External applications are deployed separately; embedded outputs are experimental research interfaces and are not financial advice.
       </section>
     </main>
   );

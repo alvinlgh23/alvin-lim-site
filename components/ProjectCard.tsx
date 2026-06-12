@@ -24,11 +24,11 @@ export function ProjectCard({ project }: ProjectCardProps) {
               {project.status}
             </span>
           </div>
-          <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-bone/30">{project.demoType}</span>
+          <span className="lab-eyebrow text-[11px] text-bone/30">{project.demoType}</span>
         </div>
-        <h3 className="mt-6 text-xl font-semibold leading-tight tracking-[-0.01em] text-bone">{project.name}</h3>
-        <p className="mt-2 font-mono text-xs uppercase tracking-[0.14em] text-bone/36">{project.type}</p>
-        <p className="mt-4 leading-7 text-bone/60">{project.description}</p>
+        <h3 className="lab-section-title mt-6 text-xl text-bone">{project.name}</h3>
+        <p className="lab-eyebrow mt-2 text-xs text-bone/36">{project.type}</p>
+        <p className="lab-copy mt-4 text-bone/60">{project.description}</p>
         <div className="mt-5 flex flex-wrap gap-2">
           {project.techStack.slice(0, 4).map((tech) => (
             <span className="lab-kbd rounded-md px-2.5 py-1 font-mono text-[11px] text-bone/44" key={tech}>

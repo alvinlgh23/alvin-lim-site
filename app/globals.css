@@ -336,6 +336,33 @@ a {
   font-feature-settings: "ss01", "cv01", "cv02";
 }
 
+.lab-wordmark {
+  letter-spacing: 0.16em;
+}
+
+.lab-eyebrow {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.lab-hero-title {
+  font-weight: 520;
+  letter-spacing: -0.012em;
+  line-height: 1.04;
+}
+
+.lab-section-title {
+  font-weight: 520;
+  letter-spacing: -0.006em;
+  line-height: 1.12;
+}
+
+.lab-copy {
+  line-height: 1.75;
+  letter-spacing: 0;
+}
+
 .lab-grid {
   position: relative;
   isolation: isolate;
