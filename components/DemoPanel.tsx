@@ -49,6 +49,7 @@ const MARKET_MODES: Array<{
 ];
 
 const SECTOR_INPUTS = ["semis", "tech", "utilities", "energy", "financials"];
+const MARKET_INTELLIGENCE_API_URL = "https://market-valuation-engine.onrender.com/v1/analyze";
 
 function scenarioDefault(project: Project) {
   if (project.slug === "on-chain-market-intelligence") return "BTC market regime scan";
@@ -457,7 +458,7 @@ export function DemoPanel({ project }: { project: Project }) {
     setExecutedCommand(command);
 
     try {
-      const response = await fetch("/api/demos/market-intelligence", {
+      const response = await fetch(MARKET_INTELLIGENCE_API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ mode: marketMode, input })
@@ -481,7 +482,12 @@ export function DemoPanel({ project }: { project: Project }) {
       setValuationError(payload.output ? "" : "The API returned successfully but no report output was included.");
       setExecutedCommand(payload.command || command);
     } catch (error) {
-      const message = error instanceof Error ? error.message : "Unable to run Valuation-model.";
+      const message =
+        error instanceof TypeError
+          ? "Unable to reach the Market Intelligence API. This may be a network or CORS issue."
+          : error instanceof Error
+            ? error.message
+            : "Unable to run Valuation-model.";
       setValuationOutput("");
       setResponseMeta({});
       setValuationError(message);
@@ -612,7 +618,7 @@ export function DemoPanel({ project }: { project: Project }) {
             </div>
             {valuationError ? <p className="mt-3 rounded-md border border-ember/25 bg-ember/10 p-3 text-xs leading-5 text-ember/85">{valuationError}</p> : null}
             <pre className="lab-terminal-lines mt-5 max-h-[620px] min-w-0 overflow-auto whitespace-pre-wrap rounded-md border border-white/8 bg-black/34 p-4 font-mono text-sm leading-6 text-bone/78">
-              {isLoading ? `Running ${command} ...\nCalling ${"https://market-valuation-engine.onrender.com"}/v1/analyze` : valuationOutput || "Select a mode and generate output to view the live terminal report."}
+              {isLoading ? `Running ${command} ...\nCalling ${MARKET_INTELLIGENCE_API_URL}` : valuationOutput || "Select a mode and generate output to view the live terminal report."}
             </pre>
           </>
         ) : (
