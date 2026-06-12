@@ -22,13 +22,15 @@ type ValuationApiResponse = {
   mode?: MarketMode;
   input?: string;
   command?: string;
-  source?: "real" | "fallback";
   output?: string;
   error?: string;
   truncated?: boolean;
+  cached?: boolean;
+  duration_ms?: number;
+  timestamp_utc?: string;
 };
 
-type MarketMode = "macro" | "full" | "sectors" | "sectors-all" | "sector" | "company" | "overheat";
+type MarketMode = "macro" | "full" | "sectors" | "sectors_all" | "sector" | "company" | "risk" | "conclusion";
 
 const MARKET_MODES: Array<{
   id: MarketMode;
@@ -39,10 +41,11 @@ const MARKET_MODES: Array<{
   { id: "macro", label: "Macro Regime Scan" },
   { id: "full", label: "Full Hottest-Market Report" },
   { id: "sectors", label: "Hottest Sector Leaderboard" },
-  { id: "sectors-all", label: "Full Sector Leaderboard" },
+  { id: "sectors_all", label: "Full Sector Leaderboard" },
   { id: "sector", label: "Specific Sector Condition / Crowding", needsInput: "sector", defaultInput: "semis" },
   { id: "company", label: "Specific Company Condition / Chase Risk", needsInput: "ticker", defaultInput: "NVDA" },
-  { id: "overheat", label: "Company Overheat Check", needsInput: "ticker", defaultInput: "NVDA" }
+  { id: "risk", label: "Company Overheat Check", needsInput: "ticker", defaultInput: "NVDA" },
+  { id: "conclusion", label: "Short Market Conclusion" }
 ];
 
 const SECTOR_INPUTS = ["semis", "tech", "utilities", "energy", "financials"];
@@ -360,10 +363,11 @@ function marketCommand(mode: MarketMode, input: string) {
   if (mode === "macro") return "python model.py macro";
   if (mode === "full") return "python model.py full";
   if (mode === "sectors") return "python model.py sectors";
-  if (mode === "sectors-all") return "python model.py sectors all";
+  if (mode === "sectors_all") return "python model.py sectors all";
   if (mode === "sector") return `python model.py sector ${safeSector}`;
   if (mode === "company") return `python model.py company ${safeTicker}`;
-  return `python model.py risk ${safeTicker}`;
+  if (mode === "risk") return `python model.py risk ${safeTicker}`;
+  return "python model.py conclusion";
 }
 
 function sanitizeTickerInput(value: string) {
@@ -385,6 +389,14 @@ function fallbackPreview(demo: NativeDemo) {
     .join("\n\n");
 }
 
+function friendlyMarketError(status: number) {
+  if (status === 400) return "Check the selected mode and input, then try again.";
+  if (status === 429) return "Too many requests. Please wait a moment and try again.";
+  if (status === 503) return "Market data provider is temporarily rate-limited. Please try again later.";
+  if (status === 504) return "Analysis timed out. Please try again.";
+  return "Market Intelligence API is temporarily unavailable. Please try again later.";
+}
+
 export function DemoPanel({ project }: { project: Project }) {
   const [scenario, setScenario] = useState(() => scenarioDefault(project));
   const [submittedScenario, setSubmittedScenario] = useState(() => scenarioDefault(project));
@@ -393,9 +405,9 @@ export function DemoPanel({ project }: { project: Project }) {
   const [marketInput, setMarketInput] = useState("NVDA");
   const [isLoading, setIsLoading] = useState(false);
   const [valuationOutput, setValuationOutput] = useState("");
-  const [valuationSource, setValuationSource] = useState<"real" | "fallback" | "simulated">("simulated");
   const [valuationError, setValuationError] = useState("");
   const [executedCommand, setExecutedCommand] = useState("");
+  const [responseMeta, setResponseMeta] = useState<{ cached?: boolean; durationMs?: number; timestampUtc?: string }>({});
   const isFinance = /market|valuation|kospi|crypto|neer|finance|on-chain|fx|equity/i.test(`${project.name} ${project.type} ${project.description}`);
   const isValuationDemo = project.slug === "market-valuation-engine";
   const demo = useMemo(() => nativeDemo(project, submittedScenario, runCount), [project, submittedScenario, runCount]);
@@ -420,6 +432,7 @@ export function DemoPanel({ project }: { project: Project }) {
     setSubmittedScenario(input || activeMarketMode.label);
     setIsLoading(true);
     setValuationError("");
+    setResponseMeta({});
     setExecutedCommand(command);
 
     try {
@@ -430,19 +443,27 @@ export function DemoPanel({ project }: { project: Project }) {
       });
       const payload = (await response.json()) as ValuationApiResponse;
 
-      if (!payload.output) {
-        throw new Error(payload.error || "No valuation output returned.");
+      setResponseMeta({
+        cached: Boolean(payload.cached),
+        durationMs: payload.duration_ms,
+        timestampUtc: payload.timestamp_utc
+      });
+
+      if (!response.ok || !payload.ok) {
+        setValuationOutput(payload.output || "");
+        setValuationError(payload.error || friendlyMarketError(response.status));
+        setExecutedCommand(payload.command || command);
+        return;
       }
 
-      setValuationOutput(payload.output);
-      setValuationSource(payload.source || (payload.ok ? "real" : "fallback"));
-      setValuationError(payload.ok ? "" : payload.error || "Real Valuation-model run failed. Showing fallback output.");
+      setValuationOutput(payload.output || "");
+      setValuationError(payload.output ? "" : "The API returned successfully but no report output was included.");
       setExecutedCommand(payload.command || command);
     } catch (error) {
       const message = error instanceof Error ? error.message : "Unable to run Valuation-model.";
       setValuationOutput("");
-      setValuationSource("simulated");
-      setValuationError(`${message} Showing simulated project-format output instead.`);
+      setResponseMeta({});
+      setValuationError(message);
     } finally {
       setIsLoading(false);
     }
@@ -471,7 +492,7 @@ export function DemoPanel({ project }: { project: Project }) {
                   setMarketInput(next.defaultInput || "");
                   setValuationOutput("");
                   setValuationError("");
-                  setValuationSource("simulated");
+                  setResponseMeta({});
                   setExecutedCommand("");
                 }}
                 value={marketMode}
@@ -532,7 +553,7 @@ export function DemoPanel({ project }: { project: Project }) {
         </div>
         <p className="lab-copy mt-5 text-sm text-bone/55">
           {isValuationDemo
-            ? "Runs predefined Valuation-model CLI modes with sanitized inputs, timeout protection, and fallback output."
+            ? "Calls the live Render API with predefined Market Intelligence modes and sanitized inputs."
             : "Simulated demo based on original project output format. Demo output is simulated for presentation purposes."}
           {isFinance ? " This is not financial advice." : ""}
         </p>
@@ -552,17 +573,25 @@ export function DemoPanel({ project }: { project: Project }) {
         <h2 className="lab-section-title mt-3 text-2xl text-bone">{demo.heading}</h2>
         {isValuationDemo ? (
           <>
-            <p className="mt-2 text-xs text-bone/45">
-              {valuationSource === "real"
-                ? "Live demo output from the project script."
-                : valuationSource === "fallback"
-                  ? "Fallback simulated output based on original project format."
-                  : "Simulated demo based on original project output format."}
-            </p>
+            <p className="mt-2 text-xs text-bone/45">Live output from the Market Intelligence Render API.</p>
             {executedCommand ? <p className="mt-2 font-mono text-xs text-bone/38">{executedCommand}</p> : null}
+            <div className="mt-4 grid gap-2 text-xs sm:grid-cols-3">
+              <div className="rounded-md border border-white/8 bg-black/22 px-3 py-2">
+                <p className="lab-eyebrow text-[10px] text-bone/32">cached</p>
+                <p className="mt-1 font-mono text-bone/70">{responseMeta.cached === undefined ? "-" : responseMeta.cached ? "true" : "false"}</p>
+              </div>
+              <div className="rounded-md border border-white/8 bg-black/22 px-3 py-2">
+                <p className="lab-eyebrow text-[10px] text-bone/32">duration</p>
+                <p className="mt-1 font-mono text-bone/70">{responseMeta.durationMs === undefined ? "-" : `${responseMeta.durationMs}ms`}</p>
+              </div>
+              <div className="rounded-md border border-white/8 bg-black/22 px-3 py-2">
+                <p className="lab-eyebrow text-[10px] text-bone/32">timestamp</p>
+                <p className="mt-1 break-all font-mono text-bone/70">{responseMeta.timestampUtc || "-"}</p>
+              </div>
+            </div>
             {valuationError ? <p className="mt-3 rounded-md border border-ember/25 bg-ember/10 p-3 text-xs leading-5 text-ember/85">{valuationError}</p> : null}
             <pre className="lab-terminal-lines mt-5 max-h-[620px] min-w-0 overflow-auto whitespace-pre-wrap rounded-md border border-white/8 bg-black/34 p-4 font-mono text-sm leading-6 text-bone/78">
-              {isLoading ? `Running ${command} ...\nFetching live Yahoo Finance data with timeout protection.` : valuationOutput || fallbackPreview(demo)}
+              {isLoading ? `Running ${command} ...\nCalling ${"https://market-valuation-engine.onrender.com"}/v1/analyze` : valuationOutput || "Select a mode and generate output to view the live terminal report."}
             </pre>
           </>
         ) : (
