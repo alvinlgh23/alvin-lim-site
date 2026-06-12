@@ -27,10 +27,10 @@ export function ProjectFilters({ projects }: { projects: Project[] }) {
       <div className="flex flex-wrap gap-2">
         {filters.map((filter) => (
           <button
-            className={`rounded-full border px-4 py-2 text-sm transition ${
+            className={`lab-focus-ring rounded-md border px-3.5 py-2 text-sm transition ${
               activeFilter === filter
-                ? "border-ember bg-ember text-ink"
-                : "border-white/12 bg-white/[0.03] text-bone/70 hover:border-white/35 hover:text-bone"
+                ? "lab-chip-active"
+                : "lab-chip text-bone/68 hover:border-white/28 hover:text-bone"
             }`}
             key={filter}
             onClick={() => setActiveFilter(filter)}

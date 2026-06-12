@@ -449,9 +449,9 @@ export function DemoPanel({ project }: { project: Project }) {
   }
 
   return (
-    <div className="grid gap-4 lg:grid-cols-[0.82fr_1.18fr]">
-      <div className="lab-surface rounded-xl p-5">
-        <p className="text-xs uppercase tracking-[0.24em] text-harbor/80">Input Console</p>
+    <div className="grid min-w-0 gap-4 lg:grid-cols-[0.82fr_1.18fr]">
+      <div className="lab-surface min-w-0 rounded-lg p-5">
+        <p className="font-mono text-xs uppercase tracking-[0.18em] text-bone/38">Input Console</p>
         <h2 className="mt-4 text-2xl font-semibold tracking-[-0.01em] text-bone">
           {isValuationDemo ? "Market Intelligence Console" : project.demoType === "ui-demo" ? "Interface Preview" : "Simulated Research Input"}
         </h2>
@@ -462,7 +462,7 @@ export function DemoPanel({ project }: { project: Project }) {
                 Analysis Mode
               </label>
               <select
-                className="w-full rounded-lg border border-white/12 bg-black/25 px-4 py-3 text-bone outline-none transition focus:border-harbor"
+                className="lab-focus-ring w-full min-w-0 rounded-md border border-white/12 bg-black/30 px-4 py-3 text-bone outline-none transition focus:border-bone/45"
                 id="market-mode"
                 onChange={(event) => {
                   const nextMode = event.target.value as MarketMode;
@@ -488,7 +488,7 @@ export function DemoPanel({ project }: { project: Project }) {
                     {activeMarketMode.needsInput === "sector" ? "Sector" : "Company ticker"}
                   </label>
                   <input
-                    className="w-full rounded-lg border border-white/12 bg-black/25 px-4 py-3 text-bone outline-none transition placeholder:text-bone/35 focus:border-harbor"
+                    className="lab-focus-ring w-full min-w-0 rounded-md border border-white/12 bg-black/30 px-4 py-3 text-bone outline-none transition placeholder:text-bone/35 focus:border-bone/45"
                     id="market-input"
                     onChange={(event) =>
                       setMarketInput(activeMarketMode.needsInput === "ticker" ? normalizeTickerInput(event.target.value) : event.target.value)
@@ -502,7 +502,7 @@ export function DemoPanel({ project }: { project: Project }) {
                 Command
               </label>
               <input
-                className="w-full rounded-lg border border-harbor/20 bg-black/30 px-4 py-3 font-mono text-sm text-bone/72 outline-none"
+                className="w-full min-w-0 rounded-md border border-white/12 bg-black/36 px-4 py-3 font-mono text-sm text-bone/62 outline-none"
                 id="market-command"
                 readOnly
                 value={command}
@@ -514,7 +514,7 @@ export function DemoPanel({ project }: { project: Project }) {
                 {demo.inputLabel}
               </label>
               <input
-                className="w-full rounded-lg border border-white/12 bg-black/25 px-4 py-3 text-bone outline-none transition placeholder:text-bone/35 focus:border-harbor"
+                className="lab-focus-ring w-full min-w-0 rounded-md border border-white/12 bg-black/30 px-4 py-3 text-bone outline-none transition placeholder:text-bone/35 focus:border-bone/45"
                 id="demo-input"
                 onChange={(event) => setScenario(event.target.value)}
                 value={scenario}
@@ -522,7 +522,7 @@ export function DemoPanel({ project }: { project: Project }) {
             </>
           )}
           <button
-            className="w-full rounded-lg bg-bone px-4 py-3 font-medium text-ink transition hover:-translate-y-0.5 hover:bg-white disabled:cursor-not-allowed disabled:opacity-60"
+            className="lab-button-primary lab-focus-ring w-full rounded-md px-4 py-3 font-medium transition hover:-translate-y-0.5 hover:bg-white disabled:cursor-not-allowed disabled:opacity-60"
             disabled={isLoading}
             onClick={generateOutput}
             type="button"
@@ -537,17 +537,17 @@ export function DemoPanel({ project }: { project: Project }) {
           {isFinance ? " This is not financial advice." : ""}
         </p>
         {isValuationDemo && activeMarketMode.needsInput ? (
-          <p className="mt-3 rounded-lg border border-white/8 bg-black/18 p-3 text-xs leading-5 text-bone/42">
+          <p className="mt-3 rounded-md border border-white/8 bg-black/20 p-3 text-xs leading-5 text-bone/42">
             {activeMarketMode.needsInput === "sector"
               ? `Supported sectors: ${SECTOR_INPUTS.join(" / ")}`
               : "Ticker format: uppercase letters only, 1-6 characters."}
           </p>
         ) : null}
       </div>
-      <div className="lab-console rounded-xl p-5">
+      <div className="lab-console min-w-0 rounded-lg p-5">
         <div className="flex items-center justify-between gap-4">
-          <p className="text-xs uppercase tracking-[0.24em] text-harbor/80">Output Panel</p>
-          <span className="rounded-full border border-moss/25 bg-moss/10 px-2.5 py-1 font-mono text-[11px] uppercase tracking-[0.16em] text-moss/85">research</span>
+          <p className="font-mono text-xs uppercase tracking-[0.18em] text-bone/38">Output Panel</p>
+          <span className="rounded-md border border-moss/25 bg-moss/10 px-2.5 py-1 font-mono text-[11px] uppercase tracking-[0.14em] text-moss/85">research</span>
         </div>
         <h2 className="mt-3 text-2xl font-semibold tracking-[-0.01em] text-bone">{demo.heading}</h2>
         {isValuationDemo ? (
@@ -560,8 +560,8 @@ export function DemoPanel({ project }: { project: Project }) {
                   : "Simulated demo based on original project output format."}
             </p>
             {executedCommand ? <p className="mt-2 font-mono text-xs text-bone/38">{executedCommand}</p> : null}
-            {valuationError ? <p className="mt-3 rounded-lg border border-ember/25 bg-ember/10 p-3 text-xs leading-5 text-ember/85">{valuationError}</p> : null}
-            <pre className="lab-terminal-lines mt-5 max-h-[620px] overflow-auto whitespace-pre-wrap rounded-lg border border-white/8 bg-black/34 p-4 font-mono text-sm leading-6 text-bone/78">
+            {valuationError ? <p className="mt-3 rounded-md border border-ember/25 bg-ember/10 p-3 text-xs leading-5 text-ember/85">{valuationError}</p> : null}
+            <pre className="lab-terminal-lines mt-5 max-h-[620px] min-w-0 overflow-auto whitespace-pre-wrap rounded-md border border-white/8 bg-black/34 p-4 font-mono text-sm leading-6 text-bone/78">
               {isLoading ? `Running ${command} ...\nFetching live Yahoo Finance data with timeout protection.` : valuationOutput || fallbackPreview(demo)}
             </pre>
           </>
@@ -570,10 +570,10 @@ export function DemoPanel({ project }: { project: Project }) {
             <p className="mt-2 text-xs text-bone/45">Simulated demo based on original project output format.</p>
             <div className="mt-5 space-y-4 font-mono text-sm">
               {demo.blocks.map((block) => (
-                <section className="lab-terminal-lines rounded-lg border border-white/8 bg-black/34 p-4 text-bone/78" key={block.title}>
+                <section className="lab-terminal-lines rounded-md border border-white/8 bg-black/34 p-4 text-bone/78" key={block.title}>
                   <div className="flex flex-wrap items-start justify-between gap-3">
                     <h3 className="whitespace-pre-line text-sm font-semibold leading-6 text-bone">{block.title}</h3>
-                    {block.badge ? <span className="rounded-full border border-harbor/30 px-2 py-1 text-[11px] text-harbor">{block.badge}</span> : null}
+                    {block.badge ? <span className="rounded-md border border-white/12 px-2 py-1 text-[11px] text-bone/58">{block.badge}</span> : null}
                   </div>
                   <div className="mt-4 space-y-2">
                     {block.rows.map(([label, value]) => (
