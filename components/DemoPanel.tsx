@@ -30,7 +30,7 @@ type ValuationApiResponse = {
   timestamp_utc?: string;
 };
 
-type MarketMode = "macro" | "full" | "sectors" | "sectors_all" | "sector" | "company" | "risk" | "conclusion";
+type MarketMode = "macro" | "full" | "sectors" | "sectors_all" | "sector" | "company" | "stock" | "risk" | "overheat" | "conclusion";
 
 const MARKET_MODES: Array<{
   id: MarketMode;
@@ -44,12 +44,15 @@ const MARKET_MODES: Array<{
   { id: "sectors_all", label: "Full Sector Leaderboard" },
   { id: "sector", label: "Specific Sector Condition / Crowding", needsInput: "sector", defaultInput: "semis" },
   { id: "company", label: "Specific Company Condition / Chase Risk", needsInput: "ticker", defaultInput: "NVDA" },
-  { id: "risk", label: "Company Overheat Check", needsInput: "ticker", defaultInput: "NVDA" },
+  { id: "stock", label: "Stock Alias / Company Condition", needsInput: "ticker", defaultInput: "NVDA" },
+  { id: "risk", label: "Company Risk Check", needsInput: "ticker", defaultInput: "NVDA" },
+  { id: "overheat", label: "Company Overheat Check", needsInput: "ticker", defaultInput: "NVDA" },
   { id: "conclusion", label: "Short Market Conclusion" }
 ];
 
 const SECTOR_INPUTS = ["semis", "tech", "utilities", "energy", "financials"];
 const MARKET_INTELLIGENCE_API_URL = "https://market-valuation-engine.onrender.com/v1/analyze";
+const LIVE_MARKET_MODES = new Set<MarketMode>(["company", "stock", "risk", "overheat"]);
 
 function scenarioDefault(project: Project) {
   if (project.slug === "on-chain-market-intelligence") return "BTC market regime scan";
@@ -367,8 +370,14 @@ function marketCommand(mode: MarketMode, input: string) {
   if (mode === "sectors_all") return "python model.py sectors all";
   if (mode === "sector") return `python model.py sector ${safeSector}`;
   if (mode === "company") return `python model.py company ${safeTicker}`;
+  if (mode === "stock") return `python model.py stock ${safeTicker}`;
   if (mode === "risk") return `python model.py risk ${safeTicker}`;
+  if (mode === "overheat") return `python model.py overheat ${safeTicker}`;
   return "python model.py conclusion";
+}
+
+function isLiveMarketMode(mode: MarketMode) {
+  return LIVE_MARKET_MODES.has(mode);
 }
 
 function sanitizeTickerInput(value: string) {
@@ -388,6 +397,133 @@ function fallbackPreview(demo: NativeDemo) {
   return demo.blocks
     .map((block) => `${block.title}\n${block.rows.map(([label, value]) => `${label}: ${value}`).join("\n")}${block.note ? `\n\n${block.note}` : ""}`)
     .join("\n\n");
+}
+
+function marketDemoOutput(mode: MarketMode, input: string) {
+  const sector = sanitizeSectorInput(input) || "semis";
+  const sectorLabel = sector === "semis" ? "Semiconductors" : sector;
+
+  if (mode === "macro") {
+    return `=================================================
+GLOBAL LIQUIDITY CONDITIONS
+=================================================
+
+Liquidity Regime: Neutral-to-Tight
+Risk Perception: Normal
+Carry Conditions: Neutral
+
+US 10Y Treasury Yield: 4.45%
+US 30Y Treasury Yield: 4.95%
+DXY Trend: Unavailable (Unavailable 3M)
+USDJPY / JPY Carry: 160.54 (+1.25% 3M)
+VIX: 19.44
+
+M2 Money Supply Trend:
+Expanding (+2.51% 6M)
+
+Long-Term Liquidity Backdrop:
+Supportive
+
+Threshold Diagnostics:
+
+US 10Y Treasury Yield:
+Current: 4.45%
+Reference Threshold: 4.50% tight-liquidity threshold
+Classification: Near Tight-Liquidity Zone
+
+VIX:
+Current: 19.44
+Reference Threshold: <15 complacency; >25 stress
+Classification: Normal Risk Perception
+
+=================================================
+DATA PROVIDER WARNINGS
+=================================================
+
+Demo output based on original system format.
+Live macro scans are not executed from this page to avoid provider timeouts on free hosting.`;
+  }
+
+  if (mode === "full") {
+    return `=================================================
+FULL MARKET INTELLIGENCE REPORT
+=================================================
+
+Layer 1: Macro Regime Engine
+Liquidity regime: Neutral-to-Tight
+Preferred environment: cash-flow-heavy sectors, defensives, balance-sheet strength
+
+Layer 2: Sector Rotation
+Leadership remains selective rather than broad.
+Semiconductors and infrastructure-linked themes remain the primary watch areas.
+
+Layer 3: Narrative Formation
+AI infrastructure, power demand, and liquidity sensitivity continue to drive the strongest research narratives.
+
+Layer 4: Institutional Capital Flow
+Capital flow confirmation depends on breadth, relative strength, and valuation heat.
+
+Layer 5: Valuation Expansion / Overheating
+Company-level checks should be run live with a ticker.
+
+Demo output based on original system format.`;
+  }
+
+  if (mode === "sectors" || mode === "sectors_all") {
+    return `=================================================
+SECTOR POSITIONING ANALYSIS
+=================================================
+
+Rank  Sector / Theme                  Signal
+1     Semiconductors / AI Memory       Strong leadership, elevated attention
+2     Utilities / Power Demand         Defensive growth plus power-infrastructure narrative
+3     Technology / AI Software         Constructive but selective
+4     Industrials                      Improving breadth, cyclical sensitivity
+5     Financials                       Mixed rate sensitivity
+
+Breadth Read:
+Leadership is concentrated. A broad market expansion would require wider participation beyond the highest-conviction themes.
+
+${mode === "sectors_all" ? "Full leaderboard mode includes the broader ETF universe in the original CLI." : "Compact leaderboard mode shows the highest-signal groups."}
+
+Demo output based on original system format.`;
+  }
+
+  if (mode === "sector") {
+    return `=================================================
+SPECIFIC SECTOR CONDITION REPORT
+=================================================
+
+Sector: ${sectorLabel}
+
+Relative Strength vs SPY:
+Constructive, but confirmation depends on breadth and sustained participation.
+
+Valuation Expansion:
+Elevated attention can create rerating pressure. This should be checked against earnings support.
+
+Crowding / Chase Risk:
+Moderate. Strong narratives can remain strong, but extension matters.
+
+Interpretation:
+The sector remains useful as a leadership proxy, but company-level analysis is better suited for live API execution.
+
+Demo output based on original system format.`;
+  }
+
+  return `=================================================
+SHORT MARKET CONCLUSION
+=================================================
+
+The market structure remains selective.
+
+Liquidity is not loose enough to treat every risk asset the same way.
+Leadership durability depends on breadth, valuation heat, and company-level quality.
+
+Best live use of this demo:
+Run company, stock, risk, or overheat mode with a ticker.
+
+Demo output based on original system format.`;
 }
 
 function friendlyMarketError(status: number) {
@@ -423,7 +559,7 @@ export function DemoPanel({ project }: { project: Project }) {
   const [scenario, setScenario] = useState(() => scenarioDefault(project));
   const [submittedScenario, setSubmittedScenario] = useState(() => scenarioDefault(project));
   const [runCount, setRunCount] = useState(0);
-  const [marketMode, setMarketMode] = useState<MarketMode>("macro");
+  const [marketMode, setMarketMode] = useState<MarketMode>("company");
   const [marketInput, setMarketInput] = useState("NVDA");
   const [isLoading, setIsLoading] = useState(false);
   const [valuationOutput, setValuationOutput] = useState("");
@@ -435,6 +571,7 @@ export function DemoPanel({ project }: { project: Project }) {
   const demo = useMemo(() => nativeDemo(project, submittedScenario, runCount), [project, submittedScenario, runCount]);
   const activeMarketMode = selectedMarketMode(marketMode);
   const command = marketCommand(marketMode, marketInput.trim());
+  const isLiveRun = isLiveMarketMode(marketMode);
 
   async function generateOutput() {
     const nextScenario = scenario.trim() || demo.defaultScenario;
@@ -452,10 +589,17 @@ export function DemoPanel({ project }: { project: Project }) {
           ? sanitizeSectorInput(marketInput) || activeMarketMode.defaultInput || ""
           : "";
     setSubmittedScenario(input || activeMarketMode.label);
-    setIsLoading(true);
     setValuationError("");
     setResponseMeta({});
     setExecutedCommand(command);
+
+    if (!isLiveRun) {
+      setValuationOutput(marketDemoOutput(marketMode, input));
+      setResponseMeta({});
+      return;
+    }
+
+    setIsLoading(true);
 
     try {
       const response = await fetch(MARKET_INTELLIGENCE_API_URL, {
@@ -580,7 +724,7 @@ export function DemoPanel({ project }: { project: Project }) {
         </div>
         <p className="lab-copy mt-5 text-sm text-bone/55">
           {isValuationDemo
-            ? "Calls the live Render API with predefined Market Intelligence modes and sanitized inputs."
+            ? "Live runs are enabled for company-level analysis. Larger market scans are shown as demo outputs to avoid provider timeouts on free hosting."
             : "Simulated demo based on original project output format. Demo output is simulated for presentation purposes."}
           {isFinance ? " This is not financial advice." : ""}
         </p>
@@ -600,25 +744,31 @@ export function DemoPanel({ project }: { project: Project }) {
         <h2 className="lab-section-title mt-3 text-2xl text-bone">{demo.heading}</h2>
         {isValuationDemo ? (
           <>
-            <p className="mt-2 text-xs text-bone/45">Live output from the Market Intelligence Render API.</p>
+            <p className="mt-2 text-xs text-bone/45">
+              {isLiveRun ? "Live output from the Market Intelligence Render API." : "Demo output based on original system format."}
+            </p>
             {executedCommand ? <p className="mt-2 font-mono text-xs text-bone/38">{executedCommand}</p> : null}
-            <div className="mt-4 grid gap-2 text-xs sm:grid-cols-3">
-              <div className="rounded-md border border-white/8 bg-black/22 px-3 py-2">
-                <p className="lab-eyebrow text-[10px] text-bone/32">cached</p>
-                <p className="mt-1 font-mono text-bone/70">{responseMeta.cached === undefined ? "-" : responseMeta.cached ? "true" : "false"}</p>
+            {isLiveRun ? (
+              <div className="mt-4 grid gap-2 text-xs sm:grid-cols-3">
+                <div className="rounded-md border border-white/8 bg-black/22 px-3 py-2">
+                  <p className="lab-eyebrow text-[10px] text-bone/32">cached</p>
+                  <p className="mt-1 font-mono text-bone/70">{responseMeta.cached === undefined ? "-" : responseMeta.cached ? "true" : "false"}</p>
+                </div>
+                <div className="rounded-md border border-white/8 bg-black/22 px-3 py-2">
+                  <p className="lab-eyebrow text-[10px] text-bone/32">duration</p>
+                  <p className="mt-1 font-mono text-bone/70">{responseMeta.durationMs === undefined ? "-" : `${responseMeta.durationMs}ms`}</p>
+                </div>
+                <div className="rounded-md border border-white/8 bg-black/22 px-3 py-2">
+                  <p className="lab-eyebrow text-[10px] text-bone/32">timestamp</p>
+                  <p className="mt-1 break-all font-mono text-bone/70">{responseMeta.timestampUtc || "-"}</p>
+                </div>
               </div>
-              <div className="rounded-md border border-white/8 bg-black/22 px-3 py-2">
-                <p className="lab-eyebrow text-[10px] text-bone/32">duration</p>
-                <p className="mt-1 font-mono text-bone/70">{responseMeta.durationMs === undefined ? "-" : `${responseMeta.durationMs}ms`}</p>
-              </div>
-              <div className="rounded-md border border-white/8 bg-black/22 px-3 py-2">
-                <p className="lab-eyebrow text-[10px] text-bone/32">timestamp</p>
-                <p className="mt-1 break-all font-mono text-bone/70">{responseMeta.timestampUtc || "-"}</p>
-              </div>
-            </div>
+            ) : null}
             {valuationError ? <p className="mt-3 rounded-md border border-ember/25 bg-ember/10 p-3 text-xs leading-5 text-ember/85">{valuationError}</p> : null}
             <pre className="lab-terminal-lines mt-5 max-h-[620px] min-w-0 overflow-auto whitespace-pre-wrap rounded-md border border-white/8 bg-black/34 p-4 font-mono text-sm leading-6 text-bone/78">
-              {isLoading ? `Running ${command} ...\nCalling ${MARKET_INTELLIGENCE_API_URL}` : valuationOutput || "Select a mode and generate output to view the live terminal report."}
+              {isLoading
+                ? `Running ${command} ...\nCalling ${MARKET_INTELLIGENCE_API_URL}`
+                : valuationOutput || "Select a mode and generate output to view the terminal report."}
             </pre>
           </>
         ) : (
