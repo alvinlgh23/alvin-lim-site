@@ -55,22 +55,22 @@ a {
 }
 
 .home-shell {
-  background: #0f0e0b;
-  font-family: "DM Sans", "Manrope", "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-feature-settings: "ss01", "cv01", "cv02";
+  background: #12100c;
+  font-family: Georgia, "Times New Roman", ui-serif, serif;
+  font-feature-settings: normal;
 }
 
 .home-heading {
-  font-family: "Satoshi", "General Sans", "Manrope", "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  font-family: Georgia, "Times New Roman", ui-serif, serif;
   letter-spacing: 0;
 }
 
 .home-copy {
-  font-family: "DM Sans", "Manrope", "Inter", ui-sans-serif, system-ui, sans-serif;
+  font-family: Georgia, "Times New Roman", ui-serif, serif;
 }
 
 .home-label {
-  font-family: "Space Grotesk", "DM Sans", "Manrope", ui-sans-serif, system-ui, sans-serif;
+  font-family: "Courier New", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
 .home-scroll-progress {
@@ -81,8 +81,8 @@ a {
   z-index: 60;
   height: 2px;
   transform-origin: 0 50%;
-  background: linear-gradient(90deg, rgba(236, 228, 215, 0.35), rgba(217, 130, 75, 0.9), rgba(127, 149, 113, 0.55));
-  box-shadow: 0 0 24px rgba(217, 130, 75, 0.22);
+  background: linear-gradient(90deg, rgba(236, 228, 215, 0.42), rgba(217, 130, 75, 0.72), rgba(127, 149, 113, 0.48));
+  box-shadow: 0 0 12px rgba(217, 130, 75, 0.12);
 }
 
 .home-cinema-bg {
@@ -91,10 +91,12 @@ a {
   pointer-events: none;
   z-index: 0;
   background:
-    radial-gradient(circle at 18% 10%, rgba(217, 130, 75, 0.2), transparent 30%),
-    radial-gradient(circle at 80% 14%, rgba(127, 149, 113, 0.14), transparent 34%),
-    radial-gradient(circle at 58% 76%, rgba(100, 127, 145, 0.14), transparent 38%),
-    linear-gradient(180deg, #14110d 0%, #0f0e0b 42%, #11120e 100%);
+    linear-gradient(90deg, rgba(236, 228, 215, 0.026) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(236, 228, 215, 0.018) 1px, transparent 1px),
+    radial-gradient(circle at 18% 12%, rgba(217, 130, 75, 0.12), transparent 30%),
+    radial-gradient(circle at 82% 22%, rgba(127, 149, 113, 0.09), transparent 34%),
+    linear-gradient(180deg, #15120e 0%, #100f0c 48%, #13120e 100%);
+  background-size: 34px 34px, 34px 34px, 100% 100%, 100% 100%, 100% 100%;
 }
 
 .home-cinema-bg::after {
@@ -102,8 +104,8 @@ a {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(90deg, rgba(0, 0, 0, 0.55), transparent 34%, rgba(0, 0, 0, 0.35)),
-    linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.34) 58%, rgba(0, 0, 0, 0.72) 100%);
+    linear-gradient(90deg, rgba(0, 0, 0, 0.28), transparent 42%, rgba(0, 0, 0, 0.2)),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.08), transparent 46%, rgba(0, 0, 0, 0.42) 100%);
 }
 
 .home-noise {
@@ -151,10 +153,12 @@ a {
   z-index: 2;
   overflow: hidden;
   background:
-    radial-gradient(circle at 18% 20%, rgba(217, 130, 75, 0.2), transparent 28%),
-    radial-gradient(circle at 84% 16%, rgba(236, 228, 215, 0.12), transparent 24%),
-    radial-gradient(circle at 72% 82%, rgba(127, 149, 113, 0.1), transparent 30%),
-    linear-gradient(145deg, #17120d 0%, #0f0e0b 46%, #1b1711 100%);
+    linear-gradient(90deg, rgba(236, 228, 215, 0.028) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(236, 228, 215, 0.018) 1px, transparent 1px),
+    radial-gradient(circle at 18% 20%, rgba(217, 130, 75, 0.14), transparent 28%),
+    radial-gradient(circle at 84% 16%, rgba(236, 228, 215, 0.08), transparent 24%),
+    linear-gradient(145deg, #17120d 0%, #0f0e0b 52%, #18140f 100%);
+  background-size: 36px 36px, 36px 36px, 100% 100%, 100% 100%, 100% 100%;
 }
 
 .home-question-wall::before {
@@ -177,8 +181,8 @@ a {
   inset: 0;
   pointer-events: none;
   background:
-    linear-gradient(90deg, rgba(0, 0, 0, 0.48), transparent 42%, rgba(0, 0, 0, 0.32)),
-    linear-gradient(180deg, rgba(0, 0, 0, 0.22), transparent 34%, rgba(0, 0, 0, 0.44));
+    linear-gradient(90deg, rgba(0, 0, 0, 0.28), transparent 46%, rgba(0, 0, 0, 0.2)),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.1), transparent 38%, rgba(0, 0, 0, 0.32));
 }
 
 .home-idea-wall {
@@ -218,7 +222,7 @@ a {
 
 .home-photo {
   background-color: #17140f;
-  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.32), 0 0 80px rgba(217, 130, 75, 0.08);
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.3), 0 0 36px rgba(217, 130, 75, 0.05);
   transform-style: preserve-3d;
   will-change: transform;
 }

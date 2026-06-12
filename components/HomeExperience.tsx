@@ -45,11 +45,11 @@ function GlowArea({ children, className = "" }: { children: ReactNode; className
 
 function HeroSequence() {
   const lines = [
-    { text: "Hi.", className: "text-7xl md:text-9xl lg:text-[10rem]", delay: 0.1 },
-    { text: "I'm Alvin.", className: "text-6xl md:text-8xl lg:text-9xl", delay: 0.78 },
-    { text: "I study economics.", className: "mt-10 text-2xl md:text-3xl", delay: 1.82 },
-    { text: "Sometimes I build things.", className: "text-2xl md:text-3xl", delay: 2.72 },
-    { text: "Most of them start with a question.", className: "text-2xl md:text-3xl", delay: 3.62 }
+    { text: "Hi.", className: "text-6xl md:text-8xl lg:text-9xl", delay: 0.1 },
+    { text: "I'm Alvin.", className: "text-5xl md:text-7xl lg:text-8xl", delay: 0.78 },
+    { text: "I study economics.", className: "mt-10 text-xl md:text-2xl", delay: 1.82 },
+    { text: "I keep notes.", className: "text-xl md:text-2xl", delay: 2.72 },
+    { text: "Sometimes they become things.", className: "text-xl md:text-2xl", delay: 3.62 }
   ];
 
   return (
@@ -144,7 +144,7 @@ function TextScene({
     <section className={`home-scene ${isPaper ? "home-paper-scene text-ink" : "text-bone"}`}>
       <div className="mx-auto flex min-h-screen max-w-6xl flex-col justify-center px-5 py-24 md:px-8">
         <SceneLabel>{label}</SceneLabel>
-        <LineReveal className="home-heading mt-6 max-w-4xl text-4xl font-extrabold leading-[1.02] md:text-6xl lg:text-7xl" lines={lines} />
+        <LineReveal className="home-heading mt-6 max-w-4xl text-4xl font-extrabold leading-[1.05] md:text-5xl lg:text-6xl" lines={lines} />
         {subtext ? (
           <motion.p
             className={`home-copy mt-8 max-w-2xl text-lg leading-8 md:text-xl ${isPaper ? "text-ink/62" : "text-bone/62"}`}
@@ -215,7 +215,7 @@ function DocumentaryPhotoScene({
                 viewport={{ once: true, margin: "-15% 0px" }}
                 transition={{ duration: 0.75, delay: 0.28, ease: softEase }}
               >
-                Project trace: {project}
+                Field note: {project}
               </motion.p>
             ) : null}
           </div>
@@ -229,44 +229,44 @@ function StickyCuriosityScene() {
   const [activeQuestion, setActiveQuestion] = useState<number | null>(null);
   const questions = [
     {
-      question: "Why do markets move?",
-      connection: "Market Intelligence System"
+      question: "Why do people make strange choices with money?",
+      connection: "economics notes"
     },
     {
-      question: "Why do some countries outperform others?",
-      connection: "Macro and FX research notes"
+      question: "Why does the same guitar passage feel different every night?",
+      connection: "practice pages"
     },
     {
-      question: "Why do institutions survive for decades?",
-      connection: "Country and institution frameworks"
+      question: "What changes when you work while everyone else is sleeping?",
+      connection: "Atlantic City"
     },
     {
-      question: "Why do technologies compound?",
-      connection: "Phone Cycle Timing Engine"
+      question: "What does a city sound like when you are new to it?",
+      connection: "New York"
     },
     {
-      question: "Why do people panic at the worst moments?",
-      connection: "Crypto Market Structure Monitor"
+      question: "What happens backstage before the crowd sees anything?",
+      connection: "event work"
     },
     {
-      question: "Can AI become leverage for individuals?",
-      connection: "Chainstox Lab"
+      question: "What is it like to stand on a set and not be the main story?",
+      connection: "music video and background acting"
     },
     {
-      question: "Can learning compound like capital?",
-      connection: "Personal research systems"
+      question: "What happens when a language starts becoming familiar?",
+      connection: "Korean notebooks"
     },
     {
-      question: "What happens when incentives change?",
-      connection: "Decision systems and validators"
+      question: "Why do some questions turn into files?",
+      connection: "things I built"
     },
     {
-      question: "What makes a system resilient?",
-      connection: "NEER Shadow Model"
+      question: "Why did some ordinary days stay in my head?",
+      connection: "small memories"
     },
     {
-      question: "What would a one-person company look like?",
-      connection: "Automation experiments"
+      question: "How did all of this end up on the same website?",
+      connection: "this record"
     }
   ];
 
@@ -274,9 +274,9 @@ function StickyCuriosityScene() {
     <section className="home-question-wall relative min-h-[170vh] px-5 py-24 text-bone md:px-8">
       <div className="sticky top-0 mx-auto grid min-h-screen max-w-6xl gap-12 py-24 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
         <div className="relative z-10">
-          <SceneLabel>Scene 2</SceneLabel>
+          <SceneLabel>Entry 02</SceneLabel>
           <LineReveal
-            className="home-heading mt-6 text-4xl font-extrabold leading-[1.02] md:text-6xl lg:text-7xl"
+            className="home-heading mt-6 text-4xl font-extrabold leading-[1.05] md:text-5xl lg:text-6xl"
             lines={["Questions that", "wouldn't leave", "me alone."]}
           />
           <motion.p
@@ -286,7 +286,7 @@ function StickyCuriosityScene() {
             viewport={{ once: true, margin: "-12% 0px" }}
             transition={{ duration: 0.75, delay: 0.28, ease: softEase }}
           >
-            I don&apos;t build projects because I have ideas. I build because certain questions refuse to leave me alone.
+            Most of this did not begin as a plan. It began as things I kept noticing.
           </motion.p>
         </div>
         <div className="home-idea-wall relative z-10">
@@ -303,7 +303,7 @@ function StickyCuriosityScene() {
               key={item.question}
               type="button"
             >
-              <span className="home-heading block text-2xl font-extrabold leading-tight text-bone/78 transition duration-300 group-hover:translate-x-2 group-hover:text-bone md:text-4xl">
+              <span className="home-heading block text-2xl font-extrabold leading-tight text-bone/78 transition duration-300 group-hover:translate-x-2 group-hover:text-bone md:text-3xl">
                 {item.question}
               </span>
               <span
@@ -311,7 +311,7 @@ function StickyCuriosityScene() {
                   activeQuestion === index ? "mt-3 max-h-16 opacity-100" : "mt-0 max-h-0 opacity-0"
                 }`}
               >
-                Eventually became: <span className="text-bone/82">{item.connection}</span>
+                Left behind: <span className="text-bone/82">{item.connection}</span>
               </span>
             </motion.button>
           ))}
@@ -322,10 +322,10 @@ function StickyCuriosityScene() {
             viewport={{ once: true, margin: "-12% 0px" }}
             transition={{ duration: 0.85, delay: 0.52, ease: softEase }}
           >
-            <p className="home-heading text-3xl font-extrabold leading-tight text-bone md:text-5xl">
-              The projects are just what happened
+            <p className="home-heading text-3xl font-extrabold leading-tight text-bone md:text-4xl">
+              The projects are only one kind
               <br />
-              after the questions stayed.
+              of footprint.
             </p>
           </motion.div>
         </div>
@@ -336,20 +336,20 @@ function StickyCuriosityScene() {
 
 function TimelineScene() {
   const timeline = [
-    ["Economics", "The language I use to study incentives, markets, and institutions."],
-    ["Guitar", "The discipline that taught me repetition before results."],
-    ["Projects", "Questions that became scripts, dashboards, and research systems."],
-    ["Work & Travel USA", "A summer of independence, money, people, and adaptation."],
-    ["Korea Exchange", "The next chapter in language, culture, and observation."],
-    ["LTCL Goal", "A long musical target that will take patience, not shortcuts."],
-    ["Future Products", "Systems that are useful because they come from lived questions."]
+    ["Economics", "Started as classes. Became a way to notice incentives, markets, and ordinary choices."],
+    ["Guitar", "A long stretch of repetition, sore fingers, and Trinity Grade 5 Distinction."],
+    ["Things I Built", "Messy scripts, tabs, dashboards, and notes that turned into tools."],
+    ["Work & Travel USA", "Atlantic City, night shifts, daily routines, and learning by being far from home."],
+    ["New York", "One day of walking too much and looking up more than usual."],
+    ["Korean", "Started learning the language. Slowly, sounds began to separate into words."],
+    ["Events And Sets", "Concert work, backstage rooms, a music video, and background acting."]
   ];
 
   return (
     <section className="home-scene text-bone">
       <div className="mx-auto flex min-h-screen max-w-6xl flex-col justify-center px-5 py-24 md:px-8">
-        <SceneLabel>Scene 17</SceneLabel>
-        <LineReveal className="home-heading mt-6 max-w-4xl text-4xl font-extrabold leading-[1.02] md:text-6xl lg:text-7xl" lines={["The story is not", "one straight line."]} />
+        <SceneLabel>Entry 17</SceneLabel>
+        <LineReveal className="home-heading mt-6 max-w-4xl text-4xl font-extrabold leading-[1.05] md:text-5xl lg:text-6xl" lines={["It did not happen", "in a straight line."]} />
         <motion.div
           className="mt-12 grid gap-3 border-y border-bone/10 py-6"
           initial={{ opacity: 0, y: 18 }}
@@ -417,7 +417,7 @@ export function HomeExperience() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 4.4, ease: softEase }}
             >
-              Usually after saying “hmm...” too many times.
+              Most of this started as small questions I kept writing down.
             </motion.p>
             <motion.div
               className="mt-10 flex flex-wrap gap-3"
@@ -425,7 +425,7 @@ export function HomeExperience() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, delay: 4.75, ease: softEase }}
             >
-              <ButtonLink href="/lab">Explore Chainstox Lab</ButtonLink>
+              <ButtonLink href="#story">Start with the notes</ButtonLink>
               <a className="group inline-flex items-center rounded-full border border-white/14 bg-white/[0.025] px-5 py-3 text-sm font-semibold text-bone transition duration-300 hover:-translate-y-0.5 hover:border-bone/45 hover:bg-white/[0.06]" href="#story">
                 <span>Keep going</span>
                 <span className="ml-2 transition duration-300 group-hover:translate-y-0.5">↓</span>
@@ -440,7 +440,7 @@ export function HomeExperience() {
             <CinematicPhoto
               className="hero-photo"
               label="hero-photo"
-              caption="A future photo goes here. For now, just a room for atmosphere."
+              caption="A page for the things that actually happened."
               tall
             />
           </motion.div>
@@ -451,62 +451,62 @@ export function HomeExperience() {
         <StickyCuriosityScene />
 
         <DocumentaryPhotoScene
-          label="Scene 3"
+          label="Entry 03"
           question="What happens when a question leaves the notebook?"
           lines={["University made the questions louder.", "Not cleaner. Louder."]}
           subtext="Lectures, side projects, half-finished notes, and the slow feeling that economics was less a subject than a way to notice things."
-          project="The habit of turning questions into systems"
+          project="economics, notes, and unfinished ideas"
           photoClass="university-life-photo"
           photoLabel="university-life-photo"
           photoCaption="University life. Notes, classrooms, long walks, unfinished ideas."
         />
 
         <DocumentaryPhotoScene
-          label="Scene 4"
+          label="Entry 04"
           question="Do ideas matter if nobody hears them?"
-          lines={["I thought ideas were enough.", "Turns out people matter too."]}
-          subtext="Campaigning taught me more than winning ever could."
-          project="Student leadership"
+          lines={["I thought ideas were enough.", "Rooms proved otherwise."]}
+          subtext="Talking to people changed the shape of the idea. Some rooms were awkward. Some were loud. All of them were real."
+          project="student election rooms"
           photoClass="student-election-photo"
           photoLabel="student-election-photo"
           photoCaption="Student election. Campaigning. Public rooms. Real people."
         />
 
         <DocumentaryPhotoScene
-          label="Scene 5"
-          question="Can a student build something useful?"
-          lines={["Some nights became tabs.", "Some tabs became projects."]}
-          subtext="Not polished at first. Mostly messy scripts, strange models, and enough curiosity to keep going."
-          project="Chainstox Lab"
+          label="Entry 05"
+          question="What happened to the late-night tabs?"
+          lines={["Some notes became", "things I built."]}
+          subtext="Not polished at first. Mostly messy scripts, strange models, and enough curiosity to keep opening the laptop."
+          project="things I built"
           photoClass="building-projects-photo"
           photoLabel="building-projects-photo"
           photoCaption="Building projects. Local scripts, dashboards, research systems."
         />
 
         <DocumentaryPhotoScene
-          label="Scene 6"
+          label="Entry 06"
           question="What does discipline look like when nobody is watching?"
-          lines={["Most people think discipline looks exciting.", "It doesn't."]}
-          subtext="It mostly looks like repeating the same thing thousands of times."
-          project="Classical guitar"
+          lines={["I picked up a guitar.", "It stayed."]}
+          subtext="That eventually led to Trinity Grade 5 Distinction. Mostly, though, it was repetition: the same few bars, again and again, until they sounded a little less forced."
+          project="classical guitar"
           photoClass="guitar-photo"
           photoLabel="guitar-photo"
           photoCaption="Classical guitar answered a lot of questions by refusing to be rushed."
         />
 
         <DocumentaryPhotoScene
-          label="Scene 7"
+          label="Entry 07"
           question="What happens if I leave home?"
-          lines={["I wanted to see what happened outside the classroom.", "So I left."]}
-          subtext="Work and Travel in the United States. A summer with uniforms, strangers, bad sleep, and very real consequences."
-          project="WAT in America"
+          lines={["I left for a summer.", "Atlantic City was waiting."]}
+          subtext="Work and Travel in the United States. Uniforms, strangers, bad sleep, practical problems, and ordinary days that felt larger because they were far from home."
+          project="work and travel usa"
           photoClass="wat-america-photo"
           photoLabel="wat-america-photo"
           photoCaption="A classroom with uniforms, strangers, bad sleep, and very real consequences."
         />
 
         <DocumentaryPhotoScene
-          label="Scene 8"
+          label="Entry 08"
           question="What does independence feel like before it becomes a story?"
           lines={["Atlantic City was loud.", "I was quieter than I expected."]}
           subtext="Boardwalk lights, practical problems, and the kind of learning that does not ask for permission first."
@@ -517,31 +517,31 @@ export function HomeExperience() {
         />
 
         <DocumentaryPhotoScene
-          label="Scene 9"
+          label="Entry 09"
           question="How big can the world feel in one afternoon?"
-          lines={["New York made everything feel possible.", "Also expensive."]}
-          subtext="A day of looking up, walking too much, and realizing ambition feels different when it has a skyline."
-          project="New York"
+          lines={["New York was too much.", "I liked that."]}
+          subtext="A day of looking up, walking too much, spending more than expected, and feeling very small in a useful way."
+          project="new york"
           photoClass="new-york-photo"
           photoLabel="new-york-photo"
           photoCaption="New York. Walking, looking up, thinking too much."
         />
 
         <DocumentaryPhotoScene
-          label="Scene 10"
-          question="What if the next chapter is not a conclusion?"
-          lines={["Next stop:", "Korea."]}
-          subtext="Still curious."
-          project="Korea journey"
+          label="Entry 10"
+          question="What happens when a language stops being only sound?"
+          lines={["I started learning Korean.", "Slowly."]}
+          subtext="At first it was just unfamiliar shapes and sounds. Then a few words stayed. Then a few sentences did."
+          project="korean notebooks"
           photoClass="korea-photo"
           photoLabel="korea-photo"
-          photoCaption="A future chapter. Not a conclusion."
+          photoCaption="Korean notes. New sounds becoming familiar."
         />
 
         <TextScene
-          label="Scene 11"
-          lines={["Some questions became projects.", "Some projects became systems."]}
-          subtext="The lab is not separate from the story. It is what happened when the questions needed somewhere to live."
+          label="Entry 11"
+          lines={["Some questions became files.", "Some files became tools."]}
+          subtext="The lab is one drawer in the notebook. It is where the market questions, scripts, and reports ended up."
           tone="dark"
         >
           <motion.div
@@ -551,14 +551,14 @@ export function HomeExperience() {
             viewport={{ once: true, margin: "-15% 0px" }}
             transition={{ duration: 0.75, delay: 0.2, ease: softEase }}
           >
-            <ButtonLink href="/lab">Explore Chainstox Lab</ButtonLink>
+            <ButtonLink href="/lab">Open the Lab drawer</ButtonLink>
           </motion.div>
         </TextScene>
 
         <TextScene
-          label="Scene 12"
-          lines={["Music came", "before systems."]}
-          subtext="Many people know me through research systems. A smaller group knows me through a guitar. Before I learned how to build models, I learned how to repeat the same passage hundreds of times until it became music. That habit never left."
+          label="Entry 12"
+          lines={["Music was there", "before the dashboards."]}
+          subtext="I picked up a guitar. It became part of life. Before models and dashboards, there were slow passages, repeated badly, then a little less badly."
           tone="dark"
         >
           <motion.div
@@ -568,7 +568,7 @@ export function HomeExperience() {
             viewport={{ once: true, margin: "-15% 0px" }}
             transition={{ duration: 0.75, delay: 0.24, ease: softEase }}
           >
-            {["Trinity Grade 5 Distinction", "Working toward Grade 8", "Long-term LTCL goal", "Practice as a daily discipline"].map((item) => (
+            {["Classical guitar", "Trinity Grade 5 Distinction", "Practice notes", "Quiet repetition"].map((item) => (
               <p className="home-label border-b border-bone/8 pb-3 uppercase tracking-[0.16em]" key={item}>
                 {item}
               </p>
@@ -577,55 +577,55 @@ export function HomeExperience() {
         </TextScene>
 
         <DocumentaryPhotoScene
-          label="Scene 13"
-          question="What does practice teach that projects cannot?"
-          lines={["The other discipline", "was quieter."]}
-          subtext="Classical guitar is not a side note. It is the part of the story that taught me patience, precision, and how slow improvement can still be real improvement."
-          project="Future placeholders: performance, practice, recital photos"
+          label="Entry 13"
+          question="What does practice look like before anyone hears it?"
+          lines={["Mostly ordinary.", "Mostly repeated."]}
+          subtext="The music part of the story is not a trophy shelf. It is a lot of sitting down, starting again, and hearing the same mistake until it changes."
+          project="practice, performance, and recital photos"
           photoClass="guitar-photo"
-          photoLabel="music-placeholder"
-          photoCaption="Performance photos, practice photos, and recital photos will live here."
+          photoLabel="music-photo-space"
+          photoCaption="Practice, performance, and recital photos."
         />
 
         <DocumentaryPhotoScene
-          label="Scene 14"
-          question="What do systems feel like when people are standing in front of you?"
-          lines={["Behind the stage,", "the theory gets tested."]}
-          subtext="Working live events taught me something software never could. Systems only matter when real people are depending on them. When hundreds of people arrive at the same place, execution matters more than theory."
-          project="Future placeholders: concert, backstage, event operations"
+          label="Entry 14"
+          question="What happens before the audience sees anything?"
+          lines={["Some nights happened", "behind the stage."]}
+          subtext="Concerts and events became part of life too. Cables, timing, small problems, people moving quickly, and the strange calm of work that has to happen now."
+          project="concerts, events, backstage work"
           photoClass="building-projects-photo"
-          photoLabel="live-events-placeholder"
-          photoCaption="Concert photos, backstage photos, and event operations will live here."
+          photoLabel="live-events-photo-space"
+          photoCaption="Concerts, backstage rooms, and event operations."
         />
 
         <DocumentaryPhotoScene
-          label="Scene 15"
+          label="Entry 15"
           question="What happens outside the plan?"
-          lines={["Some chapters", "were never planned."]}
-          subtext="Background acting and temporary performance work gave me another way to think about people, stories, and perspective. Not every useful experience arrives with a neat explanation."
-          project="Future placeholders: set days, performance work, unexpected rooms"
+          lines={["A music video set.", "Background acting."]}
+          subtext="It was not a career plan. It was something that happened. A room full of people making a scene look natural, even though almost nothing about it felt ordinary."
+          project="music video and background acting"
           photoClass="student-election-photo"
-          photoLabel="performance-placeholder"
-          photoCaption="Background acting and performance placeholders will live here."
+          photoLabel="performance-photo-space"
+          photoCaption="Set days, performance work, and unexpected rooms."
         />
 
         <DocumentaryPhotoScene
-          label="Scene 16"
+          label="Entry 16"
           question="Was America only a trip?"
-          lines={["Three months", "became a mirror."]}
-          subtext="Work & Travel was never only about travel. Atlantic City, New York, daily routines, and work shifts became lessons in independence, systems, money, people, and uncertainty."
-          project="Future placeholders: Atlantic City, New York, daily life, work"
+          lines={["Three months", "became a chapter."]}
+          subtext="Atlantic City, night shifts, daily life, photos, small errands, and the feeling of figuring things out without the usual safety rails."
+          project="atlantic city, new york, daily life, work"
           photoClass="wat-america-photo"
-          photoLabel="work-travel-placeholder"
-          photoCaption="Atlantic City, New York, daily life, and work experience photos will live here."
+          photoLabel="work-travel-photo-space"
+          photoCaption="Atlantic City, New York, daily life, and work moments."
         />
 
         <TimelineScene />
 
         <TextScene
-          label="Scene 18"
-          lines={["What I'm", "building toward."]}
-          subtext="Not only software. Korea exchange, Grade 8 guitar, the LTCL path, research systems, Chainstox Lab, and the quieter work of growing into a person who can hold all of it with care."
+          label="Entry 18"
+          lines={["That is most", "of what happened."]}
+          subtext="Not a clean storyline. Just economics classes, guitar practice, late-night tabs, Korean notes, event rooms, set days, Atlantic City shifts, New York walking, and a few tools made because the questions stayed around."
           tone="dark"
         >
           <motion.div
@@ -635,7 +635,7 @@ export function HomeExperience() {
             viewport={{ once: true, margin: "-15% 0px" }}
             transition={{ duration: 0.75, delay: 0.2, ease: softEase }}
           >
-            <ButtonLink href="/lab">Explore Chainstox Lab</ButtonLink>
+            <ButtonLink href="/lab">Open the Lab drawer</ButtonLink>
           </motion.div>
         </TextScene>
       </div>
