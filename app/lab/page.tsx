@@ -157,7 +157,7 @@ export default function LabPage() {
               <div className="mt-7 flex flex-wrap gap-3">
                 {project.demoType === "external-app" && project.liveUrl ? (
                   <a className="lab-button-primary lab-focus-ring rounded-md px-3.5 py-2 text-sm font-medium transition hover:bg-white" href={project.liveUrl} rel="noreferrer" target="_blank">
-                    Launch App
+                    {project.slug === "on-chain-market-intelligence" ? "Launch Product →" : "Launch App"}
                   </a>
                 ) : (
                   <Link className="lab-button-primary lab-focus-ring rounded-md px-3.5 py-2 text-sm font-medium transition hover:bg-white" href={`/lab/projects/${project.slug}`}>

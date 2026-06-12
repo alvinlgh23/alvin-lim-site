@@ -71,7 +71,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
             {isExternalApp ? (
               project.liveUrl ? (
                 <a className="lab-button-primary lab-focus-ring rounded-md px-4 py-3 font-medium transition hover:-translate-y-0.5 hover:bg-white" href={project.liveUrl} rel="noreferrer" target="_blank">
-                  Launch App
+                  {project.slug === "on-chain-market-intelligence" ? "Launch Product →" : "Launch App"}
                 </a>
               ) : (
                 <span className="rounded-md border border-white/10 bg-white/[0.025] px-4 py-3 font-medium text-bone/42">
@@ -162,7 +162,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
               <div className="mt-5 flex flex-col gap-3">
                 {isExternalApp && project.liveUrl ? (
                   <a className="lab-button-primary lab-focus-ring rounded-md px-4 py-3 text-center font-medium transition hover:bg-white" href={project.liveUrl} rel="noreferrer" target="_blank">
-                    Launch App
+                    {project.slug === "on-chain-market-intelligence" ? "Launch Product →" : "Launch App"}
                   </a>
                 ) : (
                   <span className="rounded-md border border-white/10 bg-white/[0.025] px-4 py-3 text-center font-medium text-bone/42">

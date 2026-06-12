@@ -7,6 +7,7 @@ type ProjectCardProps = {
 
 function primaryAction(project: Project) {
   if (project.demoType === "embedded-console") return "Open Console";
+  if (project.slug === "on-chain-market-intelligence" && project.liveUrl) return "Launch Product →";
   if (project.demoType === "external-app") return project.liveUrl ? "Launch App" : "Launch Pending";
   return "Demo Coming Soon";
 }
