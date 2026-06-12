@@ -1,6 +1,6 @@
 import inventory from "@/content/project-inventory.json";
 
-export type DemoType = "ui-demo" | "simulated-output" | "documentation-only" | "archive";
+export type DemoType = "embedded-console" | "external-app" | "coming-soon";
 
 export type Project = {
   name: string;
@@ -10,6 +10,8 @@ export type Project = {
   type: string;
   description: string;
   techStack: string[];
+  hasOwnUI: boolean;
+  liveUrl: string;
   demoType: DemoType;
   githubUrl: string;
   featured: boolean;

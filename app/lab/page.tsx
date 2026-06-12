@@ -19,16 +19,16 @@ const thesisBySlug: Record<string, string> = {
 
 const labMetrics = [
   ["Systems", "08"],
-  ["Featured", "04"],
-  ["Live demo", "01"],
-  ["Research modes", "07"]
+  ["External UIs", "04"],
+  ["Embedded", "01"],
+  ["Coming soon", "03"]
 ];
 
 const consoleRows = [
-  ["macro", "Selective risk appetite", "stable"],
-  ["semis", "Leadership intact, valuation heat visible", "watch"],
-  ["BTC", "Neutral / transition regime", "live"],
-  ["SGD", "Proxy near estimated policy centre", "research"]
+  ["hub", "Central index for separate research apps", "online"],
+  ["market", "Embedded console retained in this site", "preview"],
+  ["ui apps", "Launch out to deployed project surfaces", "external"],
+  ["source", "GitHub remains the project record", "linked"]
 ];
 
 export default function LabPage() {
@@ -62,18 +62,18 @@ export default function LabPage() {
         <div>
           <div className="inline-flex items-center gap-2 rounded-md border border-moss/20 bg-moss/10 px-2.5 py-1 font-mono text-xs uppercase tracking-[0.16em] text-moss/90">
             <span className="h-1.5 w-1.5 rounded-full bg-moss" />
-            Production Research Console
+            Central Lab Hub
           </div>
           <h1 className="mt-7 max-w-5xl text-5xl font-semibold leading-[0.97] tracking-[-0.02em] text-bone md:text-7xl">
-            Market systems for reading regime, heat, and signal quality.
+            A launch hub for research systems and deployed project apps.
           </h1>
           <p className="mt-7 max-w-2xl text-lg leading-8 text-bone/62">
-            A lab of inspectable tools for macro, crypto market structure, equity leadership, FX pressure, and decision automation.
+            Chainstox Lab now acts as the central map. UI-heavy projects live in their own codebases and deployments; Market Intelligence stays embedded here while the backend runner evolves.
           </p>
           <div className="mt-9 flex flex-wrap gap-3">
             {primaryProject ? (
               <Link className="lab-button-primary lab-focus-ring rounded-md px-4 py-3 font-medium transition hover:-translate-y-0.5 hover:bg-white" href={`/lab/projects/${primaryProject.slug}`}>
-                Open console
+                Open Market Console
               </Link>
             ) : null}
             <a className="lab-button-secondary lab-focus-ring rounded-md px-4 py-3 font-medium transition hover:-translate-y-0.5 hover:border-bone/30" href="#projects">
@@ -86,7 +86,7 @@ export default function LabPage() {
           <div className="flex items-center justify-between border-b border-white/8 px-5 py-4">
             <div>
               <p className="font-mono text-xs uppercase tracking-[0.18em] text-bone/36">chainstox://lab</p>
-              <p className="mt-1 text-sm text-bone/60">Research surface status</p>
+              <p className="mt-1 text-sm text-bone/60">Hub and deployment map</p>
             </div>
             <span className="rounded-md border border-moss/25 bg-moss/10 px-2.5 py-1 font-mono text-[11px] uppercase tracking-[0.14em] text-moss/85">
               online
@@ -126,11 +126,11 @@ export default function LabPage() {
           <div>
             <p className="font-mono text-xs uppercase tracking-[0.18em] text-bone/38">Featured Systems</p>
             <h2 className="mt-3 max-w-3xl text-3xl font-semibold tracking-[-0.01em] text-bone md:text-5xl">
-              Opinionated research products, built around narrow questions.
+              Project apps stay separate; this hub points to them.
             </h2>
           </div>
           <p className="text-sm leading-6 text-bone/50">
-            Each system exposes assumptions, caveats, and output structure so the result can be inspected instead of merely admired.
+            External UI projects launch out to their own deployments and source repos. The embedded console is reserved for Market Intelligence.
           </p>
         </div>
         <div className="grid gap-4 lg:grid-cols-2">
@@ -150,14 +150,20 @@ export default function LabPage() {
               <p className="mt-4 max-w-2xl text-base leading-7 text-bone/60">{thesisBySlug[project.slug]}</p>
               <div className="mt-7 grid gap-2 border-y border-white/8 py-4 font-mono text-xs text-bone/42 sm:grid-cols-2">
                 <span>category / {project.category}</span>
-                <span>demo / {project.demoType}</span>
+                <span>surface / {project.demoType}</span>
                 <span>stack / {project.techStack.slice(0, 2).join(" + ")}</span>
                 <span>status / {project.status.toLowerCase()}</span>
               </div>
               <div className="mt-7 flex flex-wrap gap-3">
-                <Link className="lab-button-primary lab-focus-ring rounded-md px-3.5 py-2 text-sm font-medium transition hover:bg-white" href={`/lab/projects/${project.slug}`}>
-                  Open
-                </Link>
+                {project.demoType === "external-app" && project.liveUrl ? (
+                  <a className="lab-button-primary lab-focus-ring rounded-md px-3.5 py-2 text-sm font-medium transition hover:bg-white" href={project.liveUrl} rel="noreferrer" target="_blank">
+                    Launch App
+                  </a>
+                ) : (
+                  <Link className="lab-button-primary lab-focus-ring rounded-md px-3.5 py-2 text-sm font-medium transition hover:bg-white" href={`/lab/projects/${project.slug}`}>
+                    {project.demoType === "embedded-console" ? "Open Console" : project.demoType === "external-app" ? "App Preview" : "Details"}
+                  </Link>
+                )}
                 {project.githubUrl ? (
                   <a className="rounded-md border border-white/10 px-3.5 py-2 text-sm font-medium text-bone/60 transition hover:border-bone/28 hover:text-bone" href={project.githubUrl} rel="noreferrer" target="_blank">
                     GitHub
@@ -175,7 +181,7 @@ export default function LabPage() {
             <p className="font-mono text-xs uppercase tracking-[0.18em] text-bone/38">Project Index</p>
             <h2 className="mt-3 text-3xl font-semibold tracking-[-0.01em] text-bone md:text-5xl">Current lab surface.</h2>
           </div>
-          <p className="font-mono text-xs uppercase tracking-[0.16em] text-bone/34">active / experimental / inspectable</p>
+          <p className="font-mono text-xs uppercase tracking-[0.16em] text-bone/34">external apps / embedded console / source</p>
         </div>
         <div className="grid gap-4 md:grid-cols-2">
           {labProjects.map((project) => (
@@ -198,7 +204,7 @@ export default function LabPage() {
       </MotionSection>
 
       <section className="mx-auto max-w-7xl border-t border-white/10 pt-8 text-sm leading-6 text-bone/42">
-        These demos are experimental research interfaces. Simulated outputs are for presentation only and are not financial advice.
+        Chainstox Lab is a hub. External apps are deployed separately; embedded outputs are experimental and are not financial advice.
       </section>
     </main>
   );

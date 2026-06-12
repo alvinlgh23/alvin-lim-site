@@ -5,9 +5,9 @@ import { motion } from "framer-motion";
 import { ProjectCard } from "@/components/ProjectCard";
 import type { Project } from "@/lib/projects";
 
-type Filter = "All" | "Featured" | "Active" | "Experimental" | "Research Engine" | "UI Demo" | "Simulated Output";
+type Filter = "All" | "Featured" | "Live" | "Preview" | "Coming Soon" | "External App" | "Embedded Console";
 
-const filters: Filter[] = ["All", "Featured", "Active", "Experimental", "Research Engine", "UI Demo", "Simulated Output"];
+const filters: Filter[] = ["All", "Featured", "Live", "Preview", "Coming Soon", "External App", "Embedded Console"];
 
 export function ProjectFilters({ projects }: { projects: Project[] }) {
   const [activeFilter, setActiveFilter] = useState<Filter>("All");
@@ -16,9 +16,9 @@ export function ProjectFilters({ projects }: { projects: Project[] }) {
     return projects.filter((project) => {
       if (activeFilter === "All") return true;
       if (activeFilter === "Featured") return project.featured;
-      if (activeFilter === "Active" || activeFilter === "Experimental") return project.category === activeFilter;
-      if (activeFilter === "Research Engine" || activeFilter === "UI Demo") return project.type === activeFilter;
-      return project.demoType === "simulated-output";
+      if (activeFilter === "Live" || activeFilter === "Preview" || activeFilter === "Coming Soon") return project.status === activeFilter;
+      if (activeFilter === "External App") return project.demoType === "external-app";
+      return project.demoType === "embedded-console";
     });
   }, [activeFilter, projects]);
 

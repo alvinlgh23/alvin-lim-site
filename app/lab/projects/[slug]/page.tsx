@@ -35,8 +35,11 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
     ["Status", project.status],
     ["Category", project.category],
     ["Mode", project.demoType],
+    ["Own UI", project.hasOwnUI ? "Yes" : "No"],
     ["Surface", project.type]
   ];
+  const isExternalApp = project.demoType === "external-app";
+  const isEmbeddedConsole = project.demoType === "embedded-console";
 
   return (
     <main className="lab-shell lab-grid min-h-screen px-4 pb-24 pt-4 text-bone md:px-8">
@@ -65,14 +68,34 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           <h1 className="mt-7 max-w-5xl text-5xl font-semibold leading-[0.98] tracking-[-0.02em] text-bone md:text-7xl">{project.name}</h1>
           <p className="mt-6 max-w-3xl text-xl leading-8 text-bone/62">{project.description}</p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <a className="lab-button-primary lab-focus-ring rounded-md px-4 py-3 font-medium transition hover:-translate-y-0.5 hover:bg-white" href="#demo">
-              Open demo
-            </a>
+            {isExternalApp ? (
+              project.liveUrl ? (
+                <a className="lab-button-primary lab-focus-ring rounded-md px-4 py-3 font-medium transition hover:-translate-y-0.5 hover:bg-white" href={project.liveUrl} rel="noreferrer" target="_blank">
+                  Launch App
+                </a>
+              ) : (
+                <span className="rounded-md border border-white/10 bg-white/[0.025] px-4 py-3 font-medium text-bone/42">
+                  Launch pending
+                </span>
+              )
+            ) : isEmbeddedConsole ? (
+              <a className="lab-button-primary lab-focus-ring rounded-md px-4 py-3 font-medium transition hover:-translate-y-0.5 hover:bg-white" href="#demo">
+                Open console
+              </a>
+            ) : (
+              <span className="rounded-md border border-white/10 bg-white/[0.025] px-4 py-3 font-medium text-bone/42">
+                Demo coming soon
+              </span>
+            )}
             {project.githubUrl ? (
               <a className="lab-button-secondary lab-focus-ring rounded-md px-4 py-3 font-medium transition hover:-translate-y-0.5 hover:border-bone/30" href={project.githubUrl} rel="noreferrer" target="_blank">
                 GitHub
               </a>
-            ) : null}
+            ) : (
+              <span className="rounded-md border border-white/10 bg-white/[0.025] px-4 py-3 font-medium text-bone/42">
+                Source coming soon
+              </span>
+            )}
           </div>
         </div>
 
@@ -99,16 +122,72 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
       <div className="lab-hairline mx-auto h-px max-w-7xl" />
 
-      <MotionSection className="mx-auto max-w-7xl py-12" id="demo">
-        <div className="mb-5 flex flex-col justify-between gap-3 md:flex-row md:items-end">
-          <div>
-            <p className="font-mono text-xs uppercase tracking-[0.18em] text-bone/38">Interactive Surface</p>
-            <h2 className="mt-3 text-3xl font-semibold tracking-[-0.01em] text-bone">Demo console.</h2>
+      {isEmbeddedConsole ? (
+        <MotionSection className="mx-auto max-w-7xl py-12" id="demo">
+          <div className="mb-5 flex flex-col justify-between gap-3 md:flex-row md:items-end">
+            <div>
+              <p className="font-mono text-xs uppercase tracking-[0.18em] text-bone/38">Embedded Surface</p>
+              <h2 className="mt-3 text-3xl font-semibold tracking-[-0.01em] text-bone">Market Intelligence console.</h2>
+            </div>
+            <p className="max-w-md text-sm leading-6 text-bone/48">This is the only project console currently embedded in alvin-lim.com.</p>
           </div>
-          <p className="max-w-md text-sm leading-6 text-bone/48">Inputs are constrained and outputs preserve the project’s original research format.</p>
-        </div>
-        <DemoPanel project={project} />
-      </MotionSection>
+          <DemoPanel project={project} />
+        </MotionSection>
+      ) : (
+        <MotionSection className="mx-auto max-w-7xl py-12" id="demo">
+          <div className="grid gap-4 lg:grid-cols-[0.72fr_0.28fr]">
+            <section className="lab-console min-w-0 overflow-hidden rounded-lg p-5">
+              <div className="flex items-center justify-between gap-4">
+                <p className="font-mono text-xs uppercase tracking-[0.18em] text-bone/36">
+                  {isExternalApp ? "External App Surface" : "Pending Surface"}
+                </p>
+                <span className="rounded-md border border-white/10 bg-white/[0.03] px-2.5 py-1 font-mono text-[11px] uppercase tracking-[0.14em] text-bone/42">
+                  {project.status}
+                </span>
+              </div>
+              <div className="mt-6 rounded-lg border border-white/10 bg-black/24 p-4">
+                <div className="grid min-h-64 place-items-center rounded-md border border-white/8 bg-[linear-gradient(135deg,rgba(236,228,215,0.07),rgba(100,127,145,0.06)),linear-gradient(90deg,rgba(236,228,215,0.04)_1px,transparent_1px)] bg-[size:100%_100%,32px_32px] p-6 text-center">
+                  <div>
+                    <p className="font-mono text-xs uppercase tracking-[0.18em] text-bone/36">Static Preview</p>
+                    <h2 className="mt-3 text-2xl font-semibold tracking-[-0.01em] text-bone">{project.name}</h2>
+                    <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-bone/52">
+                      The full UI belongs to its own deployed app and codebase. This hub only links out and documents the system.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <aside className="lab-surface rounded-lg p-5">
+              <p className="font-mono text-xs uppercase tracking-[0.18em] text-bone/38">Actions</p>
+              <div className="mt-5 flex flex-col gap-3">
+                {isExternalApp && project.liveUrl ? (
+                  <a className="lab-button-primary lab-focus-ring rounded-md px-4 py-3 text-center font-medium transition hover:bg-white" href={project.liveUrl} rel="noreferrer" target="_blank">
+                    Launch App
+                  </a>
+                ) : (
+                  <span className="rounded-md border border-white/10 bg-white/[0.025] px-4 py-3 text-center font-medium text-bone/42">
+                    {isExternalApp ? "Launch pending" : "Demo coming soon"}
+                  </span>
+                )}
+                {project.githubUrl ? (
+                  <a className="lab-button-secondary lab-focus-ring rounded-md px-4 py-3 text-center font-medium transition hover:border-bone/30" href={project.githubUrl} rel="noreferrer" target="_blank">
+                    GitHub
+                  </a>
+                ) : (
+                  <span className="rounded-md border border-white/10 bg-white/[0.025] px-4 py-3 text-center font-medium text-bone/42">
+                    Source coming soon
+                  </span>
+                )}
+              </div>
+              <p className="mt-5 text-sm leading-6 text-bone/50">
+                {isExternalApp
+                  ? "This project has its own UI. Add a deployment URL in project metadata to activate the launch button."
+                  : "This project is listed in the lab while its source or demo surface is still being prepared."}
+              </p>
+            </aside>
+          </div>
+        </MotionSection>
+      )}
 
       <MotionSection className="mx-auto grid max-w-7xl gap-4 py-12 md:grid-cols-2">
         {[

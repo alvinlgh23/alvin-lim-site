@@ -453,7 +453,7 @@ export function DemoPanel({ project }: { project: Project }) {
       <div className="lab-surface min-w-0 rounded-lg p-5">
         <p className="font-mono text-xs uppercase tracking-[0.18em] text-bone/38">Input Console</p>
         <h2 className="mt-4 text-2xl font-semibold tracking-[-0.01em] text-bone">
-          {isValuationDemo ? "Market Intelligence Console" : project.demoType === "ui-demo" ? "Interface Preview" : "Simulated Research Input"}
+          {isValuationDemo ? "Market Intelligence Console" : "Simulated Research Input"}
         </h2>
         <div className="mt-6 space-y-4">
           {isValuationDemo ? (
