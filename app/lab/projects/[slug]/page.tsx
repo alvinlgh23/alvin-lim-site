@@ -48,12 +48,21 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           <span className="flex h-7 w-7 items-center justify-center rounded-md border border-white/12 bg-white/[0.04] font-mono text-xs text-bone">CL</span>
           <span className="hidden sm:inline">CHAINSTOX LAB</span>
         </Link>
-        <div className="flex items-center gap-1">
+        <div className="flex flex-wrap items-center gap-1">
           <Link className="lab-focus-ring rounded-md px-3 py-2 transition hover:bg-white/[0.05] hover:text-bone" href="/">
-            Home
+            Exhibition
+          </Link>
+          <Link className="lab-focus-ring rounded-md px-3 py-2 transition hover:bg-white/[0.05] hover:text-bone" href="/research">
+            Research
+          </Link>
+          <Link className="lab-focus-ring rounded-md px-3 py-2 transition hover:bg-white/[0.05] hover:text-bone" href="/archive">
+            Archive
+          </Link>
+          <Link className="lab-focus-ring rounded-md px-3 py-2 transition hover:bg-white/[0.05] hover:text-bone" href="/contact">
+            Contact
           </Link>
           <Link className="lab-button-secondary lab-focus-ring rounded-md px-3 py-2 text-bone transition hover:border-bone/30" href="/lab">
-            Lab
+            Lab Index
           </Link>
         </div>
       </nav>
