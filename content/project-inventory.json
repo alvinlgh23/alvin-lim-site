@@ -1,5 +1,30 @@
 [
   {
+    "name": "Market Intelligence System",
+    "slug": "market-intelligence-system",
+    "category": "Featured",
+    "status": "v1.0 Public Beta",
+    "type": "Official CHAINSTOX Product",
+    "description": "A standalone financial research and market intelligence workstation for macro regime analysis, sector momentum, sector deep dives, company research, overheat monitoring, risk & rotation, and full market reports across a five-language interface.",
+    "techStack": [
+      "CHAINSTOX",
+      "Macro Regime",
+      "Sector Momentum",
+      "Company Research",
+      "Overheat Monitor",
+      "5-Language UI"
+    ],
+    "hasOwnUI": true,
+    "liveUrl": "https://mis.alvin-lim.com",
+    "demoType": "external-app",
+    "githubUrl": "https://github.com/alvinlgh23/Market-Valuation-Engine",
+    "featured": true,
+    "howItWorks": "The standalone workstation organizes market inquiry into a structured multi-layer workflow: Macro Regime Analysis, Sector Momentum & Deep Dive, Company Research, Overheat Monitor, Risk & Rotation diagnostics, and Full Market Report generation across five interface languages.",
+    "whyItMatters": "It provides a dedicated, noise-controlled market intelligence workstation that separates signal observation, narrative context, and risk diagnostics rather than issuing automated trading triggers.",
+    "whatILearned": "Turning an internal research script into a public workstation requires strict separation between presentation layers, analytical engines, and epistemic boundaries.",
+    "limitations": "Positioned strictly as a financial research and market intelligence workstation, not an automated trading system or guaranteed investment recommendation engine."
+  },
+  {
     "name": "On-Chain Market Intelligence Pipeline",
     "slug": "on-chain-market-intelligence",
     "category": "Featured",
