@@ -154,12 +154,6 @@ export default function BehindTheScenesPage() {
                         {entry.narrative}
                       </p>
                     </div>
-
-                    <div className="mt-6 border-t border-rule pt-3 text-xs text-muted">
-                      <span className="archival-mono text-[10px]">
-                        AUTHENTIC PHOTOGRAPH SLOT · VERIFIED PRODUCTION INVOLVEMENT ONLY
-                      </span>
-                    </div>
                   </div>
                 </div>
               </div>

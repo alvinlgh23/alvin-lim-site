@@ -80,6 +80,8 @@ export const SITE_IDENTITY = {
 
 export const VERIFIED_DESTINATIONS = {
   githubProfile: "https://github.com/alvinlgh23",
+  email: "alvinlim976@gmail.com",
+  linkedinProfile: "https://www.linkedin.com/in/lim-gi-hong-5917a6305",
   chainstoxLab: "/lab",
   marketValuationRepo: "https://github.com/alvinlgh23/Market-Valuation-Engine",
   onChainRepo: "https://github.com/alvinlgh23/Onchain-market-structure-engine",

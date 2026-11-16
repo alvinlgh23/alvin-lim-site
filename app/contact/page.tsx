@@ -55,16 +55,54 @@ export default function ContactPage() {
               <div className="flex items-center justify-between border-b border-rule pb-3">
                 <span className="archival-mono text-xs text-ink">DIRECTORY</span>
                 <span className="archival-mono text-[10px] text-muted">
-                  VERIFIED DESTINATIONS ONLY
+                  WHERE TO FIND ME
                 </span>
               </div>
 
               <div className="divide-y divide-rule">
+                {/* Email */}
+                <div className="py-5">
+                  <div className="flex flex-wrap items-baseline justify-between gap-4">
+                    <div>
+                      <p className="archival-mono text-[10px] text-ember">01 // EMAIL</p>
+                      <h2 className="editorial-serif mt-1 text-2xl text-ink">Email</h2>
+                      <p className="mt-1 text-xs text-graphite">The most direct way to reach me.</p>
+                    </div>
+                    <a
+                      href={`mailto:${VERIFIED_DESTINATIONS.email}`}
+                      className="shrink-0 bg-ink px-4 py-2.5 font-mono text-xs text-ivory transition hover:bg-charcoal"
+                    >
+                      {VERIFIED_DESTINATIONS.email}
+                    </a>
+                  </div>
+                </div>
+
+                {/* LinkedIn */}
+                <div className="py-5">
+                  <div className="flex flex-wrap items-baseline justify-between gap-4">
+                    <div>
+                      <p className="archival-mono text-[10px] text-ember">02 // LINKEDIN</p>
+                      <h2 className="editorial-serif mt-1 text-2xl text-ink">LinkedIn</h2>
+                      <p className="mt-1 text-xs text-graphite">
+                        Background, education, and professional updates.
+                      </p>
+                    </div>
+                    <a
+                      href={VERIFIED_DESTINATIONS.linkedinProfile}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="archival-mono shrink-0 border border-ink bg-ivory px-4 py-2.5 text-xs text-ink transition hover:bg-ink hover:text-ivory"
+                    >
+                      Open profile ↗
+                    </a>
+                  </div>
+                </div>
+
                 {/* 1. GitHub (Verified) */}
                 <div className="py-5">
                   <div className="flex items-baseline justify-between gap-4">
                     <div>
-                      <p className="archival-mono text-[10px] text-ember">01 // GITHUB (VERIFIED)</p>
+                      <p className="archival-mono text-[10px] text-ember">03 // GITHUB</p>
                       <h2 className="editorial-serif mt-1 text-2xl text-ink">GitHub</h2>
                       <p className="mt-1 text-xs text-graphite">
                         Source repositories for Market Valuation Engine, On-Chain Market Intelligence, SGD-NEER Shadow Model, and KOSPI Signal Monitor.
@@ -74,7 +112,7 @@ export default function ContactPage() {
                       href={VERIFIED_DESTINATIONS.githubProfile}
                       target="_blank"
                       rel="noreferrer"
-                      className="archival-mono shrink-0 bg-ink px-4 py-2.5 text-xs text-ivory transition hover:bg-charcoal"
+                      className="archival-mono shrink-0 border border-ink bg-ivory px-4 py-2.5 text-xs text-ink transition hover:bg-ink hover:text-ivory"
                     >
                       @alvinlgh23 ↗
                     </a>
@@ -86,7 +124,7 @@ export default function ContactPage() {
                   <div className="flex items-baseline justify-between gap-4">
                     <div>
                       <p className="archival-mono text-[10px] text-ember">
-                        02 // CHAINSTOX LAB (VERIFIED)
+                        04 // CHAINSTOX LAB
                       </p>
                       <h2 className="editorial-serif mt-1 text-2xl text-ink">Chainstox Lab</h2>
                       <p className="mt-1 text-xs text-graphite">
@@ -99,42 +137,6 @@ export default function ContactPage() {
                     >
                       Open Lab ↗
                     </Link>
-                  </div>
-                </div>
-
-                {/* 3. Email (Prepared Slot — Unverified address not invented) */}
-                <div className="py-5">
-                  <div className="flex items-baseline justify-between gap-4">
-                    <div>
-                      <p className="archival-mono text-[10px] text-muted">
-                        03 // DIRECT EMAIL
-                      </p>
-                      <h2 className="editorial-serif mt-1 text-2xl text-ink">Email</h2>
-                      <p className="mt-1 text-xs text-graphite">
-                        Prepared correspondence slot. Add your verified `mailto:` address in configuration when ready for public listing.
-                      </p>
-                    </div>
-                    <span className="archival-mono shrink-0 border border-rule bg-ivory px-3 py-2 text-[10px] text-muted">
-                      ADDRESS PENDING VERIFICATION
-                    </span>
-                  </div>
-                </div>
-
-                {/* 4. LinkedIn (Prepared Slot — Unverified URL not invented) */}
-                <div className="py-5">
-                  <div className="flex items-baseline justify-between gap-4">
-                    <div>
-                      <p className="archival-mono text-[10px] text-muted">
-                        04 // PROFESSIONAL PROFILE
-                      </p>
-                      <h2 className="editorial-serif mt-1 text-2xl text-ink">LinkedIn</h2>
-                      <p className="mt-1 text-xs text-graphite">
-                        Prepared profile slot. Add your verified LinkedIn profile URL when ready to publish.
-                      </p>
-                    </div>
-                    <span className="archival-mono shrink-0 border border-rule bg-ivory px-3 py-2 text-[10px] text-muted">
-                      URL PENDING VERIFICATION
-                    </span>
                   </div>
                 </div>
               </div>

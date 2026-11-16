@@ -60,7 +60,7 @@ export default function CampusElectionPage() {
                   PLATE 2024.01 — PRIMARY CAMPAIGN RECORD
                 </span>
                 <span className="archival-mono border border-rule bg-ivory px-2 py-0.5 text-[10px] text-muted">
-                  AUTHENTIC PHOTOGRAPH SLOT · NON-FABRICATED
+                  UNIVERSITI MALAYA · NOV 2024
                 </span>
               </div>
 
@@ -100,10 +100,7 @@ export default function CampusElectionPage() {
                 </div>
               </div>
 
-              <figcaption className="flex flex-wrap items-center justify-between gap-2 text-xs text-muted">
-                <span>
-                  Archival Note: Dedicated slot for authentic November 2024 campaign photography. No fabricated campaign imagery is used.
-                </span>
+              <figcaption className="flex flex-wrap items-center justify-end gap-2 text-xs text-muted">
                 <span className="archival-mono text-[10px]">REF: UM-FBE-2024-11</span>
               </figcaption>
             </figure>
