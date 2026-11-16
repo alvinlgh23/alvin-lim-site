@@ -1,5 +1,19 @@
 import type { Metadata } from "next";
+import { Instrument_Sans, Newsreader } from "next/font/google";
 import "./globals.css";
+
+const display = Newsreader({
+  subsets: ["latin"],
+  style: ["normal", "italic"],
+  variable: "--font-display",
+  display: "swap"
+});
+
+const body = Instrument_Sans({
+  subsets: ["latin"],
+  variable: "--font-body",
+  display: "swap"
+});
 
 export const metadata: Metadata = {
   title: "Alvin Lim — A Personal Archive",
@@ -9,9 +23,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${display.variable} ${body.variable}`}>
       <body className="antialiased selection:bg-ink selection:text-ivory">
-        <div className="museum-grain" aria-hidden="true" />
         {children}
       </body>
     </html>

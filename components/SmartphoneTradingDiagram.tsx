@@ -1,6 +1,6 @@
 export function SmartphoneTradingDiagram() {
   return (
-    <figure className="my-10 border border-rule bg-paper/70 p-6 md:p-8">
+    <figure className="m-0 border-y border-ink py-8">
       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-rule pb-4">
         <div>
           <p className="archival-mono text-[11px] text-muted">
@@ -100,8 +100,8 @@ export function SmartphoneTradingDiagram() {
               <rect x="7" y="12" width="40" height="66" stroke="currentColor" strokeWidth="1.2" />
               <rect x="20" y="81" width="14" height="4" rx="1" stroke="currentColor" strokeWidth="1.2" />
               {/* Subtle wear notation lines */}
-              <line x1="12" y1="22" x2="20" y2="30" stroke="#B8592A" strokeWidth="1.2" />
-              <line x1="36" y1="58" x2="43" y2="65" stroke="#B8592A" strokeWidth="1.2" />
+              <line x1="12" y1="22" x2="20" y2="30" stroke="#E63600" strokeWidth="1.2" />
+              <line x1="36" y1="58" x2="43" y2="65" stroke="#E63600" strokeWidth="1.2" />
             </svg>
             <div>
               <h4 className="editorial-serif text-xl font-medium text-ink">Samsung Galaxy Note 3</h4>

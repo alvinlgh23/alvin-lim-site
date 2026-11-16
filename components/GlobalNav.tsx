@@ -28,6 +28,8 @@ const SECONDARY_LINKS = [
   { label: "Journey", href: "/journey" }
 ];
 
+const DESKTOP_SECONDARY_LINKS = SECONDARY_LINKS.slice(0, 1);
+
 export function GlobalNav({ variant = "light", exhibitionChapter }: GlobalNavProps) {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -116,7 +118,7 @@ export function GlobalNav({ variant = "light", exhibitionChapter }: GlobalNavPro
           <span className={`h-3.5 w-px ${isDark ? "bg-white/15" : "bg-rule"}`} aria-hidden="true" />
 
           <div className="flex items-center gap-4">
-            {SECONDARY_LINKS.map((item) => {
+            {DESKTOP_SECONDARY_LINKS.map((item) => {
               const active = isActive(item.href);
               return (
                 <Link
@@ -163,7 +165,7 @@ export function GlobalNav({ variant = "light", exhibitionChapter }: GlobalNavPro
             isDark ? "border-white/12 bg-lab text-bone" : "border-rule bg-ivory text-ink"
           }`}
         >
-          <p className={`archival-mono text-[10px] ${isDark ? "text-bone/45" : "text-muted"}`}>
+          <p className={`archival-mono text-[11px] ${isDark ? "text-bone/45" : "text-muted"}`}>
             PRIMARY COLLECTIONS
           </p>
           <div className="mt-3 grid grid-cols-2 gap-2.5">
@@ -190,7 +192,7 @@ export function GlobalNav({ variant = "light", exhibitionChapter }: GlobalNavPro
             })}
           </div>
 
-          <p className={`archival-mono mt-6 text-[10px] ${isDark ? "text-bone/45" : "text-muted"}`}>
+          <p className={`archival-mono mt-6 text-[11px] ${isDark ? "text-bone/45" : "text-muted"}`}>
             CATALOGUE & LAB DESTINATIONS
           </p>
           <div className="mt-3 flex flex-wrap gap-3">

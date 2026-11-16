@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 :root {
-  --font-serif: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, "Times New Roman", Georgia, serif;
-  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-serif: var(--font-display), "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, "Times New Roman", Georgia, serif;
+  --font-sans: var(--font-body), "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-mono: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
@@ -32,8 +32,8 @@ html {
 
 body {
   margin: 0;
-  background-color: #F7F4ED;
-  color: #111110;
+  background-color: #FFFFFF;
+  color: #0A0A0A;
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -42,18 +42,6 @@ body {
 a {
   color: inherit;
   text-decoration: none;
-}
-
-.museum-grain {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 45;
-  opacity: 0.032;
-  background-image:
-    linear-gradient(rgba(17, 17, 16, 0.25) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(17, 17, 16, 0.2) 1px, transparent 1px);
-  background-size: 36px 36px;
 }
 
 /* Editorial typography utilities */
@@ -74,23 +62,30 @@ a {
 
 /* Museum catalog hairline & grid primitives */
 .catalog-rule {
-  border-color: #D7D2C6;
+  border-color: #E5E5E5;
 }
 
 .catalog-rule-dark {
   border-color: rgba(236, 228, 215, 0.14);
 }
 
+/* White-cube surfaces: a piece on the wall is white, thinly edged, and casts a soft shadow */
 .specimen-sheet {
-  background-color: #EFECE3;
-  border: 1px solid #D7D2C6;
+  background-color: #FFFFFF;
+  border: 1px solid rgba(17, 17, 16, 0.1);
+  box-shadow:
+    0 1px 2px rgba(17, 17, 16, 0.06),
+    0 30px 44px -30px rgba(17, 17, 16, 0.3);
 }
 
 .specimen-grid-bg {
-  background-image:
-    linear-gradient(to right, rgba(17, 17, 16, 0.045) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(17, 17, 16, 0.045) 1px, transparent 1px);
-  background-size: 24px 24px;
+  background-image: none;
+}
+
+.bg-ivory main article {
+  box-shadow:
+    0 1px 2px rgba(17, 17, 16, 0.05),
+    0 30px 44px -32px rgba(17, 17, 16, 0.28);
 }
 
 .dark-specimen-grid-bg {
@@ -106,7 +101,7 @@ a {
 }
 
 .exhibition-track::-webkit-scrollbar-track {
-  background: #EFECE3;
+  background: #F2F2F2;
 }
 
 .exhibition-track::-webkit-scrollbar-thumb {
@@ -132,16 +127,19 @@ a {
   text-transform: uppercase;
 }
 
+/* Lab headings share the exhibition serif so the lab reads as the dark room of the same building */
 .lab-hero-title {
-  font-weight: 520;
-  letter-spacing: -0.012em;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: -0.02em;
   line-height: 1.04;
 }
 
 .lab-section-title {
-  font-weight: 520;
-  letter-spacing: -0.006em;
-  line-height: 1.12;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: -0.012em;
+  line-height: 1.14;
 }
 
 .lab-copy {

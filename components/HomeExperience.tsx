@@ -128,29 +128,17 @@ function Room({ chapter, dark = false, exhibitFirst = false, wall, exhibit }: Ro
       data-chapter-panel
       aria-label={chapter.label}
       className={`relative flex min-h-[calc(100svh-59px)] w-full shrink-0 scroll-mt-[59px] overflow-hidden border-b px-6 py-16 md:px-12 lg:h-full lg:w-screen lg:snap-start lg:overflow-y-auto lg:border-b-0 lg:bg-transparent lg:px-16 lg:py-8 ${
-        dark ? "border-white/15 bg-lab text-bone" : "border-rule/80 bg-ivory text-ink"
+        dark ? "border-white/15 bg-lab text-bone" : "border-ink/10 bg-white text-ink"
       }`}
     >
-      {/* Mobile atmosphere (desktop uses the shared cross-dissolving stage) */}
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0 lg:hidden">
-        <img
-          src={chapter.photo}
-          alt=""
-          loading={chapter.index === 1 ? "eager" : "lazy"}
-          decoding="async"
-          className={`h-full w-full object-cover ${dark ? "opacity-40" : "opacity-20"}`}
-        />
-        <div className={`absolute inset-0 ${dark ? "bg-lab/80" : "bg-ivory/85"}`} />
-      </div>
-
-      <div className="relative z-10 m-auto grid w-full max-w-[1180px] gap-12 lg:grid-cols-12 lg:items-center lg:gap-20">
+      <div className="relative z-10 m-auto grid w-full max-w-[1280px] gap-12 lg:grid-cols-12 lg:items-center lg:gap-16">
         <motion.div
           variants={roomReveal}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
           custom={0.04}
-          className={`lg:col-span-5 ${exhibitFirst ? "lg:order-2" : ""}`}
+          className={`lg:col-span-6 ${exhibitFirst ? "lg:order-2" : ""}`}
         >
           <p className={`archival-mono text-xs ${dark ? "text-moss" : "text-ember"}`}>
             {chapter.code.slice(0, 2)} — {chapter.label}
@@ -163,8 +151,8 @@ function Room({ chapter, dark = false, exhibitFirst = false, wall, exhibit }: Ro
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
-          custom={0.16}
-          className={`lg:col-span-7 ${exhibitFirst ? "lg:order-1" : ""}`}
+          custom={0.32}
+          className={`lg:col-span-6 ${exhibitFirst ? "lg:order-1" : ""}`}
         >
           {exhibit}
         </motion.div>
@@ -173,7 +161,7 @@ function Room({ chapter, dark = false, exhibitFirst = false, wall, exhibit }: Ro
   );
 }
 
-/* A framed piece hung on the wall, with a small label underneath. */
+/* A framed piece hung on the wall, with a museum wall label beside it. */
 function Frame({
   dark = false,
   label,
@@ -186,17 +174,19 @@ function Frame({
   return (
     <figure className="m-0">
       <div
-        className={`border p-7 md:p-10 xl:p-12 ${
+        className={`border-[6px] p-8 md:p-12 xl:p-14 ${
           dark
-            ? "border-bone/20 bg-[#121414] shadow-[0_40px_80px_-40px_rgba(0,0,0,0.9)]"
-            : "border-ink/15 bg-ivory shadow-[0_40px_70px_-45px_rgba(17,17,16,0.45)]"
+            ? "border-[#2B2D2C] bg-[#131515] shadow-[0_30px_50px_-24px_rgba(0,0,0,0.9)]"
+            : "border-[#0A0A0A] bg-white shadow-[0_26px_38px_-22px_rgba(17,17,16,0.42),0_70px_90px_-60px_rgba(17,17,16,0.3)]"
         }`}
       >
         {children}
       </div>
       <figcaption
-        className={`mt-5 max-w-[46ch] text-sm leading-relaxed ${
-          dark ? "text-bone/60" : "text-graphite"
+        className={`ml-auto mt-8 w-fit max-w-[36ch] px-4 py-3 text-[13px] leading-relaxed ${
+          dark
+            ? "bg-[#1B1D1D] text-bone/65 shadow-[0_8px_16px_-10px_rgba(0,0,0,0.9)]"
+            : "bg-white text-graphite shadow-[0_1px_2px_rgba(17,17,16,0.1),0_8px_16px_-10px_rgba(17,17,16,0.3)]"
         }`}
       >
         {label}
@@ -207,7 +197,7 @@ function Frame({
 
 function WallHeading({ children }: { children: React.ReactNode }) {
   return (
-    <h2 className="editorial-serif mt-5 text-4xl font-normal leading-[1.05] md:text-5xl xl:text-[3.5rem]">
+    <h2 className="editorial-serif mt-5 text-5xl font-normal leading-[1] tracking-[-0.025em] md:text-6xl xl:text-[4.75rem]">
       {children}
     </h2>
   );
@@ -397,7 +387,7 @@ export function HomeExperience() {
   );
 
   return (
-    <div className="exhibition-v2-shell relative min-h-screen bg-ivory text-ink lg:flex lg:h-screen lg:flex-col lg:overflow-hidden">
+    <div className="exhibition-v2-shell relative min-h-screen bg-white text-ink lg:flex lg:h-screen lg:flex-col lg:overflow-hidden">
       <GlobalNav
         variant={isNocturnalDominant ? "dark" : "light"}
         exhibitionChapter={{
@@ -424,72 +414,35 @@ export function HomeExperience() {
         />
       </div>
 
-      {/* =====================================================================
-          DESKTOP SCROLL-LINKED CROSS-DISSOLVE PHOTOGRAPHIC STAGE
-          Smoothly fades adjacent chapter background plates & interpolates
-          the warm-ivory gallery into the dark Chainstox Lab observatory (Ch 04)
-      ===================================================================== */}
+      {/* Gallery architecture: one continuous wall and floor behind every room.
+          The wall darkens into the lab around room 04 and lightens again after. */}
       <div
         aria-hidden="true"
         className="pointer-events-none fixed inset-0 top-[59px] z-0 hidden overflow-hidden lg:block"
       >
-        {/* Base Warm Ivory Canvas */}
-        <div className="absolute inset-0 bg-ivory" />
-
-        {/* 7 Chapter Full-Bleed Atmospheric Photographic Plates */}
-        {CHAPTERS.map((chap, idx) => {
-          const dist = Math.abs(continuousIndex - idx);
-          const rawWeight = Math.max(0, 1 - dist);
-          const weight = smoothstep(0, 1, rawWeight);
-          const signedDelta = continuousIndex - idx;
-          const parallaxX = prefersReducedMotion ? 0 : signedDelta * -38;
-          const scale = prefersReducedMotion ? 1 : 1 + (1 - weight) * 0.045;
-          const isDarkChap = idx === 3;
-
-          return (
-            <div
-              key={chap.id}
-              className="absolute inset-0 will-change-[opacity,transform]"
-              style={{
-                opacity: weight,
-                transform: `translate3d(${parallaxX.toFixed(1)}px, 0, 0) scale(${scale.toFixed(4)})`
-              }}
-            >
-              <img
-                src={chap.photo}
-                alt=""
-                loading={idx === 0 ? "eager" : "lazy"}
-                fetchPriority={idx === 0 ? "high" : "auto"}
-                decoding="async"
-                className="h-full w-full object-cover"
-                style={{
-                  objectPosition: chap.objectPosition,
-                  opacity: isDarkChap ? 0.58 : 0.34
-                }}
-              />
-            </div>
-          );
-        })}
-
-        {/* Warm Editorial Museum Veil (fades out smoothly as Chapter 04 approaches) */}
+        <div className="absolute inset-0 bg-white" />
         <div
           className="absolute inset-0"
           style={{
-            opacity: 1 - nocturnalAlpha,
             background:
-              "radial-gradient(circle at 18% 16%, rgba(247, 244, 237, 0.42) 0%, rgba(247, 244, 237, 0.76) 58%, rgba(239, 236, 227, 0.88) 100%)"
+              "radial-gradient(ellipse 75% 60% at 50% 0%, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0) 72%)"
           }}
+        />
+        <div
+          className="absolute inset-x-0 bottom-0 h-[17%] border-t border-ink/10"
+          style={{ background: "linear-gradient(180deg, #F4F4F4 0%, #EAEAEA 100%)" }}
         />
 
-        {/* Nocturnal Chainstox Lab Veil (gradually fades in between Chapter 03 -> 04 and out 04 -> 05) */}
-        <div
-          className="absolute inset-0"
-          style={{
-            opacity: nocturnalAlpha,
-            background:
-              "radial-gradient(circle at 24% 22%, rgba(14, 15, 15, 0.52) 0%, rgba(11, 13, 13, 0.84) 64%, rgba(9, 10, 10, 0.92) 100%)"
-          }}
-        />
+        <div className="absolute inset-0 bg-lab" style={{ opacity: nocturnalAlpha }}>
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(ellipse 42% 58% at 30% 42%, rgba(236,228,215,0.11) 0%, rgba(236,228,215,0) 70%)"
+            }}
+          />
+          <div className="absolute inset-x-0 bottom-0 h-[17%] border-t border-white/10 bg-[#090A0A]" />
+        </div>
       </div>
 
       {/* Horizontal Exhibition Track on Desktop / Vertical Stack on Mobile */}
@@ -502,7 +455,7 @@ export function HomeExperience() {
           chapter={CHAPTERS[0]}
           wall={
             <>
-              <h1 className="editorial-serif mt-5 text-6xl font-normal leading-[0.98] tracking-[-0.022em] md:text-7xl xl:text-[5.5rem]">
+              <h1 className="editorial-serif mt-5 text-[4.25rem] font-normal leading-[0.92] tracking-[-0.035em] md:text-8xl xl:text-[8.5rem]">
                 Hi, I&apos;m Alvin.
               </h1>
               <WallCopy>
@@ -621,17 +574,17 @@ export function HomeExperience() {
               }
             >
               <svg viewBox="0 0 440 190" className="block h-auto w-full" fill="none" role="img" aria-label="A line moving inside a rising policy band">
-                <path d="M0 42 L440 18 L440 148 L0 172 Z" fill="#B8592A" fillOpacity="0.06" />
-                <line x1="0" y1="42" x2="440" y2="18" stroke="#7D7A72" strokeDasharray="4 5" strokeWidth="1" />
-                <line x1="0" y1="107" x2="440" y2="83" stroke="#111110" strokeOpacity="0.55" strokeWidth="1" />
-                <line x1="0" y1="172" x2="440" y2="148" stroke="#7D7A72" strokeDasharray="4 5" strokeWidth="1" />
+                <path d="M0 42 L440 18 L440 148 L0 172 Z" fill="#E63600" fillOpacity="0.06" />
+                <line x1="0" y1="42" x2="440" y2="18" stroke="#767676" strokeDasharray="4 5" strokeWidth="1" />
+                <line x1="0" y1="107" x2="440" y2="83" stroke="#0A0A0A" strokeOpacity="0.55" strokeWidth="1" />
+                <line x1="0" y1="172" x2="440" y2="148" stroke="#767676" strokeDasharray="4 5" strokeWidth="1" />
                 <path
                   d="M0 128 C 40 118, 62 84, 104 92 S 168 132, 214 104 S 286 52, 330 66 S 404 96, 440 58"
-                  stroke="#B8592A"
+                  stroke="#E63600"
                   strokeWidth="2.2"
                   strokeLinecap="round"
                 />
-                <circle cx="440" cy="58" r="4" fill="#B8592A" />
+                <circle cx="440" cy="58" r="4" fill="#E63600" />
               </svg>
             </Frame>
           }
