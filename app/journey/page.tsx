@@ -20,7 +20,7 @@ const CHRONOLOGY = [
     ]
   },
   {
-    period: "PRE-TRANSFER UNIVERSITY STUDY",
+    period: "OCTOBER 2022",
     title: "Studying Law at Universiti Kebangsaan Malaysia (UKM)",
     location: "Bangi, Malaysia",
     summary:
@@ -28,7 +28,7 @@ const CHRONOLOGY = [
     links: [{ label: "Education & Direction (Part 01–02)", href: "/archive/education" }]
   },
   {
-    period: "ACADEMIC TRANSITION",
+    period: "OCTOBER 2023",
     title: "Transfer to Universiti Malaya to Study Economics",
     location: "Kuala Lumpur, Malaysia",
     summary:
@@ -36,20 +36,12 @@ const CHRONOLOGY = [
     links: [{ label: "Education & Direction (Part 03)", href: "/archive/education" }]
   },
   {
-    period: "PRODUCTION & LIVE EVENTS",
-    title: "Event Operations & Production Set Support",
-    location: "Venues & Studio Sets",
+    period: "2023 – 2024",
+    title: "Concert Crew & a Music-Video Role",
+    location: "Malaysia & Singapore",
     summary:
-      "Worked behind the scenes across live events, concerts, and music-video production environments—handling pre-show setup, stage transitions, and on-set logistics.",
+      "Worked as crew on Taylor Swift's The Eras Tour in Singapore (2024), Jay Chou's concerts in Malaysia (2023 and 2024), Coldplay in Malaysia (2024), and the 9Wave music festival at Sunway (2023), among many other shows — handling pre-show setup and stage transitions — and stepped in front of the camera for a small role in a music video.",
     links: [{ label: "Behind the Scenes Collection", href: "/archive/behind-the-scenes" }]
-  },
-  {
-    period: "SUMMER WORK & TRAVEL",
-    title: "Work & Travel in Atlantic City & Urban Field Notes",
-    location: "Atlantic City & New York, United States",
-    summary:
-      "Spent a summer working in Atlantic City, New Jersey, followed by travel and urban observations in New York and later South Korea.",
-    links: [{ label: "Elsewhere Field Journal", href: "/archive/elsewhere" }]
   },
   {
     period: "NOVEMBER 2024",
@@ -63,11 +55,19 @@ const CHRONOLOGY = [
     ]
   },
   {
+    period: "SUMMER 2026",
+    title: "Work & Travel in Atlantic City",
+    location: "Atlantic City & New York, United States",
+    summary:
+      "Spent the summer working behind a food counter in Atlantic City, New Jersey, with time in New York along the way.",
+    links: [{ label: "Elsewhere Field Journal", href: "/archive/elsewhere" }]
+  },
+  {
     period: "PRESENT",
     title: "Independent Market Research & Chainstox Lab",
     location: "Universiti Malaya · Kuala Lumpur",
     summary:
-      "Concentrating on economics, financial markets, semiconductor research, and building independent analytical systems in Chainstox Lab (Market Valuation Engine, On-Chain Market Intelligence, SGD-NEER Shadow Model).",
+      "Studying economics at Universiti Malaya, expected to graduate in 2028, while building independent analytical systems in Chainstox Lab (Market Valuation Engine, On-Chain Market Intelligence, SGD-NEER Shadow Model).",
     links: [
       { label: "Research Collection", href: "/research" },
       { label: "Chainstox Lab", href: "/lab" }

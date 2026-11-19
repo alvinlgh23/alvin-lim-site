@@ -67,6 +67,30 @@ const CHAPTERS = [
 
 const museumEase = [0.22, 1, 0.36, 1] as const;
 
+/* Entering the exhibition: the entrance wall rushes past, then the first room settles into view. */
+const doorVariants = {
+  closed: { scale: 1, opacity: 1 },
+  leaving: {
+    scale: 1.02,
+    opacity: 0,
+    transition: { duration: 0.7, ease: [0.4, 0, 1, 1] as const }
+  },
+  arriving: {
+    scale: [1.015, 1],
+    opacity: [0, 1],
+    transition: { duration: 1.2, delay: 0.35, ease: museumEase }
+  },
+  open: { scale: 1, opacity: 1 }
+};
+
+/* The doorway: the whole screen dims to black, holds a beat, then the gallery lights come up. */
+const doorwayVariants = {
+  closed: { opacity: 0 },
+  leaving: { opacity: 1, transition: { duration: 0.7, ease: [0.4, 0, 1, 1] as const } },
+  arriving: { opacity: 0, transition: { duration: 1.3, delay: 0.25, ease: museumEase } },
+  open: { opacity: 0 }
+};
+
 const roomReveal = {
   hidden: { opacity: 0, y: 16 },
   visible: (delay = 0) => ({
@@ -75,6 +99,24 @@ const roomReveal = {
     transition: { duration: 0.68, delay, ease: museumEase }
   })
 };
+
+/* Document position from layout (offsetTop), so an in-flight transform cannot skew it. */
+function layoutTop(el: HTMLElement) {
+  let top = 0;
+  let node: HTMLElement | null = el;
+  while (node) {
+    top += node.offsetTop;
+    node = node.offsetParent as HTMLElement | null;
+  }
+  return top;
+}
+
+/* Zoom around the middle of what is on screen, not the middle of a tall mobile column. */
+function viewportOrigin(track: HTMLElement | null) {
+  if (!track || window.innerWidth >= 1024) return "50% 45%";
+  const y = window.scrollY + window.innerHeight * 0.45 - layoutTop(track);
+  return `50% ${Math.max(0, y).toFixed(0)}px`;
+}
 
 function smoothstep(edge0: number, edge1: number, x: number) {
   const t = Math.max(0, Math.min(1, (x - edge0) / (edge1 - edge0 || 1)));
@@ -90,18 +132,11 @@ const LAB_SYSTEMS = [
 ] as const;
 
 const PATH_STAGES = [
-  ["Law", "Universiti Kebangsaan Malaysia"],
-  ["Economics", "Universiti Malaya"],
-  ["A campus election", "November 2024"],
-  ["Research", "Now"]
+  ["Law", "Universiti Kebangsaan Malaysia", "2022"],
+  ["Economics", "Universiti Malaya", "2023"],
+  ["A campus election", "Universiti Malaya", "2024"],
+  ["Research", "Independent", "Now"]
 ] as const;
-
-const BACKSTAGE_RECORDS = [
-  ["Before doors", "Live event & stage coordination"],
-  ["On set", "Music-video & visual production"],
-  ["Backstage", "Cue sheets & real-time problem solving"]
-] as const;
-
 const DIRECTORY = [
   ["Research", "What I'm trying to understand", "/research"],
   ["Archive", "How I got here", "/archive"],
@@ -115,20 +150,25 @@ const DIRECTORY = [
 type RoomProps = {
   chapter: (typeof CHAPTERS)[number];
   dark?: boolean;
+  lab?: boolean;
   exhibitFirst?: boolean;
   wall: React.ReactNode;
   exhibit: React.ReactNode;
 };
 
 /* One room: a wall text and a single exhibit. Nothing else. */
-function Room({ chapter, dark = false, exhibitFirst = false, wall, exhibit }: RoomProps) {
+function Room({ chapter, dark = false, lab = false, exhibitFirst = false, wall, exhibit }: RoomProps) {
   return (
     <section
       id={chapter.id}
       data-chapter-panel
       aria-label={chapter.label}
-      className={`relative flex min-h-[calc(100svh-59px)] w-full shrink-0 scroll-mt-[59px] overflow-hidden border-b px-6 py-16 md:px-12 lg:h-full lg:w-screen lg:snap-start lg:overflow-y-auto lg:border-b-0 lg:bg-transparent lg:px-16 lg:py-8 ${
-        dark ? "border-white/15 bg-lab text-bone" : "border-ink/10 bg-white text-ink"
+      className={`relative flex min-h-[calc(100svh-59px)] w-full shrink-0 scroll-mt-[59px] overflow-hidden border-b px-6 ${chapter.index === 1 ? "py-16 [@media(max-height:720px)]:py-8" : "py-16"} md:px-12 md:py-16 lg:h-full lg:w-screen lg:snap-start lg:overflow-y-auto lg:border-b-0 lg:bg-transparent lg:px-16 lg:py-8 ${
+        lab
+          ? "border-white/15 bg-lab text-bone"
+          : dark
+            ? "border-white/10 bg-[#141415] text-bone max-lg:bg-[linear-gradient(180deg,rgba(255,255,255,0.34)_0%,rgba(255,255,255,0.08)_22%,rgba(255,255,255,0)_40%)] max-lg:shadow-[inset_0_3px_0_rgba(255,255,255,1),inset_0_14px_26px_-10px_rgba(255,255,255,0.6)]"
+            : "border-ink/10 bg-white text-ink"
       }`}
     >
       <div className="relative z-10 m-auto grid w-full max-w-[1280px] gap-12 lg:grid-cols-12 lg:items-center lg:gap-16">
@@ -140,7 +180,7 @@ function Room({ chapter, dark = false, exhibitFirst = false, wall, exhibit }: Ro
           custom={0.04}
           className={`lg:col-span-6 ${exhibitFirst ? "lg:order-2" : ""}`}
         >
-          <p className={`archival-mono text-xs ${dark ? "text-moss" : "text-ember"}`}>
+          <p className={`archival-mono text-xs ${lab ? "text-moss" : "text-ember"}`}>
             {chapter.code.slice(0, 2)} — {chapter.label}
           </p>
           {wall}
@@ -164,20 +204,22 @@ function Room({ chapter, dark = false, exhibitFirst = false, wall, exhibit }: Ro
 /* A framed piece hung on the wall, with a museum wall label beside it. */
 function Frame({
   dark = false,
+  photo = false,
   label,
   children
 }: {
   dark?: boolean;
+  photo?: boolean;
   label: React.ReactNode;
   children: React.ReactNode;
 }) {
   return (
-    <figure className="m-0">
+    <figure className={`m-0 ${photo ? "mx-auto w-full lg:w-fit" : ""}`}>
       <div
-        className={`border-[6px] p-8 md:p-12 xl:p-14 ${
+        className={`${photo ? "p-3 md:p-4" : "p-8 md:p-12 xl:p-14"} ${
           dark
-            ? "border-[#2B2D2C] bg-[#131515] shadow-[0_30px_50px_-24px_rgba(0,0,0,0.9)]"
-            : "border-[#0A0A0A] bg-white shadow-[0_26px_38px_-22px_rgba(17,17,16,0.42),0_70px_90px_-60px_rgba(17,17,16,0.3)]"
+            ? "border border-white/20 bg-[#0F0F10] shadow-[0_30px_50px_-24px_rgba(0,0,0,0.95)]"
+            : "border-2 border-[#151515] bg-white shadow-[0_0_0_1px_rgba(255,255,255,0.16),0_28px_44px_-22px_rgba(0,0,0,0.55),0_70px_90px_-60px_rgba(0,0,0,0.4)]"
         }`}
       >
         {children}
@@ -185,7 +227,7 @@ function Frame({
       <figcaption
         className={`ml-auto mt-8 w-fit max-w-[36ch] px-4 py-3 text-[13px] leading-relaxed ${
           dark
-            ? "bg-[#1B1D1D] text-bone/65 shadow-[0_8px_16px_-10px_rgba(0,0,0,0.9)]"
+            ? "border border-white/10 bg-[#0F0F10] text-bone/65 shadow-[0_8px_16px_-10px_rgba(0,0,0,0.9)]"
             : "bg-white text-graphite shadow-[0_1px_2px_rgba(17,17,16,0.1),0_8px_16px_-10px_rgba(17,17,16,0.3)]"
         }`}
       >
@@ -239,17 +281,23 @@ function WallLink({
   );
 }
 
-
 export function HomeExperience() {
   const trackRef = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = useReducedMotion();
   const [activeChapter, setActiveChapter] = useState(0);
   // Continuous chapter index from 0.0 to 6.0 synced to real scroll position
   const [continuousIndex, setContinuousIndex] = useState(0);
+  // The entrance is a threshold: rooms 02–07 do not exist until the visitor enters.
+  const [entered, setEntered] = useState(false);
+  const pendingEnter = useRef(false);
+  // closed → leaving (walk toward the wall) → arriving (room 02 comes into focus) → open
+  const [doorPhase, setDoorPhase] = useState<"closed" | "leaving" | "arriving" | "open">("closed");
+  const [doorOrigin, setDoorOrigin] = useState("50% 45%");
 
   const scrollToChapter = useCallback(
     (index: number) => {
       const clamped = Math.max(0, Math.min(CHAPTERS.length - 1, index));
+      if (!entered && clamped > 0) return;
       setActiveChapter(clamped);
 
       const track = trackRef.current;
@@ -268,8 +316,77 @@ export function HomeExperience() {
         targetEl.scrollIntoView({ behavior: scrollBehavior, block: "start" });
       }
     },
-    [prefersReducedMotion]
+    [prefersReducedMotion, entered]
   );
+
+  const enterExhibition = useCallback(() => {
+    if (entered) {
+      scrollToChapter(1);
+      return;
+    }
+    if (doorPhase !== "closed") return;
+    if (prefersReducedMotion) {
+      pendingEnter.current = true;
+      setEntered(true);
+      return;
+    }
+    setDoorOrigin(viewportOrigin(trackRef.current));
+    setDoorPhase("leaving");
+  }, [entered, doorPhase, prefersReducedMotion, scrollToChapter]);
+
+  const handleDoorAnimationComplete = useCallback((phase: unknown) => {
+    if (phase === "leaving") {
+      pendingEnter.current = true;
+      setEntered(true);
+    } else if (phase === "arriving") {
+      setDoorPhase("open");
+    }
+  }, []);
+
+  // At the entrance the page does not scroll: the only way on is through the door.
+  // Only locked when the entrance fits the screen, so a very short phone can still reach the button.
+  useEffect(() => {
+    if (entered) return;
+    const html = document.documentElement;
+    const previous = { overflow: html.style.overflow, overscroll: html.style.overscrollBehavior };
+    const apply = () => {
+      html.style.overflow = "";
+      const fits = html.scrollHeight <= window.innerHeight + 2;
+      html.style.overflow = fits ? "hidden" : "";
+      html.style.overscrollBehavior = fits ? "none" : "";
+    };
+    apply();
+    window.addEventListener("resize", apply);
+    return () => {
+      window.removeEventListener("resize", apply);
+      html.style.overflow = previous.overflow;
+      html.style.overscrollBehavior = previous.overscroll;
+    };
+  }, [entered]);
+
+  // Once the rooms are mounted, stand the visitor in room 02 and let it come into focus
+  useEffect(() => {
+    if (!entered || !pendingEnter.current) return;
+    pendingEnter.current = false;
+
+    const track = trackRef.current;
+    const target = document.getElementById(CHAPTERS[1].id);
+    if (target) {
+      if (window.innerWidth >= 1024 && track) {
+        track.scrollTo({ left: target.offsetLeft, behavior: "instant" });
+      } else {
+        const header = document.querySelector("header");
+        window.scrollTo({
+          top: layoutTop(target) - (header?.getBoundingClientRect().height ?? 0),
+          behavior: "instant"
+        });
+      }
+    }
+    setDoorOrigin(viewportOrigin(track));
+    setActiveChapter(1);
+    setContinuousIndex(1);
+    setDoorPhase(prefersReducedMotion ? "open" : "arriving");
+  }, [entered, prefersReducedMotion]);
 
   // Sync active chapter and continuous float index on desktop horizontal scroll
   useEffect(() => {
@@ -362,6 +479,14 @@ export function HomeExperience() {
       const tag = (event.target as HTMLElement | null)?.tagName;
       if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
 
+      if (!entered) {
+        if (event.key === "Enter" && tag !== "A" && tag !== "BUTTON") {
+          event.preventDefault();
+          enterExhibition();
+        }
+        return;
+      }
+
       if (event.key === "ArrowRight") {
         event.preventDefault();
         scrollToChapter(activeChapter + 1);
@@ -373,7 +498,7 @@ export function HomeExperience() {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [activeChapter, scrollToChapter]);
+  }, [activeChapter, scrollToChapter, entered, enterExhibition]);
 
   const currentChapterMeta = CHAPTERS[activeChapter] || CHAPTERS[0];
 
@@ -381,6 +506,16 @@ export function HomeExperience() {
   const darkProximity = Math.max(0, 1 - Math.abs(continuousIndex - 3));
   const nocturnalAlpha = smoothstep(0.08, 0.92, darkProximity);
   const isNocturnalDominant = nocturnalAlpha > 0.52;
+
+  // 0 at the entrance, 1 once inside the gallery
+  const insideAlpha = smoothstep(0, 1, Math.min(1, continuousIndex));
+  const isDarkChrome = insideAlpha > 0.5 || isNocturnalDominant;
+  // The light sits over the exhibit: left in rooms 02/04/06, right in the others, gliding between
+  const exhibitSide = (roomIdx: number) => (roomIdx % 2 === 1 ? 27 : 73);
+  const lowerRoom = Math.floor(continuousIndex);
+  const roomBlend = smoothstep(0, 1, continuousIndex - lowerRoom);
+  const spotlightX =
+    exhibitSide(lowerRoom) + (exhibitSide(Math.min(CHAPTERS.length - 1, lowerRoom + 1)) - exhibitSide(lowerRoom)) * roomBlend;
   const overallProgress = Math.max(
     (activeChapter + 1) / CHAPTERS.length,
     (continuousIndex + 1) / CHAPTERS.length
@@ -389,7 +524,7 @@ export function HomeExperience() {
   return (
     <div className="exhibition-v2-shell relative min-h-screen bg-white text-ink lg:flex lg:h-screen lg:flex-col lg:overflow-hidden">
       <GlobalNav
-        variant={isNocturnalDominant ? "dark" : "light"}
+        variant={isDarkChrome ? "dark" : "light"}
         exhibitionChapter={{
           current: currentChapterMeta.index,
           total: CHAPTERS.length,
@@ -402,7 +537,7 @@ export function HomeExperience() {
       <div
         aria-hidden="true"
         className={`sticky top-[57px] z-30 h-[2px] w-full overflow-hidden transition-colors duration-300 lg:static ${
-          isNocturnalDominant ? "bg-white/10" : "bg-rule/70"
+          isDarkChrome ? "bg-white/10" : "bg-rule/70"
         }`}
       >
         <motion.div
@@ -414,48 +549,100 @@ export function HomeExperience() {
         />
       </div>
 
-      {/* Gallery architecture: one continuous wall and floor behind every room.
-          The wall darkens into the lab around room 04 and lightens again after. */}
+      {/* Gallery architecture.
+          The entrance is a flat, bright white wall. Past the threshold the gallery is dimmer:
+          a grey wall, a floor, and a soft light that follows whichever side the exhibit hangs on.
+          Around room 04 the gallery darkens into the lab and lightens again after. */}
       <div
         aria-hidden="true"
         className="pointer-events-none fixed inset-0 top-[59px] z-0 hidden overflow-hidden lg:block"
       >
         <div className="absolute inset-0 bg-white" />
+
         <div
-          className="absolute inset-0"
+          className="absolute inset-0 bg-[#141415]"
           style={{
-            background:
-              "radial-gradient(ellipse 75% 60% at 50% 0%, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0) 72%)"
+            opacity: insideAlpha,
+            transition: doorPhase === "arriving" ? "opacity 900ms ease" : undefined
           }}
-        />
-        <div
-          className="absolute inset-x-0 bottom-0 h-[17%] border-t border-ink/10"
-          style={{ background: "linear-gradient(180deg, #F4F4F4 0%, #EAEAEA 100%)" }}
-        />
+        >
+          {/* Wall wash: brightest just under the ceiling slot, falling off toward the floor */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(180deg, rgba(255,255,255,0.32) 0%, rgba(255,255,255,0.12) 16%, rgba(255,255,255,0.03) 34%, rgba(0,0,0,0) 48%, rgba(0,0,0,0.16) 83%)"
+            }}
+          />
+          {/* A faint pool of light on the exhibit */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background: `radial-gradient(ellipse 34% 62% at ${spotlightX.toFixed(1)}% 36%, rgba(255,255,255,0.26) 0%, rgba(255,255,255,0.1) 42%, rgba(255,255,255,0) 74%)`
+            }}
+          />
+          {/* Corners fall into shadow */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(ellipse 90% 85% at 50% 42%, rgba(0,0,0,0) 52%, rgba(0,0,0,0.26) 100%)"
+            }}
+          />
+          {/* Ceiling slot: light leaking out of the gap between wall and ceiling */}
+          <div
+            className="absolute inset-x-0 top-0 h-[3px]"
+            style={{
+              background: "rgba(255,255,255,1)",
+              boxShadow:
+                "0 0 10px 2px rgba(255,255,255,0.95), 0 0 34px 8px rgba(255,255,255,0.6), 0 0 120px 34px rgba(255,255,255,0.3)"
+            }}
+          />
+          {/* Floor, with a second lit gap where the wall stops short of it */}
+          <div
+            className="absolute inset-x-0 bottom-0 h-[17%]"
+            style={{ background: "linear-gradient(180deg, #0B0B0C 0%, #060607 100%)" }}
+          >
+            <div
+              className="absolute inset-x-0 top-0 h-[3px]"
+              style={{
+                background: "rgba(255,255,255,1)",
+                boxShadow:
+                  "0 0 10px 2px rgba(255,255,255,0.9), 0 0 30px 6px rgba(255,255,255,0.5), 0 -44px 90px 16px rgba(255,255,255,0.2), 0 34px 80px 12px rgba(255,255,255,0.16)"
+              }}
+            />
+          </div>
+        </div>
 
         <div className="absolute inset-0 bg-lab" style={{ opacity: nocturnalAlpha }}>
           <div
             className="absolute inset-0"
             style={{
-              background:
-                "radial-gradient(ellipse 42% 58% at 30% 42%, rgba(236,228,215,0.11) 0%, rgba(236,228,215,0) 70%)"
+              background: `radial-gradient(ellipse 40% 60% at ${spotlightX.toFixed(1)}% 38%, rgba(236,228,215,0.13) 0%, rgba(236,228,215,0) 70%)`
             }}
           />
-          <div className="absolute inset-x-0 bottom-0 h-[17%] border-t border-white/10 bg-[#090A0A]" />
+          <div className="absolute inset-x-0 bottom-0 h-[17%] border-t border-white/10 bg-[#050506]" />
         </div>
       </div>
 
       {/* Horizontal Exhibition Track on Desktop / Vertical Stack on Mobile */}
-      <div
+      <motion.div
         ref={trackRef}
-        className="exhibition-track relative z-10 flex-1 lg:flex lg:snap-x lg:snap-mandatory lg:overflow-x-auto lg:overflow-y-hidden"
+        variants={doorVariants}
+        initial={false}
+        animate={doorPhase}
+        onAnimationComplete={handleDoorAnimationComplete}
+        style={{ transformOrigin: doorOrigin }}
+        className={`exhibition-track relative z-10 flex-1 lg:flex lg:snap-x lg:snap-mandatory lg:overflow-x-auto lg:overflow-y-hidden ${
+          doorPhase === "leaving" ? "pointer-events-none" : ""
+        }`}
       >
         {/* 01 — ENTRANCE WALL */}
         <Room
           chapter={CHAPTERS[0]}
           wall={
             <>
-              <h1 className="editorial-serif mt-5 text-[4.25rem] font-normal leading-[0.92] tracking-[-0.035em] md:text-8xl xl:text-[8.5rem]">
+              <h1 className="editorial-serif mt-5 text-[3.6rem] font-normal leading-[0.92] min-[400px]:text-[4.25rem] tracking-[-0.035em] md:text-8xl xl:text-[8.5rem]">
                 Hi, I&apos;m Alvin.
               </h1>
               <WallCopy>
@@ -469,7 +656,7 @@ export function HomeExperience() {
               </WallCopy>
               <button
                 type="button"
-                onClick={() => scrollToChapter(1)}
+                onClick={enterExhibition}
                 className="group mt-9 inline-flex items-center gap-3 bg-ink px-6 py-3.5 text-xs font-medium uppercase tracking-[0.14em] text-ivory transition-all duration-300 hover:-translate-y-0.5 hover:bg-charcoal"
               >
                 <span>Enter the exhibition</span>
@@ -480,22 +667,27 @@ export function HomeExperience() {
             </>
           }
           exhibit={
+            <div className="hidden lg:block">
             <Frame label="Alvin Lim — Kuala Lumpur. Seven rooms, in order.">
               <blockquote className="editorial-serif m-0 text-3xl italic leading-[1.3] text-ink md:text-4xl xl:text-[2.75rem]">
                 “A curiosity about how things work — and how they could work better.”
               </blockquote>
             </Frame>
+            </div>
           }
         />
 
+        {entered ? (
+          <>
         {/* 02 — EDUCATION & DIRECTION */}
         <Room
           chapter={CHAPTERS[1]}
+          dark
           exhibitFirst
           wall={
             <>
               <WallHeading>A different way of understanding systems.</WallHeading>
-              <WallCopy>
+              <WallCopy dark>
                 <p>
                   I first studied law, hoping to work on public policy and how resources could be better allocated. It turned out to be quite different from what I had imagined.
                 </p>
@@ -503,7 +695,7 @@ export function HomeExperience() {
                   So I transferred to economics — and later, a campus election changed how I thought about politics too.
                 </p>
               </WallCopy>
-              <WallLink href="/archive/education">From law to economics</WallLink>
+              <WallLink href="/archive/education" dark>From law to economics</WallLink>
             </>
           }
           exhibit={
@@ -519,7 +711,7 @@ export function HomeExperience() {
               }
             >
               <ol className="m-0 grid list-none gap-7 p-0 sm:grid-cols-4 sm:gap-0">
-                {PATH_STAGES.map(([title, place], idx) => {
+                {PATH_STAGES.map(([title, place, when], idx) => {
                   const isCurrent = idx === PATH_STAGES.length - 1;
                   return (
                     <li key={title} className="relative sm:pr-4">
@@ -539,6 +731,7 @@ export function HomeExperience() {
                       </div>
                       <p className="editorial-serif mt-4 text-2xl leading-tight text-ink">{title}</p>
                       <p className="mt-1.5 text-sm leading-snug text-graphite">{place}</p>
+                      <p className="archival-mono mt-2 text-xs text-ember">{when}</p>
                     </li>
                   );
                 })}
@@ -550,16 +743,17 @@ export function HomeExperience() {
         {/* 03 — SELECTED RESEARCH */}
         <Room
           chapter={CHAPTERS[2]}
+          dark
           wall={
             <>
               <WallHeading>Questions worth testing.</WallHeading>
-              <WallCopy>
+              <WallCopy dark>
                 <p>
                   Some questions begin with a technology. Others begin with a market price that doesn&apos;t quite make sense.
                 </p>
                 <p>I explore them through research, data, and small systems built to test ideas.</p>
               </WallCopy>
-              <WallLink href="/research">Open the research collection</WallLink>
+              <WallLink href="/research" dark>Open the research collection</WallLink>
             </>
           }
           exhibit={
@@ -594,6 +788,7 @@ export function HomeExperience() {
         <Room
           chapter={CHAPTERS[3]}
           dark
+          lab
           exhibitFirst
           wall={
             <>
@@ -631,30 +826,33 @@ export function HomeExperience() {
         {/* 05 — BEHIND THE SCENES */}
         <Room
           chapter={CHAPTERS[4]}
+          dark
           wall={
             <>
               <WallHeading>Before the lights come on.</WallHeading>
-              <WallCopy>
+              <WallCopy dark>
                 <p>Different venues. Same last-minute chaos.</p>
                 <p>
                   Moments from event work, productions, and the less visible parts of making things happen.
                 </p>
               </WallCopy>
-              <WallLink href="/archive/behind-the-scenes">Go behind the scenes</WallLink>
+              <WallLink href="/archive/behind-the-scenes" dark>Go behind the scenes</WallLink>
             </>
           }
           exhibit={
-            <Frame label="A call sheet, of sorts — three kinds of work that happen before an audience arrives.">
-              <ol className="m-0 list-none divide-y divide-ink/12 p-0">
-                {BACKSTAGE_RECORDS.map(([when, what]) => (
-                  <li key={when} className="grid gap-1 py-5 first:pt-0 last:pb-0 sm:grid-cols-[9rem_1fr] sm:items-baseline sm:gap-6">
-                    <span className="archival-mono text-xs text-ember">{when}</span>
-                    <span className="editorial-serif text-2xl leading-snug text-ink md:text-[1.75rem]">
-                      {what}
-                    </span>
-                  </li>
-                ))}
-              </ol>
+            <Frame
+              photo
+              label="Hours before doors open: the rig is lit, the chairs are still stacked, and the crew is still on stage."
+            >
+              <img
+                src="/photos/behind-the-scenes/pre-show-stage.webp"
+                alt="An empty concert floor before doors: stacked black chairs in the foreground, lighting beams across a lit stage behind"
+                width={1260}
+                height={945}
+                loading="lazy"
+                decoding="async"
+                className="block h-auto w-full lg:w-[min(44vw,640px)]"
+              />
             </Frame>
           }
         />
@@ -662,24 +860,34 @@ export function HomeExperience() {
         {/* 06 — ELSEWHERE */}
         <Room
           chapter={CHAPTERS[5]}
+          dark
           exhibitFirst
           wall={
             <>
               <WallHeading>Not everything fits into a category.</WallHeading>
-              <WallCopy>
+              <WallCopy dark>
                 <p>
                   Working in unfamiliar places, getting lost in new cities, and collecting small observations along the way.
                 </p>
                 <p>Some experiences become projects. Others are simply worth remembering.</p>
               </WallCopy>
-              <WallLink href="/archive/elsewhere">Open the field journal</WallLink>
+              <WallLink href="/archive/elsewhere" dark>Open the field journal</WallLink>
             </>
           }
           exhibit={
-            <Frame label="Atlantic City, New Jersey — a summer of Work & Travel. Also in this room: cities and streets, and classical guitar.">
-              <blockquote className="editorial-serif m-0 text-3xl italic leading-[1.32] text-ink md:text-4xl">
-                “Boardwalk lights, practical problems, and the kind of learning that does not ask for permission first.”
-              </blockquote>
+            <Frame
+              photo
+              label="Board Wok, Atlantic City, New Jersey — Work & Travel, summer 2026."
+            >
+              <img
+                src="/photos/atlantic-city/board-wok.webp"
+                alt="Alvin in a chef's jacket and red apron in front of the Board Wok counter in Atlantic City"
+                width={900}
+                height={1600}
+                loading="lazy"
+                decoding="async"
+                className="block h-auto w-full lg:h-[min(58vh,540px)] lg:w-auto"
+              />
             </Frame>
           }
         />
@@ -687,17 +895,18 @@ export function HomeExperience() {
         {/* 07 — EXIT */}
         <Room
           chapter={CHAPTERS[6]}
+          dark
           wall={
             <>
               <WallHeading>That&apos;s the exhibition. For now.</WallHeading>
-              <WallCopy>
+              <WallCopy dark>
                 <p>Still learning, still building, and still figuring things out.</p>
                 <p>Thanks for looking around.</p>
               </WallCopy>
               <button
                 type="button"
                 onClick={() => scrollToChapter(0)}
-                className="group mt-8 inline-flex items-center gap-3 border-b border-ink/50 pb-1.5 text-sm font-medium tracking-[0.04em] text-ink transition-colors hover:border-ink"
+                className="group mt-8 inline-flex items-center gap-3 border-b border-bone/50 pb-1.5 text-sm font-medium tracking-[0.04em] text-bone transition-colors hover:border-bone"
               >
                 <span aria-hidden="true" className="transition-transform duration-300 group-hover:-translate-x-1">
                   ←
@@ -710,38 +919,53 @@ export function HomeExperience() {
             <nav aria-label="Where to go next">
               <ul className="m-0 grid list-none gap-x-12 p-0 sm:grid-cols-2">
                 {DIRECTORY.map(([name, note, href]) => (
-                  <li key={name} className="border-t border-ink/15">
+                  <li key={name} className="border-t border-white/15">
                     <Link href={href} className="group block py-4">
-                      <span className="editorial-serif text-2xl text-ink underline-offset-4 group-hover:underline md:text-[1.75rem]">
+                      <span className="editorial-serif text-2xl text-bone underline-offset-4 group-hover:underline md:text-[1.75rem]">
                         {name}
                       </span>
-                      <span className="mt-0.5 block text-sm text-graphite">{note}</span>
+                      <span className="mt-0.5 block text-sm text-bone/55">{note}</span>
                     </Link>
                   </li>
                 ))}
-                <li className="border-t border-ink/15">
+                <li className="border-t border-white/15">
                   <a
                     href={VERIFIED_DESTINATIONS.githubProfile}
                     target="_blank"
                     rel="noreferrer"
                     className="group block py-4"
                   >
-                    <span className="editorial-serif text-2xl text-ink underline-offset-4 group-hover:underline md:text-[1.75rem]">
+                    <span className="editorial-serif text-2xl text-bone underline-offset-4 group-hover:underline md:text-[1.75rem]">
                       GitHub
                     </span>
-                    <span className="mt-0.5 block text-sm text-graphite">@alvinlgh23 ↗</span>
+                    <span className="mt-0.5 block text-sm text-bone/55">@alvinlgh23 ↗</span>
                   </a>
                 </li>
               </ul>
             </nav>
           }
         />
-      </div>
+          </>
+        ) : null}
+      </motion.div>
+
+      {/* Doorway: a full-screen black veil, only present while entering */}
+      <motion.div
+        aria-hidden="true"
+        variants={doorwayVariants}
+        initial={false}
+        animate={doorPhase}
+        className={`pointer-events-none fixed inset-0 z-[70] bg-black ${
+          doorPhase === "closed" || doorPhase === "open" ? "hidden" : ""
+        }`}
+      />
 
       {/* Desktop room rail */}
       <div
-        className={`relative z-20 hidden border-t px-10 py-2.5 transition-colors duration-300 lg:block ${
-          isNocturnalDominant
+        className={`relative z-20 hidden border-t px-10 py-2.5 transition-colors duration-300 ${
+          entered ? "lg:block" : ""
+        } ${
+          isDarkChrome
             ? "border-white/15 bg-lab/95 text-bone backdrop-blur-md"
             : "border-rule bg-paper/95 text-ink backdrop-blur-md"
         }`}
@@ -759,10 +983,10 @@ export function HomeExperience() {
                   aria-label={`Room ${chap.index}: ${chap.label}`}
                   className={`archival-mono whitespace-nowrap px-2.5 py-1 text-[11px] transition-all duration-200 ${
                     isCurrent
-                      ? isNocturnalDominant
+                      ? isDarkChrome
                         ? "bg-bone font-semibold text-ink"
                         : "bg-ink font-semibold text-ivory"
-                      : isNocturnalDominant
+                      : isDarkChrome
                         ? "text-bone/50 hover:bg-white/5 hover:text-bone"
                         : "text-muted hover:bg-ivory hover:text-ink"
                   }`}

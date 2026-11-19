@@ -435,7 +435,7 @@ export const ARCHIVE_COLLECTION_ENTRIES: ArchiveCollectionEntry[] = [
     highlights: [
       "Event setup, cue coordination, and backstage logistics before doors open",
       "Live venue transitions and production floor environments",
-      "Music-video and set production support away from the spotlight"
+      "A small on-camera role in a music video"
     ]
   },
   {

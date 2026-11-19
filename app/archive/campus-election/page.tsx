@@ -1,5 +1,16 @@
 import type { Metadata } from "next";
-import { Facts, LinkRow, NextRoom, PageIntro, PageShell, Prose, Section, TextLink } from "@/components/Gallery";
+import {
+  Facts,
+  LinkRow,
+  NextRoom,
+  PageIntro,
+  PageShell,
+  PhotoRow,
+  Plate,
+  Prose,
+  Section,
+  TextLink
+} from "@/components/Gallery";
 
 export const metadata: Metadata = {
   title: "Campus Election 2024 | Personal Archive — Alvin Lim",
@@ -18,6 +29,17 @@ export default function CampusElectionPage() {
       />
 
       <Section label="Record">
+        <div className="mb-12">
+          <Plate
+            photo={{
+              src: "/photos/campus-election/candidate-card.webp",
+              alt: "Round NewGen campaign card with Alvin's portrait, the name Lim Gi Hong, and the line Calon Fakulti Perniagaan dan Ekonomi",
+              width: 1260,
+              height: 1254,
+              caption: "The candidate card: “Calon Fakulti Perniagaan dan Ekonomi” — candidate for the Faculty of Business and Economics."
+            }}
+          />
+        </div>
         <Facts
           items={[
             ["University", "Universiti Malaya"],
@@ -30,6 +52,17 @@ export default function CampusElectionPage() {
       </Section>
 
       <Section label="01" title="The candidacy">
+        <div className="mb-12">
+          <Plate
+            photo={{
+              src: "/photos/campus-election/speech.webp",
+              alt: "Alvin in a black shirt speaking into a microphone, arm raised, between two NewGen banners",
+              width: 1260,
+              height: 833,
+              caption: "Making the case to FBE students, November 2024."
+            }}
+          />
+        </div>
         <Prose>
           <p>
             In November 2024, I stood as a student representative candidate for the Faculty of Business and Economics at Universiti Malaya with NewGen.
@@ -49,6 +82,33 @@ export default function CampusElectionPage() {
             Although we approached the election from different platforms, those conversations were an important part of the experience.
           </p>
         </Prose>
+        <div className="mt-12">
+          <PhotoRow
+            photos={[
+              {
+                src: "/photos/campus-election/lecture-visit.webp",
+                alt: "The NewGen team with banners at the front of a lecture room full of students",
+                width: 1260,
+                height: 819,
+                caption: "Visiting a lecture room with the team."
+              },
+              {
+                src: "/photos/campus-election/speaking-banner.webp",
+                alt: "Alvin speaking into a microphone beside a teammate holding a NewGen banner",
+                width: 1260,
+                height: 833,
+                caption: "Speaking alongside the NewGen banner."
+              },
+              {
+                src: "/photos/campus-election/lecture-theatre-session.webp",
+                alt: "Alvin addressing students in a lecture theatre, flanked by teammates holding NewGen banners",
+                width: 1260,
+                height: 841,
+                caption: "A campaign session in a lecture theatre."
+              }
+            ]}
+          />
+        </div>
       </Section>
 
       <Section label="03" title="The outcome">

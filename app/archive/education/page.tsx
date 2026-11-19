@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { LinkRow, NextRoom, PageIntro, PageShell, Prose, Section, TextLink } from "@/components/Gallery";
+import { LinkRow, NextRoom, PageIntro, PageShell, Plate, Prose, Section, TextLink } from "@/components/Gallery";
 
 export const metadata: Metadata = {
   title: "Education & Direction | Personal Archive — Alvin Lim",
@@ -30,7 +30,7 @@ export default function EducationDirectionPage() {
       </Section>
 
       <Section label="02" title="Choosing law">
-        <p className="archival-mono mb-5 text-xs text-muted">Universiti Kebangsaan Malaysia</p>
+        <p className="archival-mono mb-5 text-xs text-muted">Universiti Kebangsaan Malaysia · October 2022</p>
         <Prose>
           <p>That ambition initially led me to study law at Universiti Kebangsaan Malaysia.</p>
           <p>
@@ -41,7 +41,7 @@ export default function EducationDirectionPage() {
       </Section>
 
       <Section label="03" title="Entering economics">
-        <p className="archival-mono mb-5 text-xs text-muted">Universiti Malaya · Faculty of Business and Economics</p>
+        <p className="archival-mono mb-5 text-xs text-muted">Universiti Malaya · Faculty of Business and Economics · October 2023</p>
         <Prose>
           <p>
             Economics offered another way to explore questions about incentives, markets, institutions, and how resources are allocated.
@@ -49,7 +49,19 @@ export default function EducationDirectionPage() {
           <p>
             It also became a foundation for my growing interest in financial markets and independent research.
           </p>
+          <p>I expect to graduate in 2028.</p>
         </Prose>
+        <div className="mt-12">
+          <Plate
+            photo={{
+              src: "/photos/education/um-2023.webp",
+              alt: "Alvin in a Universiti Malaya varsity jacket in front of the illuminated Universiti Malaya 2023 sign at night",
+              width: 1200,
+              height: 1600,
+              caption: "At Universiti Malaya."
+            }}
+          />
+        </div>
       </Section>
 
       <Section label="04" title="The campus election">

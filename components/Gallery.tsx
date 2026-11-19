@@ -229,3 +229,60 @@ export function NextRoom({ href, label, title }: { href: string; label: string; 
     </Link>
   );
 }
+
+/* Photographs hung in a row, each with a short label underneath. */
+export type GalleryPhoto = {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  caption?: ReactNode;
+};
+
+export function PhotoRow({ photos }: { photos: GalleryPhoto[] }) {
+  return (
+    <div className="grid items-start gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      {photos.map((photo) => (
+        <figure key={photo.src} className="m-0">
+          <div className="border border-ink/15 bg-white p-2 shadow-[0_24px_36px_-26px_rgba(0,0,0,0.45)]">
+            <img
+              src={photo.src}
+              alt={photo.alt}
+              width={photo.width}
+              height={photo.height}
+              loading="lazy"
+              decoding="async"
+              className="block h-auto w-full"
+            />
+          </div>
+          {photo.caption ? (
+            <figcaption className="mt-3 text-sm leading-relaxed text-graphite">{photo.caption}</figcaption>
+          ) : null}
+        </figure>
+      ))}
+    </div>
+  );
+}
+
+/* A single photograph given room on the wall. Portrait pictures stay narrower so they never tower. */
+export function Plate({ photo }: { photo: GalleryPhoto }) {
+  const portrait = photo.height >= photo.width * 0.9;
+  return (
+    <figure className={`m-0 ${portrait ? "max-w-[460px]" : "max-w-[880px]"}`}>
+      <div className="border border-ink/15 bg-white p-2 shadow-[0_28px_40px_-28px_rgba(0,0,0,0.45)]">
+        <img
+          src={photo.src}
+          alt={photo.alt}
+          width={photo.width}
+          height={photo.height}
+          loading="lazy"
+          decoding="async"
+          className="block h-auto w-full"
+        />
+      </div>
+      {photo.caption ? (
+        <figcaption className="mt-3 max-w-[60ch] text-sm leading-relaxed text-graphite">{photo.caption}</figcaption>
+      ) : null}
+    </figure>
+  );
+}

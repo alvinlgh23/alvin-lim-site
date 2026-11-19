@@ -6,6 +6,8 @@ import {
   NextRoom,
   PageIntro,
   PageShell,
+  PhotoRow,
+  Plate,
   Prose,
   Quote,
   Section,
@@ -40,6 +42,33 @@ export default function ElsewherePage() {
             Atlantic City was loud and fast-paced on the surface, yet the experience itself taught a quieter kind of independence — solving everyday problems on your own before they ever turn into a story.
           </p>
         </Prose>
+        <div className="mt-12">
+          <PhotoRow
+            photos={[
+              {
+                src: "/photos/atlantic-city/board-wok.webp",
+                alt: "Alvin in a chef's jacket and red apron in front of the Board Wok counter",
+                width: 900,
+                height: 1600,
+                caption: "Behind the Board Wok counter."
+              },
+              {
+                src: "/photos/atlantic-city/showboat-crew.webp",
+                alt: "A selfie of Alvin with two coworkers in chef's whites at a food counter",
+                width: 1203,
+                height: 1600,
+                caption: "On shift with coworkers."
+              },
+              {
+                src: "/photos/atlantic-city/board-wok-register.webp",
+                alt: "A register screen showing an order of General Tso chicken, pepper steak and chicken with broccoli",
+                width: 1202,
+                height: 1600,
+                caption: "A typical order on the register."
+              }
+            ]}
+          />
+        </div>
         <div className="my-12">
           <Quote>
             “Boardwalk lights, practical problems, and the kind of learning that does not ask for permission first.”
@@ -48,6 +77,7 @@ export default function ElsewherePage() {
         <Facts
           items={[
             ["Program", "Summer Work & Travel (USA)"],
+            ["When", "Summer 2026"],
             ["Base", "Atlantic City, New Jersey"],
             ["Context", "Seasonal shift work & independent travel"]
           ]}
@@ -73,10 +103,24 @@ export default function ElsewherePage() {
       </Section>
 
       <Section label="Interests" title="Music, guitar, and taking things apart.">
-        <Entry meta="Practice" title="Classical guitar">
+        <Entry meta="Practice · Trinity Grade 5, Distinction" title="Classical guitar">
           <p>
-            Practicing classical guitar offers a counterbalance to analytical and digital work. Progress on the instrument cannot be rushed — it comes from slow repetition, attention to tone and finger placement, and patience over months and years.
+            Practicing classical guitar offers a counterbalance to analytical and digital work. Progress on the instrument cannot be rushed — it comes from slow repetition, attention to tone and finger placement, and patience.
           </p>
+          <p>
+            I hold the Trinity College London Classical Guitar Grade 5 certificate, awarded with Distinction.
+          </p>
+          <div className="pt-6">
+            <Plate
+              photo={{
+                src: "/photos/elsewhere/guitar-performance.webp",
+                alt: "Alvin playing classical guitar on stage beside a second guitarist, a black-and-white projection behind them",
+                width: 1260,
+                height: 942,
+                caption: "On stage with a fellow guitarist."
+              }}
+            />
+          </div>
         </Entry>
         <Entry meta="Hardware" title="Devices & repair">
           <p>

@@ -19,7 +19,7 @@ const config: Config = {
         muted: "#767676",
         rule: "#E5E5E5",
         ember: "#E63600",
-        bone: "#ECE4D7",
+        bone: "#EDEDEB",
         moss: "#7F9571",
         harbor: "#647F91",
         lab: "#0E0F0F",

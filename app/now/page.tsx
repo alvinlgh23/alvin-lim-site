@@ -18,7 +18,7 @@ export default function NowPage() {
       <Section label="Study" title="Economics at Universiti Malaya">
         <Prose>
           <p>
-            Studying economics at the Faculty of Business and Economics, Universiti Malaya — focusing on incentives, market structure, monetary institutions, and resource allocation.
+            Studying economics at the Faculty of Business and Economics, Universiti Malaya — focusing on incentives, market structure, monetary institutions, and resource allocation. Expected to graduate in 2028.
           </p>
         </Prose>
         <LinkRow>
