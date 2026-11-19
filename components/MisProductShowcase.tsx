@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { MisLaunchButton } from "@/components/MisLaunchButton";
 import { MotionSection } from "@/components/MotionSection";
 import { projects } from "@/lib/projects";
 
@@ -69,7 +68,7 @@ const WORKSTATION_FRAMES = [
     title: "Macro Regime Analysis & Sector Momentum Leaderboard",
     altDescription:
       "Preview of the Market Intelligence System macro regime and sector momentum workstation surface showing liquidity thresholds, asset attraction mapping, and multi-horizon sector relative strength.",
-    windowTitle: "mis.alvin-lim.com — Workstation // Macro Regime & Sector Momentum",
+    windowTitle: "MIS v1.0 — Workstation // Macro Regime & Sector Momentum",
     activeTab: "01 Macro Regime · 02 Sector Momentum",
     languages: ["EN", "中文", "BM", "日本語", "한국어"],
     panels: [
@@ -99,7 +98,7 @@ const WORKSTATION_FRAMES = [
     title: "Sector Deep Dive, Company Research & Overheat Monitor",
     altDescription:
       "Preview of the Market Intelligence System company research and overheat monitor surface showing financial quality breakdown, valuation expansion, distance from 200MA, and chase-risk diagnostics.",
-    windowTitle: "mis.alvin-lim.com — Workstation // Company Research & Overheat Monitor",
+    windowTitle: "MIS v1.0 — Workstation // Company Research & Overheat Monitor",
     activeTab: "04 Company Research · 05 Overheat Monitor · 06 Risk & Rotation",
     languages: ["EN", "中文", "BM", "日本語", "한국어"],
     panels: [
@@ -136,7 +135,7 @@ const ARCHITECTURE_LAYERS = [
   {
     step: "02",
     layer: "Standalone Application Interface",
-    domain: "https://mis.alvin-lim.com",
+    domain: "Standalone MIS web application",
     description:
       "Independently deployed five-language web workstation where users run Macro Regime scans, Sector Deep Dives, Company Research, Overheat checks, and Full Market Reports."
   },
@@ -231,13 +230,11 @@ export function MisProductShowcase() {
           </p>
 
           <p className="lab-copy mt-4 max-w-2xl text-sm text-bone/52">
-            Designed as an independent research workstation at{" "}
-            <span className="font-mono text-bone/80">mis.alvin-lim.com</span> — separating signal observation, narrative context, and risk diagnostics rather than operating as an automated trading or guaranteed investment recommendation system.
+            Designed as an independent research workstation — separating signal observation, narrative context, and risk diagnostics rather than operating as an automated trading or guaranteed investment recommendation system.
           </p>
 
           {/* Primary Launch CTA & Secondary Navigation */}
           <div className="mt-9 flex flex-wrap items-start gap-4">
-            <MisLaunchButton label="Launch Application" variant="primary" />
             <a
               href="#capabilities"
               className="lab-button-secondary lab-focus-ring rounded-md px-4 py-3 font-medium transition hover:-translate-y-0.5 hover:border-bone/30"
@@ -271,7 +268,6 @@ export function MisProductShowcase() {
               ["Product", "Market Intelligence System (MIS)"],
               ["Release Stage", "v1.0 Public Beta"],
               ["Classification", "Financial Research & Market Intelligence Workstation"],
-              ["Application URL", "https://mis.alvin-lim.com"],
               ["Interface Languages", "5 Languages (Multilingual UI)"],
               ["Architecture", "Standalone Web Application (External Navigation)"]
             ].map(([label, value]) => (
@@ -456,7 +452,7 @@ export function MisProductShowcase() {
               Decoupled discovery and workstation execution.
             </h2>
             <p className="lab-copy mt-4 text-base text-bone/62">
-              To keep both systems clean and maintainable, the personal archive (<span className="font-mono text-bone/85">alvin-lim.com</span>) serves strictly as the discovery and documentation layer, while the Market Intelligence System (<span className="font-mono text-bone/85">mis.alvin-lim.com</span>) operates as a standalone web application.
+              To keep both systems clean and maintainable, the personal archive (<span className="font-mono text-bone/85">alvin-lim.com</span>) serves strictly as the discovery and documentation layer, while the Market Intelligence System runs as its own standalone web application.
             </p>
 
             <div className="lab-surface mt-6 rounded-lg p-5">
@@ -485,16 +481,6 @@ export function MisProductShowcase() {
               </div>
             ))}
 
-            {/* Launch Bar */}
-            <div className="lab-surface flex flex-col justify-between gap-4 rounded-lg border border-moss/30 p-5 sm:flex-row sm:items-center">
-              <div>
-                <p className="lab-eyebrow text-xs text-moss">READY TO EXPLORE</p>
-                <p className="mt-1 text-sm text-bone/75">
-                  Open the standalone Market Intelligence System workstation in a new tab.
-                </p>
-              </div>
-              <MisLaunchButton label="Launch Application" variant="compact" />
-            </div>
           </div>
         </div>
       </MotionSection>

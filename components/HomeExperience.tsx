@@ -642,6 +642,17 @@ export function HomeExperience() {
           chapter={CHAPTERS[0]}
           wall={
             <>
+              {/* Phones: a small portrait above the name (hidden on short screens so the entrance stays one screen) */}
+              <img
+                src="/photos/portrait/alvin.webp"
+                alt=""
+                aria-hidden="true"
+                width={1260}
+                height={1408}
+                decoding="async"
+                className="mt-6 hidden h-16 w-16 rounded-full object-cover ring-1 ring-ink/15 max-lg:[@media(min-height:721px)]:block"
+                style={{ objectPosition: "48% 29%" }}
+              />
               <h1 className="editorial-serif mt-5 text-[3.6rem] font-normal leading-[0.92] min-[400px]:text-[4.25rem] tracking-[-0.035em] md:text-8xl xl:text-[8.5rem]">
                 Hi, I&apos;m Alvin.
               </h1>
@@ -668,11 +679,27 @@ export function HomeExperience() {
           }
           exhibit={
             <div className="hidden lg:block">
-            <Frame label="Alvin Lim — Kuala Lumpur. Seven rooms, in order.">
-              <blockquote className="editorial-serif m-0 text-3xl italic leading-[1.3] text-ink md:text-4xl xl:text-[2.75rem]">
-                “A curiosity about how things work — and how they could work better.”
-              </blockquote>
-            </Frame>
+              <Frame
+                photo
+                label={
+                  <>
+                    <span className="editorial-serif text-base italic text-ink">
+                      “A curiosity about how things work — and how they could work better.”
+                    </span>
+                    <span className="mt-1 block">Alvin Lim, Kuala Lumpur.</span>
+                  </>
+                }
+              >
+                <img
+                  src="/photos/portrait/alvin.webp"
+                  alt="Alvin in a white T-shirt and lanyard, smiling and making peace signs with both hands in a lecture hall"
+                  width={1260}
+                  height={1408}
+                  decoding="async"
+                  fetchPriority="high"
+                  className="block h-auto w-full lg:h-[min(56vh,520px)] lg:w-auto"
+                />
+              </Frame>
             </div>
           }
         />

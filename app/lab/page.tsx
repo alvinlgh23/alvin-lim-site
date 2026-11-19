@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { MisLaunchButton } from "@/components/MisLaunchButton";
 import { MotionSection } from "@/components/MotionSection";
 import { ProjectCard } from "@/components/ProjectCard";
 import { projects } from "@/lib/projects";
@@ -191,7 +190,7 @@ export default function LabPage() {
             </span>
           </div>
           <span className="font-mono text-xs text-bone/45">
-            STANDALONE WORKSTATION · https://mis.alvin-lim.com
+            STANDALONE WORKSTATION
           </span>
         </div>
 
@@ -220,10 +219,9 @@ export default function LabPage() {
               </div>
 
               <div className="mt-8 flex flex-wrap items-start gap-3 border-t border-white/10 pt-6">
-                <MisLaunchButton label="Launch Application" variant="primary" />
                 <Link
                   href="/lab/market-intelligence-system"
-                  className="lab-button-secondary lab-focus-ring rounded-md px-4 py-3 font-medium transition hover:-translate-y-0.5 hover:border-bone/30"
+                  className="lab-button-primary lab-focus-ring rounded-md px-4 py-3 font-medium transition hover:-translate-y-0.5 hover:bg-white"
                 >
                   Product Showcase & Architecture →
                 </Link>
@@ -233,7 +231,7 @@ export default function LabPage() {
             {/* Real Workstation Schema Preview Card */}
             <div className="rounded-lg border border-white/12 bg-black/45 p-5">
               <div className="flex items-center justify-between border-b border-white/10 pb-3 font-mono text-xs">
-                <span className="text-bone/75">mis.alvin-lim.com // WORKSTATION OVERVIEW</span>
+                <span className="text-bone/75">MIS v1.0 // WORKSTATION OVERVIEW</span>
                 <span className="text-moss">5-LANG UI</span>
               </div>
               <div className="mt-4 space-y-2.5 font-mono text-xs">

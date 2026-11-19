@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { MisLaunchButton } from "@/components/MisLaunchButton";
 import type { Project } from "@/lib/projects";
 
 type ProjectCardProps = {
@@ -48,7 +47,12 @@ export function ProjectCard({ project }: ProjectCardProps) {
       </div>
       <div className="mt-7 flex flex-wrap items-start gap-3 border-t border-white/8 pt-5">
         {project.slug === "market-intelligence-system" ? (
-          <MisLaunchButton label="Launch Application" variant="compact" />
+          <Link
+            className="lab-button-primary lab-focus-ring rounded-md px-3.5 py-2 text-sm font-medium transition hover:bg-white"
+            href={detailsHref}
+          >
+            Product Showcase
+          </Link>
         ) : project.demoType === "external-app" && project.liveUrl ? (
           <a
             className="lab-button-primary lab-focus-ring rounded-md px-3.5 py-2 text-sm font-medium transition hover:bg-white"
