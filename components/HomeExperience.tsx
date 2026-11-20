@@ -458,78 +458,33 @@ export function HomeExperience() {
     return () => window.removeEventListener("scroll", handleWindowScroll);
   }, []);
 
-  // Desktop wheel-to-horizontal translation when vertical scroll inside a panel isn't needed
+  // Full-screen desktop: rooms move left/right only. In a smaller (non-full-screen) window the
+  // up/down wheel also walks between rooms. Tablets never get this: they swipe sideways.
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
 
+    const isFullScreenWindow = () =>
+      Boolean(document.fullscreenElement) ||
+      (window.innerWidth >= window.screen.availWidth - 24 && window.outerHeight >= window.screen.availHeight - 24);
+
     const handleWheel = (event: WheelEvent) => {
-      if (window.innerWidth < 1024) return;
-      if (Math.abs(event.deltaY) > Math.abs(event.deltaX)) {
-        const target = event.target as HTMLElement | null;
-        const panel = target?.closest("[data-chapter-panel]") as HTMLElement | null;
-        if (panel && panel.scrollHeight > panel.clientHeight + 4) {
-          const atTop = panel.scrollTop <= 0 && event.deltaY < 0;
-          const atBottom =
-            panel.scrollTop + panel.clientHeight >= panel.scrollHeight - 2 && event.deltaY > 0;
-          if (!atTop && !atBottom) {
-            return;
-          }
-        }
-        event.preventDefault();
-        track.scrollBy({
-          left: event.deltaY * 1.18,
-          behavior: "auto"
-        });
+      if (window.innerWidth < 1024 || isFullScreenWindow()) return;
+      if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
+      const panel = (event.target as HTMLElement | null)?.closest("[data-chapter-panel]") as HTMLElement | null;
+      // A room taller than the window scrolls its own content first
+      if (panel && panel.scrollHeight > panel.clientHeight + 4) {
+        const atTop = panel.scrollTop <= 0 && event.deltaY < 0;
+        const atBottom = panel.scrollTop + panel.clientHeight >= panel.scrollHeight - 2 && event.deltaY > 0;
+        if (!atTop && !atBottom) return;
       }
+      event.preventDefault();
+      track.scrollBy({ left: event.deltaY * 1.18, behavior: "auto" });
     };
 
     track.addEventListener("wheel", handleWheel, { passive: false });
     return () => track.removeEventListener("wheel", handleWheel);
   }, []);
-
-  // Touch tablets in landscape get the horizontal gallery too; an up/down swipe walks between rooms
-  const activeChapterRef = useRef(activeChapter);
-  activeChapterRef.current = activeChapter;
-  useEffect(() => {
-    const track = trackRef.current;
-    if (!track || !entered) return;
-    let start: { x: number; y: number; panel: HTMLElement | null; scrollTop: number } | null = null;
-
-    const onStart = (event: TouchEvent) => {
-      if (window.innerWidth < 1024 || event.touches.length !== 1) return;
-      const touch = event.touches[0];
-      const panel = (event.target as HTMLElement | null)?.closest("[data-chapter-panel]") as HTMLElement | null;
-      start = { x: touch.clientX, y: touch.clientY, panel, scrollTop: panel?.scrollTop ?? 0 };
-    };
-
-    const onEnd = (event: TouchEvent) => {
-      if (!start || window.innerWidth < 1024) return;
-      const touch = event.changedTouches[0];
-      const dx = touch.clientX - start.x;
-      const dy = touch.clientY - start.y;
-      const { panel, scrollTop } = start;
-      start = null;
-      if (Math.abs(dy) < 60 || Math.abs(dy) < Math.abs(dx) * 1.3) return;
-      // A room with its own scrolling content keeps the swipe until it reaches its top or bottom
-      if (panel && panel.scrollHeight > panel.clientHeight + 4) {
-        const moved = panel.scrollTop !== scrollTop;
-        const atEdge =
-          dy < 0
-            ? panel.scrollTop + panel.clientHeight >= panel.scrollHeight - 2
-            : panel.scrollTop <= 0;
-        if (moved || !atEdge) return;
-      }
-      scrollToChapter(activeChapterRef.current + (dy < 0 ? 1 : -1));
-    };
-
-    track.addEventListener("touchstart", onStart, { passive: true });
-    track.addEventListener("touchend", onEnd, { passive: true });
-    return () => {
-      track.removeEventListener("touchstart", onStart);
-      track.removeEventListener("touchend", onEnd);
-    };
-  }, [entered, scrollToChapter]);
 
   // Keyboard navigation on desktop (ArrowLeft / ArrowRight)
   useEffect(() => {
