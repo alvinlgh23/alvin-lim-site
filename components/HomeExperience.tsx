@@ -662,20 +662,11 @@ export function HomeExperience() {
                 "0 0 10px 2px rgba(255,255,255,0.95), 0 0 34px 8px rgba(255,255,255,0.6), 0 0 120px 34px rgba(255,255,255,0.3)"
             }}
           />
-          {/* Floor, with a second lit gap where the wall stops short of it */}
+          {/* Floor: the wall simply falls into shadow toward the bottom, no lit line across the exhibits */}
           <div
-            className="absolute inset-x-0 bottom-0 h-[9%] lg:h-[17%]"
-            style={{ background: "linear-gradient(180deg, #0B0B0C 0%, #060607 100%)" }}
-          >
-            <div
-              className="absolute inset-x-0 top-0 h-[3px]"
-              style={{
-                background: "rgba(255,255,255,1)",
-                boxShadow:
-                  "0 0 10px 2px rgba(255,255,255,0.9), 0 0 30px 6px rgba(255,255,255,0.5), 0 -44px 90px 16px rgba(255,255,255,0.2), 0 34px 80px 12px rgba(255,255,255,0.16)"
-              }}
-            />
-          </div>
+            className="absolute inset-x-0 bottom-0 h-[14%] lg:h-[22%]"
+            style={{ background: "linear-gradient(180deg, rgba(6,6,7,0) 0%, rgba(6,6,7,0.55) 60%, rgba(6,6,7,0.8) 100%)" }}
+          />
         </div>
 
         <div className="absolute inset-0 bg-lab" style={{ opacity: stageNocturnal }}>
@@ -685,7 +676,7 @@ export function HomeExperience() {
               background: `radial-gradient(ellipse 40% 60% at ${spotlightX.toFixed(1)}% 38%, rgba(236,228,215,0.13) 0%, rgba(236,228,215,0) 70%)`
             }}
           />
-          <div className="absolute inset-x-0 bottom-0 h-[17%] border-t border-white/10 bg-[#050506]" />
+          <div className="absolute inset-x-0 bottom-0 h-[22%] bg-[linear-gradient(180deg,rgba(5,5,6,0)_0%,rgba(5,5,6,0.85)_100%)]" />
         </div>
       </div>
 
