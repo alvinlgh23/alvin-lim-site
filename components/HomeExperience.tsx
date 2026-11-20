@@ -162,16 +162,17 @@ type RoomProps = {
   exhibitFirst?: boolean;
   wall: React.ReactNode;
   exhibit: React.ReactNode;
+  closed?: boolean;
 };
 
 /* One room: a wall text and a single exhibit. Nothing else. */
-function Room({ chapter, dark = false, lab = false, exhibitFirst = false, wall, exhibit }: RoomProps) {
+function Room({ chapter, dark = false, lab = false, exhibitFirst = false, wall, exhibit, closed = false }: RoomProps) {
   return (
     <section
       id={chapter.id}
       data-chapter-panel
       aria-label={chapter.label}
-      className={`relative flex min-h-[calc(100svh-59px)] w-full shrink-0 scroll-mt-[59px] overflow-hidden border-b px-6 ${chapter.index === 1 ? "py-16 [@media(max-height:720px)]:py-8 short:!py-4" : "py-16"} md:px-12 md:py-16 lg:h-full lg:min-h-0 lg:w-screen lg:snap-start lg:overflow-y-auto lg:border-b-0 lg:bg-transparent lg:px-16 lg:py-8 ${
+      className={`relative ${closed ? "hidden" : "flex"} min-h-[calc(100svh-59px)] w-full shrink-0 scroll-mt-[59px] overflow-hidden border-b px-6 ${chapter.index === 1 ? "py-16 [@media(max-height:720px)]:py-8 short:!py-4" : "py-16"} md:px-12 md:py-16 lg:h-full lg:min-h-0 lg:w-screen lg:snap-start lg:overflow-y-auto lg:border-b-0 lg:bg-transparent lg:px-16 lg:py-8 ${
         lab
           ? "border-white/15 bg-lab text-bone"
           : dark
@@ -298,6 +299,9 @@ export function HomeExperience() {
   // The entrance is a threshold: rooms 02–07 do not exist until the visitor enters.
   const [entered, setEntered] = useState(false);
   const pendingEnter = useRef(false);
+  const enteredRef = useRef(false);
+  enteredRef.current = entered;
+  const pendingLeave = useRef(false);
   // closed → leaving (walk toward the wall) → arriving (room 02 comes into focus) → open
   const [doorPhase, setDoorPhase] = useState<"closed" | "leaving" | "arriving" | "open">("closed");
   const [doorOrigin, setDoorOrigin] = useState("50% 45%");
@@ -314,6 +318,8 @@ export function HomeExperience() {
     (index: number) => {
       const clamped = Math.max(0, Math.min(CHAPTERS.length - 1, index));
       if (!entered && clamped > 0) return;
+      // Once inside, the entrance is locked: only "Back to the entrance" (or a refresh) returns there
+      if (entered && clamped === 0) return;
       setActiveChapter(clamped);
 
       const track = trackRef.current;
@@ -352,6 +358,22 @@ export function HomeExperience() {
     setDoorOrigin(viewportOrigin(trackRef.current));
     setDoorPhase("leaving");
   }, [entered, doorPhase, prefersReducedMotion, scrollToChapter]);
+
+  const leaveExhibition = useCallback(() => {
+    pendingLeave.current = true;
+    setEntered(false);
+    setDoorPhase("closed");
+    setActiveChapter(0);
+    setContinuousIndex(0);
+  }, []);
+
+  // Back at the entrance: put the visitor at the start of the page with the door closed
+  useEffect(() => {
+    if (entered || !pendingLeave.current) return;
+    pendingLeave.current = false;
+    trackRef.current?.scrollTo({ left: 0, behavior: "instant" });
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, [entered]);
 
   const handleDoorAnimationComplete = useCallback((phase: unknown) => {
     if (phase === "leaving") {
@@ -419,7 +441,8 @@ export function HomeExperience() {
       rafId = requestAnimationFrame(() => {
         const scrollLeft = track.scrollLeft;
         const width = track.clientWidth || 1;
-        const floatIdx = Math.max(0, Math.min(CHAPTERS.length - 1, scrollLeft / width));
+        const offset = enteredRef.current ? 1 : 0;
+        const floatIdx = Math.max(0, Math.min(CHAPTERS.length - 1, offset + scrollLeft / width));
         setContinuousIndex(floatIdx);
 
         const nextIndex = Math.round(floatIdx);
@@ -444,8 +467,9 @@ export function HomeExperience() {
       const progress = Math.min(1, Math.max(0, window.scrollY / maxScroll));
       setContinuousIndex(progress * (CHAPTERS.length - 1));
 
-      let current = 0;
-      for (let i = 0; i < CHAPTERS.length; i++) {
+      const first = enteredRef.current ? 1 : 0;
+      let current = first;
+      for (let i = first; i < CHAPTERS.length; i++) {
         const el = document.getElementById(CHAPTERS[i].id);
         if (el) {
           const rect = el.getBoundingClientRect();
@@ -653,6 +677,7 @@ export function HomeExperience() {
         {/* 01 — ENTRANCE WALL */}
         <Room
           chapter={CHAPTERS[0]}
+          closed={entered}
           wall={
             <>
               {/* The artist's placard: who he is in thirty seconds, then the CV, then the way in. */}
@@ -986,7 +1011,7 @@ export function HomeExperience() {
               </WallCopy>
               <button
                 type="button"
-                onClick={() => scrollToChapter(0)}
+                onClick={leaveExhibition}
                 className="group mt-8 inline-flex items-center gap-3 border-b border-bone/50 pb-1.5 text-sm font-medium tracking-[0.04em] text-bone transition-colors hover:border-bone"
               >
                 <span aria-hidden="true" className="transition-transform duration-300 group-hover:-translate-x-1">
@@ -1054,6 +1079,7 @@ export function HomeExperience() {
         <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-6">
           <div className="flex min-w-0 items-center gap-1">
             {CHAPTERS.map((chap, idx) => {
+              if (idx === 0) return null;
               const isCurrent = idx === activeChapter;
               return (
                 <button
@@ -1082,7 +1108,7 @@ export function HomeExperience() {
             <button
               type="button"
               onClick={() => scrollToChapter(activeChapter - 1)}
-              disabled={activeChapter === 0}
+              disabled={activeChapter <= 1}
               aria-label="Previous room"
               className="px-3 py-1 text-base transition-opacity hover:opacity-60 disabled:opacity-25"
             >
