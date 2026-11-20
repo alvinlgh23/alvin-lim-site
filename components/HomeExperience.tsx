@@ -151,7 +151,7 @@ const DIRECTORY = [
 const PLACARD_FACTS: [string, string][] = [
   ["Study", "Economics, Universiti Malaya · 2028"],
   ["Build", "Market models in Python & SQL"],
-  ["Crew", "Coldplay, the Eras Tour, Jay Chou"],
+  ["Campus", "Student election candidate · UMFA investment competition"],
   ["Speak", "English, Malay, Chinese, basic Korean"]
 ];
 
