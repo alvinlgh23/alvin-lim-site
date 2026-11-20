@@ -179,7 +179,7 @@ function Room({ chapter, dark = false, lab = false, exhibitFirst = false, wall, 
             : "border-ink/10 bg-white text-ink"
       }`}
     >
-      <div className="relative z-10 m-auto grid w-full max-w-[1280px] gap-12 lg:grid-cols-12 lg:items-center lg:gap-16">
+      <div className={`relative z-10 m-auto grid w-full max-w-[1280px] gap-12 lg:grid-cols-12 lg:items-center lg:gap-16 ${chapter.index === 1 ? "md:max-lg:max-w-[600px]" : ""}`}>
         <motion.div
           variants={roomReveal}
           initial="hidden"
@@ -480,6 +480,49 @@ export function HomeExperience() {
     return () => track.removeEventListener("wheel", handleWheel);
   }, []);
 
+  // Touch tablets in landscape get the horizontal gallery too; an up/down swipe walks between rooms
+  const activeChapterRef = useRef(activeChapter);
+  activeChapterRef.current = activeChapter;
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track || !entered) return;
+    let start: { x: number; y: number; panel: HTMLElement | null; scrollTop: number } | null = null;
+
+    const onStart = (event: TouchEvent) => {
+      if (window.innerWidth < 1024 || event.touches.length !== 1) return;
+      const touch = event.touches[0];
+      const panel = (event.target as HTMLElement | null)?.closest("[data-chapter-panel]") as HTMLElement | null;
+      start = { x: touch.clientX, y: touch.clientY, panel, scrollTop: panel?.scrollTop ?? 0 };
+    };
+
+    const onEnd = (event: TouchEvent) => {
+      if (!start || window.innerWidth < 1024) return;
+      const touch = event.changedTouches[0];
+      const dx = touch.clientX - start.x;
+      const dy = touch.clientY - start.y;
+      const { panel, scrollTop } = start;
+      start = null;
+      if (Math.abs(dy) < 60 || Math.abs(dy) < Math.abs(dx) * 1.3) return;
+      // A room with its own scrolling content keeps the swipe until it reaches its top or bottom
+      if (panel && panel.scrollHeight > panel.clientHeight + 4) {
+        const moved = panel.scrollTop !== scrollTop;
+        const atEdge =
+          dy < 0
+            ? panel.scrollTop + panel.clientHeight >= panel.scrollHeight - 2
+            : panel.scrollTop <= 0;
+        if (moved || !atEdge) return;
+      }
+      scrollToChapter(activeChapterRef.current + (dy < 0 ? 1 : -1));
+    };
+
+    track.addEventListener("touchstart", onStart, { passive: true });
+    track.addEventListener("touchend", onEnd, { passive: true });
+    return () => {
+      track.removeEventListener("touchstart", onStart);
+      track.removeEventListener("touchend", onEnd);
+    };
+  }, [entered, scrollToChapter]);
+
   // Keyboard navigation on desktop (ArrowLeft / ArrowRight)
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -651,7 +694,7 @@ export function HomeExperience() {
           wall={
             <>
               {/* The artist's placard: who he is in thirty seconds, then the CV, then the way in. */}
-              <div className="mt-5 flex items-center gap-4 md:mt-7">
+              <div className="mt-5 flex items-center gap-4 md:mt-7 md:items-end md:gap-7">
                 {/* Phones: a small portrait beside the name; the framed portrait hangs on the right on desktop */}
                 <img
                   src="/photos/portrait/alvin.webp"
@@ -660,7 +703,7 @@ export function HomeExperience() {
                   width={1260}
                   height={1408}
                   decoding="async"
-                  className="h-14 w-14 shrink-0 rounded-full object-cover ring-1 ring-ink/15 min-[400px]:h-16 min-[400px]:w-16 lg:hidden"
+                  className="h-14 w-14 shrink-0 rounded-full object-cover ring-1 ring-ink/15 min-[400px]:h-16 min-[400px]:w-16 md:h-44 md:w-36 md:rounded-none md:border-2 md:border-[#151515] md:bg-white md:p-1.5 md:shadow-[0_18px_30px_-18px_rgba(0,0,0,0.5)] md:ring-0 lg:hidden"
                   style={{ objectPosition: "48% 29%" }}
                 />
                 <div>
@@ -786,7 +829,7 @@ export function HomeExperience() {
                 </>
               }
             >
-              <ol className="m-0 grid list-none gap-7 p-0 sm:grid-cols-4 sm:gap-0">
+              <ol className="m-0 grid list-none gap-7 p-0 sm:grid-cols-4 sm:gap-0 lg:grid-cols-2 lg:gap-y-9 2xl:grid-cols-4 2xl:gap-y-0">
                 {PATH_STAGES.map(([title, place, when], idx) => {
                   const isCurrent = idx === PATH_STAGES.length - 1;
                   return (
@@ -802,7 +845,7 @@ export function HomeExperience() {
                           aria-hidden="true"
                           className={`ml-2 hidden h-px flex-1 sm:block ${
                             isCurrent ? "bg-transparent" : "bg-ink/30"
-                          }`}
+                          } ${idx % 2 === 1 ? "lg:max-2xl:bg-transparent" : ""}`}
                         />
                       </div>
                       <p className="editorial-serif mt-4 text-2xl leading-tight text-ink">{title}</p>
