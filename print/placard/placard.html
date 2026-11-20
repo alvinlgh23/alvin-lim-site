@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Artist Placard — Alvin Lim</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&display=block" rel="stylesheet">
+<style>
+  /* A5 portrait — fits a standard acrylic sign holder */
+  @page { size: 148mm 210mm; margin: 0; }
+  :root {
+    --ink: #0A0A0A; --charcoal: #262626; --graphite: #525252; --muted: #767676;
+    --rule: #E5E5E5; --ember: #E63600;
+    --serif: "Newsreader", Georgia, serif;
+    --sans: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+    --mono: "SFMono-Regular", Menlo, Monaco, monospace;
+    --cjk: "Songti SC", "STSong", "Noto Serif SC", serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #fff; }
+  body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .sheet {
+    width: 148mm; height: 210mm; padding: 13mm 13mm 12mm;
+    display: flex; flex-direction: column; color: var(--ink); font-family: var(--sans);
+    position: relative; overflow: hidden;
+  }
+  .mono { font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.16em; }
+  .top { display: flex; justify-content: space-between; align-items: baseline; font-size: 6.6pt; color: var(--muted); }
+  .top .no { color: var(--ember); }
+  .bar { height: 0.7mm; width: 22mm; background: var(--ember); margin-top: 3mm; }
+
+  .who { display: flex; gap: 6mm; align-items: flex-end; margin-top: 10mm; }
+  .portrait { width: 38mm; height: 45mm; flex: none; padding: 1.6mm; border: 0.5mm solid #151515; background: #fff;
+    box-shadow: 0 2mm 4mm -2mm rgba(0,0,0,0.35); }
+  .portrait img { width: 100%; height: 100%; object-fit: cover; object-position: 48% 26%; display: block; }
+  h1 { font-family: var(--serif); font-weight: 400; font-size: 44pt; line-height: 0.92; letter-spacing: -0.035em; }
+  .names { display: flex; align-items: baseline; gap: 3.5mm; margin-top: 2.5mm; }
+  .zh { font-family: var(--cjk); font-size: 15pt; letter-spacing: 0.1em; }
+  .roman { font-size: 6.8pt; color: var(--muted); }
+
+  .line { font-family: var(--serif); font-size: 16.5pt; line-height: 1.25; letter-spacing: -0.01em; color: var(--charcoal);
+    margin-top: 8mm; max-width: 24ch; }
+
+  dl { margin-top: 7mm; border-top: 0.3mm solid rgba(10,10,10,0.18); font-size: 9pt; }
+  dl div { display: grid; grid-template-columns: 19mm 1fr; gap: 3mm; padding: 2.1mm 0; border-bottom: 0.2mm solid rgba(10,10,10,0.1); }
+  dt { font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.16em; font-size: 6.4pt; color: var(--ember); padding-top: 0.6mm; }
+  dd { color: var(--charcoal); }
+
+  .foot { margin-top: auto; display: flex; gap: 6mm; align-items: flex-end; }
+  .qr { width: 42mm; height: 42mm; flex: none; padding: 2.5mm; border: 0.5mm solid var(--ink); background: #fff; }
+  .qr img { width: 100%; height: 100%; display: block; image-rendering: pixelated; }
+  .cta .scan { font-size: 6.6pt; color: var(--ember); }
+  .cta p.copy { font-size: 8.6pt; line-height: 1.45; color: var(--graphite); margin-top: 2mm; max-width: 50mm; }
+  .cta .url { font-family: var(--serif); font-size: 17pt; letter-spacing: -0.01em; margin-top: 3mm; border-bottom: 0.4mm solid var(--ink); display: inline-block; padding-bottom: 0.6mm; }
+</style>
+</head>
+<body>
+  <main class="sheet">
+    <div class="top mono"><span>A Personal Archive — Exhibition</span><span class="no">01 / The Artist</span></div>
+    <div class="bar"></div>
+
+    <section class="who">
+      <div class="portrait"><img src="portrait.webp" alt="Alvin Lim"></div>
+      <div>
+        <h1>Alvin<br>Lim</h1>
+        <div class="names"><span class="zh" lang="zh-Hans">林宜弘</span><span class="roman mono">Lim Gi Hong</span></div>
+      </div>
+    </section>
+
+    <p class="line">I study economics and build my own tools for reading markets.</p>
+
+    <dl>
+      <div><dt>Study</dt><dd>Economics, Universiti Malaya · 2028</dd></div>
+      <div><dt>Build</dt><dd>Market models in Python &amp; SQL — FX, equities, on-chain</dd></div>
+      <div><dt>Crew</dt><dd>Coldplay, the Eras Tour, Jay Chou</dd></div>
+      <div><dt>Speak</dt><dd>English, Malay, Chinese, basic Korean</dd></div>
+    </dl>
+
+    <section class="foot">
+      <div class="qr"><img src="qr.svg" alt="QR code to alvin-lim.com"></div>
+      <div class="cta">
+        <div class="scan mono">Scan to enter</div>
+        <p class="copy">Thirty seconds on who I am, my CV to download — or walk through the full exhibition.</p>
+        <div class="url">alvin-lim.com</div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

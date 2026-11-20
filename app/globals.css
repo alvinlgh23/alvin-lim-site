@@ -244,3 +244,9 @@ a {
   outline: 2px solid rgba(237, 237, 235, 0.72);
   outline-offset: 3px;
 }
+
+/* Chinese name on the placard: a system serif, no web-font download for two characters */
+.font-cjk-serif {
+  font-family: "Songti SC", "STSong", "Noto Serif SC", "Noto Serif CJK SC", "Source Han Serif SC", serif;
+  letter-spacing: 0.08em;
+}

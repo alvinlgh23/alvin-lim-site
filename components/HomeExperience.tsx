@@ -10,7 +10,7 @@ const CHAPTERS = [
   {
     index: 1,
     code: "01 / 07",
-    label: "INTRODUCTION",
+    label: "THE ARTIST",
     id: "chapter-01",
     photo: "/exhibition/chapter-01-intro.webp",
     objectPosition: "52% 48%"
@@ -146,6 +146,14 @@ const DIRECTORY = [
   ["Journey", "When things happened", "/journey"],
   ["Contact", "Get in touch", "/contact"]
 ] as const;
+
+/* The entrance placard: four lines a recruiter can read in thirty seconds. */
+const PLACARD_FACTS: [string, string][] = [
+  ["Study", "Economics, Universiti Malaya · 2028"],
+  ["Build", "Market models in Python & SQL"],
+  ["Crew", "Coldplay, the Eras Tour, Jay Chou"],
+  ["Speak", "English, Malay, Chinese, basic Korean"]
+];
 
 type RoomProps = {
   chapter: (typeof CHAPTERS)[number];
@@ -642,33 +650,74 @@ export function HomeExperience() {
           chapter={CHAPTERS[0]}
           wall={
             <>
-              {/* Phones: a small portrait above the name (hidden on short screens so the entrance stays one screen) */}
-              <img
-                src="/photos/portrait/alvin.webp"
-                alt=""
-                aria-hidden="true"
-                width={1260}
-                height={1408}
-                decoding="async"
-                className="mt-6 hidden h-16 w-16 rounded-full object-cover ring-1 ring-ink/15 max-lg:[@media(min-height:721px)]:block"
-                style={{ objectPosition: "48% 29%" }}
-              />
-              <h1 className="editorial-serif mt-5 text-[3.6rem] font-normal leading-[0.92] min-[400px]:text-[4.25rem] tracking-[-0.035em] md:text-8xl xl:text-[8.5rem]">
-                Hi, I&apos;m Alvin.
-              </h1>
-              <WallCopy>
-                <p>I&apos;m an economics student at Universiti Malaya.</p>
-                <p>
-                  I spend much of my time exploring financial markets, technology, and the questions that connect them.
-                </p>
-                <p>
-                  This is a small collection of things I&apos;ve worked on, places I&apos;ve been, and interests I&apos;ve followed along the way.
-                </p>
-              </WallCopy>
+              {/* The artist's placard: who he is in thirty seconds, then the CV, then the way in. */}
+              <div className="mt-5 flex items-center gap-4 md:mt-7">
+                {/* Phones: a small portrait beside the name; the framed portrait hangs on the right on desktop */}
+                <img
+                  src="/photos/portrait/alvin.webp"
+                  alt=""
+                  aria-hidden="true"
+                  width={1260}
+                  height={1408}
+                  decoding="async"
+                  className="h-14 w-14 shrink-0 rounded-full object-cover ring-1 ring-ink/15 min-[400px]:h-16 min-[400px]:w-16 lg:hidden"
+                  style={{ objectPosition: "48% 29%" }}
+                />
+                <div>
+                  <h1 className="editorial-serif text-[2.75rem] font-normal leading-[0.95] tracking-[-0.035em] min-[400px]:text-[3.25rem] md:text-7xl xl:text-[6.5rem]">
+                    Alvin Lim
+                  </h1>
+                  <p className="mt-1.5 flex items-baseline gap-3 text-sm text-graphite md:mt-3 md:text-base">
+                    <span lang="zh-Hans" className="font-cjk-serif text-base text-ink md:text-xl">
+                      林宜弘
+                    </span>
+                    <span className="archival-mono text-[11px] tracking-[0.12em] text-muted md:text-xs">LIM GI HONG</span>
+                  </p>
+                </div>
+              </div>
+
+              <p className="editorial-serif mt-5 max-w-[24ch] text-[1.3rem] leading-[1.3] tracking-[-0.01em] text-charcoal min-[400px]:text-[1.45rem] md:mt-8 md:text-[2rem]">
+                I study economics and build my own tools for reading markets.
+              </p>
+
+              <dl className="mt-5 max-w-[46ch] border-t border-ink/15 text-[13px] leading-snug md:mt-8 md:text-[15px]">
+                {PLACARD_FACTS.map(([term, detail]) => (
+                  <div key={term} className="grid grid-cols-[4.25rem_1fr] gap-3 border-b border-ink/10 py-2 md:grid-cols-[5.5rem_1fr] md:py-2.5">
+                    <dt className="archival-mono pt-px text-[10.5px] uppercase tracking-[0.14em] text-ember md:text-[11px]">{term}</dt>
+                    <dd className="text-charcoal">{detail}</dd>
+                  </div>
+                ))}
+              </dl>
+
+              <div className="mt-5 grid grid-cols-[1.4fr_1fr_1fr] gap-1.5 sm:flex sm:flex-wrap sm:gap-2 md:mt-7">
+                <a
+                  href="/cv/Alvin-Lim-CV.pdf"
+                  download="Alvin-Lim-CV.pdf"
+                  className="group inline-flex items-center justify-center gap-2 border border-ink px-3 py-2.5 sm:px-4 text-[11px] font-medium uppercase tracking-[0.14em] text-ink transition-colors hover:bg-ink hover:text-ivory"
+                >
+                  <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-y-0.5">↓</span>
+                  <span className="whitespace-nowrap"><span className="max-[399px]:hidden">Download </span>CV</span>
+                </a>
+                <a
+                  href={VERIFIED_DESTINATIONS.linkedinProfile}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center justify-center border border-ink/20 px-3 py-2.5 sm:px-4 text-[11px] font-medium uppercase tracking-[0.14em] text-ink transition-colors hover:border-ink"
+                >
+                  LinkedIn
+                </a>
+                <a
+                  href={`mailto:${VERIFIED_DESTINATIONS.email}`}
+                  className="inline-flex items-center justify-center border border-ink/20 px-3 py-2.5 sm:px-4 text-[11px] font-medium uppercase tracking-[0.14em] text-ink transition-colors hover:border-ink"
+                >
+                  Email
+                </a>
+              </div>
+
               <button
                 type="button"
                 onClick={enterExhibition}
-                className="group mt-9 inline-flex items-center gap-3 bg-ink px-6 py-3.5 text-xs font-medium uppercase tracking-[0.14em] text-ivory transition-all duration-300 hover:-translate-y-0.5 hover:bg-charcoal"
+                className="group mt-4 inline-flex w-full items-center justify-between gap-3 bg-ink px-6 py-3.5 text-xs font-medium uppercase tracking-[0.14em] text-ivory transition-all duration-300 hover:-translate-y-0.5 hover:bg-charcoal sm:w-auto sm:justify-start md:mt-5"
               >
                 <span>Enter the exhibition</span>
                 <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1">
