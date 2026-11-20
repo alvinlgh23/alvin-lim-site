@@ -36,6 +36,17 @@ export function GlobalNav({ variant = "light", exhibitionChapter }: GlobalNavPro
 
   const isDark = variant === "dark";
 
+  // On the exhibition itself a link to "/" goes nowhere, so walk the visitor back to the entrance instead
+  const backToEntrance = (href: string) => (event: React.MouseEvent<HTMLAnchorElement>) => {
+    setMobileMenuOpen(false);
+    if (href !== "/" || pathname !== "/" || !exhibitionChapter?.onSelectChapter) return;
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.button !== 0) return;
+    event.preventDefault();
+    const select = exhibitionChapter.onSelectChapter;
+    // Let the mobile drawer close first so the page doesn't shift under the scroll
+    requestAnimationFrame(() => requestAnimationFrame(() => select(0)));
+  };
+
   const isActive = (href: string) => {
     if (href === "/") return pathname === "/";
     return pathname === href || pathname.startsWith(`${href}/`);
@@ -52,7 +63,7 @@ export function GlobalNav({ variant = "light", exhibitionChapter }: GlobalNavPro
       <div className="mx-auto flex max-w-[1440px] items-center justify-between px-5 py-3.5 md:px-10">
         {/* Brand Identity */}
         <div className="flex items-center gap-4">
-          <Link href="/" className="group flex items-baseline gap-2.5">
+          <Link href="/" onClick={backToEntrance("/")} className="group flex items-baseline gap-2.5">
             <span className="archival-mono text-xs font-semibold tracking-[0.2em]">
               ALVIN LIM
             </span>
@@ -92,6 +103,7 @@ export function GlobalNav({ variant = "light", exhibitionChapter }: GlobalNavPro
                 <Link
                   key={item.href}
                   href={item.href}
+                  onClick={backToEntrance(item.href)}
                   className={`relative py-1 text-xs font-medium tracking-[0.08em] uppercase transition-colors ${
                     active
                       ? isDark
@@ -175,7 +187,7 @@ export function GlobalNav({ variant = "light", exhibitionChapter }: GlobalNavPro
                 <Link
                   key={item.href}
                   href={item.href}
-                  onClick={() => setMobileMenuOpen(false)}
+                  onClick={backToEntrance(item.href)}
                   className={`border px-3.5 py-2.5 text-sm font-medium ${
                     active
                       ? isDark

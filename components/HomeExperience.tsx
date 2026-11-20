@@ -329,7 +329,10 @@ export function HomeExperience() {
           behavior: scrollBehavior
         });
       } else if (targetEl) {
-        targetEl.scrollIntoView({ behavior: scrollBehavior, block: "start" });
+        // Measured from layout, not from the (possibly zoomed) rendered box; the entrance is simply the top
+        const header = document.querySelector("header");
+        const top = clamped === 0 ? 0 : layoutTop(targetEl) - (header?.getBoundingClientRect().height ?? 0);
+        window.scrollTo({ top, behavior: scrollBehavior });
       }
     },
     [prefersReducedMotion, entered]
