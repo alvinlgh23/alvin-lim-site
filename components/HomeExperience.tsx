@@ -175,7 +175,7 @@ function Room({ chapter, dark = false, lab = false, exhibitFirst = false, wall, 
         lab
           ? "border-white/15 bg-lab text-bone"
           : dark
-            ? "border-white/10 bg-[#141415] text-bone max-lg:bg-[linear-gradient(180deg,rgba(255,255,255,0.34)_0%,rgba(255,255,255,0.08)_22%,rgba(255,255,255,0)_40%)] max-lg:shadow-[inset_0_3px_0_rgba(255,255,255,1),inset_0_14px_26px_-10px_rgba(255,255,255,0.6)]"
+            ? "border-transparent bg-transparent text-bone"
             : "border-ink/10 bg-white text-ink"
       }`}
     >
@@ -301,6 +301,14 @@ export function HomeExperience() {
   // closed → leaving (walk toward the wall) → arriving (room 02 comes into focus) → open
   const [doorPhase, setDoorPhase] = useState<"closed" | "leaving" | "arriving" | "open">("closed");
   const [doorOrigin, setDoorOrigin] = useState("50% 45%");
+  // Below 1024px the rooms stack vertically and the gallery light stays fixed while they scroll past
+  const [stacked, setStacked] = useState(false);
+  useEffect(() => {
+    const update = () => setStacked(window.innerWidth < 1024);
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
 
   const scrollToChapter = useCallback(
     (index: number) => {
@@ -556,11 +564,14 @@ export function HomeExperience() {
   // Special Chapter 03 -> Chapter 04 -> Chapter 05 nocturnal darkness interpolation (peaks at index 3.0)
   const darkProximity = Math.max(0, 1 - Math.abs(continuousIndex - 3));
   const nocturnalAlpha = smoothstep(0.08, 0.92, darkProximity);
-  const isNocturnalDominant = nocturnalAlpha > 0.52;
+  const isNocturnalDominant = stacked ? activeChapter === 3 : nocturnalAlpha > 0.52;
 
   // 0 at the entrance, 1 once inside the gallery
   const insideAlpha = smoothstep(0, 1, Math.min(1, continuousIndex));
-  const isDarkChrome = insideAlpha > 0.5 || isNocturnalDominant;
+  const isDarkChrome = stacked ? entered && activeChapter >= 1 : insideAlpha > 0.5 || isNocturnalDominant;
+  // Stacked: room 01 and the lab paint their own walls, so the stage is simply the dark gallery once inside
+  const stageInside = stacked ? (entered ? 1 : 0) : insideAlpha;
+  const stageNocturnal = stacked ? 0 : nocturnalAlpha;
   // The light sits over the exhibit: left in rooms 02/04/06, right in the others, gliding between
   const exhibitSide = (roomIdx: number) => (roomIdx % 2 === 1 ? 27 : 73);
   const lowerRoom = Math.floor(continuousIndex);
@@ -606,14 +617,14 @@ export function HomeExperience() {
           Around room 04 the gallery darkens into the lab and lightens again after. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none fixed inset-0 top-[59px] z-0 hidden overflow-hidden lg:block"
+        className="pointer-events-none fixed inset-0 top-[59px] z-0 overflow-hidden"
       >
         <div className="absolute inset-0 bg-white" />
 
         <div
           className="absolute inset-0 bg-[#141415]"
           style={{
-            opacity: insideAlpha,
+            opacity: stageInside,
             transition: doorPhase === "arriving" ? "opacity 900ms ease" : undefined
           }}
         >
@@ -629,7 +640,9 @@ export function HomeExperience() {
           <div
             className="absolute inset-0"
             style={{
-              background: `radial-gradient(ellipse 34% 62% at ${spotlightX.toFixed(1)}% 36%, rgba(255,255,255,0.26) 0%, rgba(255,255,255,0.1) 42%, rgba(255,255,255,0) 74%)`
+              background: stacked
+                ? "radial-gradient(ellipse 75% 38% at 50% 34%, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.07) 45%, rgba(255,255,255,0) 75%)"
+                : `radial-gradient(ellipse 34% 62% at ${spotlightX.toFixed(1)}% 36%, rgba(255,255,255,0.26) 0%, rgba(255,255,255,0.1) 42%, rgba(255,255,255,0) 74%)`
             }}
           />
           {/* Corners fall into shadow */}
@@ -651,7 +664,7 @@ export function HomeExperience() {
           />
           {/* Floor, with a second lit gap where the wall stops short of it */}
           <div
-            className="absolute inset-x-0 bottom-0 h-[17%]"
+            className="absolute inset-x-0 bottom-0 h-[9%] lg:h-[17%]"
             style={{ background: "linear-gradient(180deg, #0B0B0C 0%, #060607 100%)" }}
           >
             <div
@@ -665,7 +678,7 @@ export function HomeExperience() {
           </div>
         </div>
 
-        <div className="absolute inset-0 bg-lab" style={{ opacity: nocturnalAlpha }}>
+        <div className="absolute inset-0 bg-lab" style={{ opacity: stageNocturnal }}>
           <div
             className="absolute inset-0"
             style={{
