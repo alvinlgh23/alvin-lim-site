@@ -9,6 +9,8 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      // Desktop layout in a short window (laptop with toolbars, iPad landscape with Safari chrome)
+      screens: { short: { raw: "(min-width: 1024px) and (max-height: 760px)" } },
       colors: {
         ivory: "#FFFFFF",
         paper: "#FFFFFF",

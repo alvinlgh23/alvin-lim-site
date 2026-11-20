@@ -171,7 +171,7 @@ function Room({ chapter, dark = false, lab = false, exhibitFirst = false, wall, 
       id={chapter.id}
       data-chapter-panel
       aria-label={chapter.label}
-      className={`relative flex min-h-[calc(100svh-59px)] w-full shrink-0 scroll-mt-[59px] overflow-hidden border-b px-6 ${chapter.index === 1 ? "py-16 [@media(max-height:720px)]:py-8" : "py-16"} md:px-12 md:py-16 lg:h-full lg:w-screen lg:snap-start lg:overflow-y-auto lg:border-b-0 lg:bg-transparent lg:px-16 lg:py-8 ${
+      className={`relative flex min-h-[calc(100svh-59px)] w-full shrink-0 scroll-mt-[59px] overflow-hidden border-b px-6 ${chapter.index === 1 ? "py-16 [@media(max-height:720px)]:py-8 short:!py-4" : "py-16"} md:px-12 md:py-16 lg:h-full lg:min-h-0 lg:w-screen lg:snap-start lg:overflow-y-auto lg:border-b-0 lg:bg-transparent lg:px-16 lg:py-8 ${
         lab
           ? "border-white/15 bg-lab text-bone"
           : dark
@@ -188,7 +188,7 @@ function Room({ chapter, dark = false, lab = false, exhibitFirst = false, wall, 
           custom={0.04}
           className={`lg:col-span-6 ${exhibitFirst ? "lg:order-2" : ""}`}
         >
-          <p className={`archival-mono text-xs ${lab ? "text-moss" : "text-ember"}`}>
+          <p className={`archival-mono text-xs ${lab ? "text-moss" : "text-ember"} ${chapter.index === 1 ? "short:!hidden" : ""}`}>
             {chapter.code.slice(0, 2)} — {chapter.label}
           </p>
           {wall}
@@ -698,7 +698,7 @@ export function HomeExperience() {
           wall={
             <>
               {/* The artist's placard: who he is in thirty seconds, then the CV, then the way in. */}
-              <div className="mt-5 flex items-center gap-4 md:mt-7 md:items-end md:gap-7">
+              <div className="mt-5 flex items-center gap-4 md:mt-7 md:items-end md:gap-7 short:!mt-0">
                 {/* Phones: a small portrait beside the name; the framed portrait hangs on the right on desktop */}
                 <img
                   src="/photos/portrait/alvin.webp"
@@ -711,10 +711,10 @@ export function HomeExperience() {
                   style={{ objectPosition: "48% 29%" }}
                 />
                 <div>
-                  <h1 className="editorial-serif text-[2.75rem] font-normal leading-[0.95] tracking-[-0.035em] min-[400px]:text-[3.25rem] md:text-7xl xl:text-[6.5rem]">
+                  <h1 className="editorial-serif text-[2.75rem] font-normal leading-[0.95] tracking-[-0.035em] min-[400px]:text-[3.25rem] md:text-7xl xl:text-[6.5rem] short:!text-[3.5rem]">
                     Alvin Lim
                   </h1>
-                  <p className="mt-1.5 flex items-baseline gap-3 text-sm text-graphite md:mt-3 md:text-base">
+                  <p className="mt-1.5 flex items-baseline gap-3 text-sm text-graphite md:mt-3 md:text-base short:!mt-1.5">
                     <span lang="zh-Hans" className="font-cjk-serif text-base text-ink md:text-xl">
                       林宜弘
                     </span>
@@ -723,20 +723,20 @@ export function HomeExperience() {
                 </div>
               </div>
 
-              <p className="editorial-serif mt-5 max-w-[24ch] text-[1.3rem] leading-[1.3] tracking-[-0.01em] text-charcoal min-[400px]:text-[1.45rem] md:mt-8 md:text-[2rem]">
+              <p className="editorial-serif mt-5 max-w-[24ch] text-[1.3rem] leading-[1.3] tracking-[-0.01em] text-charcoal min-[400px]:text-[1.45rem] md:mt-8 md:text-[2rem] short:!mt-3 short:!text-[1.35rem]">
                 I study economics and build my own tools for reading markets.
               </p>
 
-              <dl className="mt-5 max-w-[46ch] border-t border-ink/15 text-[13px] leading-snug md:mt-8 md:text-[15px]">
+              <dl className="mt-5 max-w-[46ch] border-t border-ink/15 text-[13px] leading-snug md:mt-8 md:text-[15px] short:!mt-3 short:!text-[13.5px]">
                 {PLACARD_FACTS.map(([term, detail]) => (
-                  <div key={term} className="grid grid-cols-[4.25rem_1fr] gap-3 border-b border-ink/10 py-2 md:grid-cols-[5.5rem_1fr] md:py-2.5">
+                  <div key={term} className="grid grid-cols-[4.25rem_1fr] gap-3 border-b border-ink/10 py-2 md:grid-cols-[5.5rem_1fr] md:py-2.5 short:!py-1.5">
                     <dt className="archival-mono pt-px text-[10.5px] uppercase tracking-[0.14em] text-ember md:text-[11px]">{term}</dt>
                     <dd className="text-charcoal">{detail}</dd>
                   </div>
                 ))}
               </dl>
 
-              <div className="mt-5 grid grid-cols-[1.4fr_1fr_1fr] gap-1.5 sm:flex sm:flex-wrap sm:gap-2 md:mt-7">
+              <div className="mt-5 grid grid-cols-[1.4fr_1fr_1fr] gap-1.5 sm:flex sm:flex-wrap sm:gap-2 md:mt-7 short:!mt-3.5">
                 <a
                   href="/cv/Alvin-Lim-CV.pdf"
                   download="Alvin-Lim-CV.pdf"
@@ -764,7 +764,7 @@ export function HomeExperience() {
               <button
                 type="button"
                 onClick={enterExhibition}
-                className="group mt-4 inline-flex w-full items-center justify-between gap-3 bg-ink px-6 py-3.5 text-xs font-medium uppercase tracking-[0.14em] text-ivory transition-all duration-300 hover:-translate-y-0.5 hover:bg-charcoal sm:w-auto sm:justify-start md:mt-5"
+                className="group mt-4 inline-flex w-full items-center justify-between gap-3 bg-ink px-6 py-3.5 text-xs font-medium uppercase tracking-[0.14em] text-ivory transition-all duration-300 hover:-translate-y-0.5 hover:bg-charcoal sm:w-auto sm:justify-start md:mt-5 short:!mt-2.5 short:!py-3"
               >
                 <span>Enter the exhibition</span>
                 <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1">
@@ -793,7 +793,7 @@ export function HomeExperience() {
                   height={1408}
                   decoding="async"
                   fetchPriority="high"
-                  className="block h-auto w-full lg:h-[min(56vh,520px)] lg:w-auto"
+                  className="block h-auto w-full lg:h-[min(56vh,520px)] lg:w-auto short:!h-[46vh]"
                 />
               </Frame>
             </div>
