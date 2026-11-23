@@ -22,6 +22,8 @@ export default function CampusElectionPage() {
   return (
     <PageShell>
       <PageIntro
+        image="/photos/campus-election/speech.webp"
+        imagePosition="50% 35%"
         back={{ href: "/archive", label: "Archive" }}
         eyebrow="Campus Election · November 2024"
         title="On the campaign trail."

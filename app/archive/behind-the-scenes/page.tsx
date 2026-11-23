@@ -80,6 +80,8 @@ export default function BehindTheScenesPage() {
   return (
     <PageShell>
       <PageIntro
+        image="/photos/behind-the-scenes/pre-show-stage.webp"
+        imagePosition="50% 45%"
         back={{ href: "/archive", label: "Archive" }}
         eyebrow="Behind the Scenes"
         title="Before the lights come on."

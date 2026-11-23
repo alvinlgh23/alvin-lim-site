@@ -225,7 +225,7 @@ export default function LabPage() {
           <p>Chainstox Lab · research interfaces, not financial advice.</p>
           <div className="flex gap-6">
             <Link href="/" className="transition hover:text-white">
-              Exhibition
+              Home
             </Link>
             <Link href="/research" className="transition hover:text-white">
               Research

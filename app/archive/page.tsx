@@ -14,6 +14,8 @@ export default function PersonalArchivePage() {
   return (
     <PageShell>
       <PageIntro
+        image="/photos/campus-election/lecture-theatre-session.webp"
+        imagePosition="50% 40%"
         eyebrow="Archive"
         title="A few things outside the usual categories."
         lede="A collection of experiences, places, and interests that have shaped different parts of my life."

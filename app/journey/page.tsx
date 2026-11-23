@@ -79,6 +79,8 @@ export default function JourneyPage() {
   return (
     <PageShell>
       <PageIntro
+        image="/photos/education/um-2023.webp"
+        imagePosition="50% 30%"
         eyebrow="Journey"
         title="When things happened."
         lede="The same story as the archive, in order. Each stop links to the place where it is told in full."

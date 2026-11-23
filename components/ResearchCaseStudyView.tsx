@@ -19,6 +19,8 @@ export function ResearchCaseStudyView({ study }: { study: ResearchCaseStudyRecor
   return (
     <PageShell>
       <PageIntro
+        image={study.slug === "sgd-neer" ? "/photos/research/neer-dashboard.webp" : undefined}
+        imagePosition="50% 15%"
         back={{ href: "/research", label: "Research" }}
         eyebrow={`${study.category} · ${study.status}`}
         title={study.title}

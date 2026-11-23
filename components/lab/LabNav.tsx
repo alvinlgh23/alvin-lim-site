@@ -9,7 +9,7 @@ const LINKS = [
   { label: "Live data", href: "#live" },
   { label: "MIS v1.0", href: "/lab/market-intelligence-system" },
   { label: "Research", href: "/research" },
-  { label: "Exhibition", href: "/" },
+  { label: "Home", href: "/" },
   { label: "Contact", href: "/contact" }
 ];
 

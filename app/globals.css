@@ -250,3 +250,30 @@ a {
   font-family: "Songti SC", "STSong", "Noto Serif SC", "Noto Serif CJK SC", "Source Han Serif SC", serif;
   letter-spacing: 0.08em;
 }
+
+/* ===== Site-wide editorial-tech skin (everything except Chainstox Lab) =====
+   One grotesk for everything, monochrome, square edges. Pages opt in with .site. */
+.site {
+  font-family: var(--font-grotesk), "Helvetica Neue", Arial, sans-serif;
+  background: #EDEDED;
+  color: #111111;
+}
+.site .editorial-serif {
+  font-family: var(--font-grotesk), "Helvetica Neue", Arial, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: -0.035em;
+}
+.site .archival-mono {
+  font-family: var(--font-grotesk), "Helvetica Neue", Arial, sans-serif;
+  letter-spacing: 0.06em;
+  font-weight: 500;
+}
+.site .text-ember { color: #111111; }
+.site .hover\:text-ember:hover { color: #555555; }
+.site .hover\:border-ember:hover { border-color: #111111; }
+
+@keyframes kenburns {
+  from { transform: scale(1.04) translate3d(0, 0, 0); }
+  to { transform: scale(1.16) translate3d(-1.5%, -1%, 0); }
+}

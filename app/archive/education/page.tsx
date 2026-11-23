@@ -11,6 +11,8 @@ export default function EducationDirectionPage() {
   return (
     <PageShell>
       <PageIntro
+        image="/photos/education/um-2023.webp"
+        imagePosition="50% 30%"
         back={{ href: "/archive", label: "Archive" }}
         eyebrow="Education & Direction"
         title="A different way of understanding systems."

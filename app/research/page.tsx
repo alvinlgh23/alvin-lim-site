@@ -21,6 +21,8 @@ export default function ResearchCollectionPage() {
   return (
     <PageShell>
       <PageIntro
+        image="/photos/research/neer-dashboard.webp"
+        imagePosition="50% 15%"
         eyebrow="Research"
         title="Curiosity leads. Evidence decides."
         lede="Research into technology, markets, and the systems connecting them."
