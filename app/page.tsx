@@ -73,6 +73,13 @@ function SectionHead({ kicker, title, href, cta }: { kicker: string; title: stri
 export default function HomePage() {
   return (
     <div className="site min-h-screen">
+      {/* Visitors who scanned the printed placard (QR → /?from=card) land on its digital twin.
+          Inline so it runs before the home page paints. */}
+      <script
+        dangerouslySetInnerHTML={{
+          __html: "if(/[?&]from=card(&|$)/.test(location.search))location.replace('/card'+location.search);"
+        }}
+      />
       <SiteNav />
       <HomeHero />
 
