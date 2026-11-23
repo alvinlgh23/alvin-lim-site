@@ -19,8 +19,9 @@ export default function ContactPage() {
   return (
     <PageShell>
       <PageIntro
-        image="/photos/portrait/alvin.webp"
-        imagePosition="48% 28%"
+        image="/photos/portrait/studio.webp"
+        imagePosition="50% 18%"
+        imageTall
         eyebrow="Contact"
         title="Let's get in touch."
         lede="If you'd like to talk about research, technology, a project, or something interesting, feel free to reach out."

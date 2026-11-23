@@ -116,10 +116,10 @@ export default function HomePage() {
           </div>
           <div className="overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.025] p-1.5">
             <img
-              src="/photos/portrait/alvin.webp"
-              alt="Alvin Lim in a lecture hall, smiling and making peace signs"
+              src="/photos/portrait/studio.webp"
+              alt="Studio portrait of Alvin Lim in a white shirt, seated, chin resting on one hand"
               className="h-full max-h-[560px] min-h-[380px] w-full rounded-[12px] object-cover"
-              style={{ objectPosition: "48% 30%" }}
+              style={{ objectPosition: "50% 22%" }}
             />
           </div>
         </div>
