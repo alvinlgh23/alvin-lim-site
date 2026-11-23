@@ -51,7 +51,7 @@ const LIFE = [
   { title: "Atlantic City", note: "Work & Travel, summer 2026", href: "/archive/elsewhere", image: "/photos/atlantic-city/board-wok.webp", pos: "50% 30%" },
   { title: "Classical Guitar", note: "Trinity Grade 5, Distinction", href: "/archive/elsewhere", image: "/photos/elsewhere/guitar-performance.webp" },
   { title: "On camera", note: "A small role in a music video", href: "/archive/behind-the-scenes", image: "/photos/behind-the-scenes/music-video.webp" },
-  { title: "Law → Economics", note: "UKM law, then economics at UM", href: "/archive/education", image: "/photos/education/um-2023.webp", pos: "50% 30%" }
+  { title: "Mount Kinabalu", note: "Climbed Malaysia's highest mountain, March 2023", href: "/archive/elsewhere", image: "/photos/elsewhere/kinabalu.webp", pos: "40% 40%" }
 ];
 
 function SectionHead({ kicker, title, href, cta }: { kicker: string; title: string; href?: string; cta?: string }) {
