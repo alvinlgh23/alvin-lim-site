@@ -62,7 +62,7 @@ export default function LabPage() {
       </Reveal>
 
       {/* Live data */}
-      <Reveal id="live" className="mx-auto max-w-[1400px] scroll-mt-24 px-5 pt-32 md:px-8">
+      <Reveal id="live" shortcut="Live data" className="mx-auto max-w-[1400px] scroll-mt-24 px-5 pt-32 md:px-8">
         <p className="font-mono text-xs uppercase tracking-[0.2em] text-white/40">Live from the lab</p>
         <h2 className="mt-4 max-w-3xl text-4xl font-medium leading-[1.05] tracking-[-0.03em] md:text-6xl">
           Not screenshots. The models, running.
@@ -122,7 +122,7 @@ export default function LabPage() {
       </Reveal>
 
       {/* Systems */}
-      <Reveal id="systems" className="mx-auto max-w-[1400px] scroll-mt-24 px-5 pt-36 md:px-8">
+      <Reveal id="systems" shortcut="Systems" className="mx-auto max-w-[1400px] scroll-mt-24 px-5 pt-36 md:px-8">
         <p className="font-mono text-xs uppercase tracking-[0.2em] text-white/40">Systems</p>
         <h2 className="mt-4 max-w-3xl text-4xl font-medium leading-[1.05] tracking-[-0.03em] md:text-6xl">
           Independent systems, one research stack.

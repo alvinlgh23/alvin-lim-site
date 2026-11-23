@@ -60,7 +60,12 @@ export function SiteFooter() {
           ))}
         </div>
         <div className="mt-16 flex flex-wrap items-center justify-between gap-4 text-[13px] text-white/40">
-          <p>© {new Date().getFullYear()} Alvin Lim · Kuala Lumpur</p>
+          <p>
+            © {new Date().getFullYear()} Alvin Lim · Kuala Lumpur
+            <span className="ml-4 hidden md:inline">
+              Press <kbd className="rounded border border-white/15 px-1.5 font-mono text-[11px]">?</kbd> for shortcuts
+            </span>
+          </p>
           <div className="flex gap-5">
             <a href={`mailto:${VERIFIED_DESTINATIONS.email}`} className="transition hover:text-white">
               Email

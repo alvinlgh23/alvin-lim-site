@@ -5,6 +5,7 @@ import { HomeHero } from "@/components/site/HomeHero";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { SiteNav } from "@/components/site/SiteNav";
 import { VERIFIED_DESTINATIONS } from "@/lib/archive-data";
+import { WorkGrid, type WorkItem } from "@/components/site/WorkGrid";
 
 const FACTS: [string, string][] = [
   ["Study", "Bachelor of Economics (Applied Economics), Universiti Malaya · expected 2028"],
@@ -13,12 +14,13 @@ const FACTS: [string, string][] = [
   ["Speak", "English, Malay, Chinese, basic Korean"]
 ];
 
-const WORK = [
+const WORK: WorkItem[] = [
   {
     kicker: "Research · FX",
     title: "SGD-NEER Shadow Model",
     note: "Infers MAS's undisclosed basket from 12 currencies and rebuilds the policy band from every statement.",
     href: "/research/sgd-neer",
+    metric: "neer",
     image: "/photos/research/neer-dashboard.webp",
     wide: true
   },
@@ -27,6 +29,7 @@ const WORK = [
     title: "KOSPI Signal Monitor",
     note: "Korea equities through semiconductors, FX, exports and volatility.",
     href: "/lab/projects/kospi-signal-monitor",
+    metric: "exports",
     stat: ["49%", "of Korea's exports in Oct 2026 were chips"]
   },
   {
@@ -34,6 +37,7 @@ const WORK = [
     title: "Chainstox Lab",
     note: "Every model, running on real data — and the Market Intelligence System v1.0.",
     href: "/lab",
+    metric: "lab",
     stat: ["v1.0", "Market Intelligence System, public beta"]
   },
   {
@@ -41,6 +45,7 @@ const WORK = [
     title: "All research",
     note: "Markets & valuation, semiconductors, macro and monetary systems, on-chain intelligence.",
     href: "/research",
+    metric: "research",
     stat: ["06", "case studies and collections"]
   }
 ];
@@ -84,12 +89,12 @@ export default function HomePage() {
       <HomeHero />
 
       {/* The product shot */}
-      <section className="mx-auto max-w-[1240px] px-5 md:px-8">
+      <section data-shortcut="Live model" className="mx-auto max-w-[1240px] px-5 md:px-8">
         <AppWindow />
       </section>
 
       {/* At a glance */}
-      <Reveal id="glance" className="mx-auto max-w-[1240px] scroll-mt-24 px-5 pt-32 md:px-8 md:pt-44">
+      <Reveal id="glance" shortcut="At a glance" className="mx-auto max-w-[1240px] scroll-mt-24 px-5 pt-32 md:px-8 md:pt-44">
         <SectionHead kicker="At a glance" title="Thirty seconds on who I am." />
         <div className="mt-12 grid gap-3 lg:grid-cols-[1.4fr_1fr]">
           <div className="flex flex-col justify-between rounded-2xl border border-white/[0.08] bg-white/[0.025] p-7 md:p-10">
@@ -133,46 +138,13 @@ export default function HomePage() {
       </Reveal>
 
       {/* Work */}
-      <Reveal id="work" className="mx-auto max-w-[1240px] scroll-mt-24 px-5 pt-32 md:px-8 md:pt-44">
+      <Reveal id="work" shortcut="Selected work" className="mx-auto max-w-[1240px] scroll-mt-24 px-5 pt-32 md:px-8 md:pt-44">
         <SectionHead kicker="Selected work" title="Research that runs on real data." href="/research" cta="All research" />
-        <div className="mt-12 grid gap-3 md:grid-cols-3">
-          {WORK.map((w) => (
-            <Link
-              key={w.title}
-              href={w.href}
-              className={`group flex flex-col overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.025] transition duration-300 hover:border-white/20 hover:bg-white/[0.05] ${
-                w.wide ? "md:col-span-2 md:row-span-2" : ""
-              }`}
-            >
-              {w.image ? (
-                <div className="relative m-1.5 flex-1 overflow-hidden rounded-[12px]">
-                  <img
-                    src={w.image}
-                    alt=""
-                    aria-hidden="true"
-                    className="h-full min-h-[240px] w-full object-cover object-[50%_10%] transition-transform duration-700 group-hover:scale-[1.03]"
-                  />
-                </div>
-              ) : (
-                <div className="px-7 pt-7">
-                  <p className="text-[3.6rem] font-medium leading-none tracking-[-0.05em] text-[#F7F8F8]">{w.stat?.[0]}</p>
-                  <p className="mt-2 max-w-[24ch] text-sm text-white/45">{w.stat?.[1]}</p>
-                </div>
-              )}
-              <div className="p-7">
-                <p className="text-[13px] text-white/45">{w.kicker}</p>
-                <p className="mt-2 text-xl font-medium tracking-[-0.03em] text-[#F7F8F8] md:text-2xl">
-                  {w.title} <span className="inline-block text-white/40 transition group-hover:translate-x-1 group-hover:text-white">→</span>
-                </p>
-                <p className="mt-2 text-[15px] leading-relaxed text-white/55">{w.note}</p>
-              </div>
-            </Link>
-          ))}
-        </div>
+        <WorkGrid items={WORK} />
       </Reveal>
 
       {/* Life */}
-      <Reveal id="life" className="mx-auto max-w-[1240px] scroll-mt-24 px-5 pb-32 pt-32 md:px-8 md:pt-44">
+      <Reveal id="life" shortcut="Beyond the desk" className="mx-auto max-w-[1240px] scroll-mt-24 px-5 pb-32 pt-32 md:px-8 md:pt-44">
         <SectionHead kicker="Beyond the desk" title="The rest of the story." href="/archive" cta="Archive" />
         <div className="mt-12 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {LIFE.map((l) => (

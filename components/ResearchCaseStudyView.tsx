@@ -14,6 +14,7 @@ import {
 } from "@/components/Gallery";
 import type { ResearchCaseStudyRecord } from "@/lib/archive-data";
 import { NeerBandChart } from "@/components/lab/NeerBandChart";
+import { NeerEvidence } from "@/components/lab/NeerEvidence";
 
 export function ResearchCaseStudyView({ study }: { study: ResearchCaseStudyRecord }) {
   return (
@@ -37,6 +38,12 @@ export function ResearchCaseStudyView({ study }: { study: ResearchCaseStudyRecor
           <div className="rounded-[28px] bg-black p-6 md:p-10">
             <NeerBandChart />
           </div>
+        </Section>
+      ) : null}
+
+      {study.slug === "sgd-neer" ? (
+        <Section label="Evidence" title="The receipts: fit, basket, track record, code.">
+          <NeerEvidence />
         </Section>
       ) : null}
 

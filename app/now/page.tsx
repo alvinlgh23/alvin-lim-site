@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { LinkRow, NextRoom, PageIntro, PageShell, Prose, Section, TextLink } from "@/components/Gallery";
+import { NextRoom, PageIntro, PageShell } from "@/components/Gallery";
+import { NowBoard } from "@/components/site/NowBoard";
 
 export const metadata: Metadata = {
-  title: "Now | Alvin Lim — A Personal Archive",
-  description: "Current projects, academic focus at Universiti Malaya, and active research directions."
+  title: "Now | Alvin Lim",
+  description: "What's running, what I'm tracking and reading, and what comes next — a live status board."
 };
 
 export default function NowPage() {
@@ -11,54 +12,15 @@ export default function NowPage() {
     <PageShell>
       <PageIntro
         eyebrow="Now"
-        title="What I'm focused on right now."
-        lede="A snapshot of current study, active research, and what comes next."
+        title="What's running right now."
+        lede="A status board, not a bio: the systems in motion, the dates and data I'm watching, and what I want to push next."
       />
 
-      <Section label="Study" title="Economics at Universiti Malaya">
-        <Prose>
-          <p>
-            Studying economics at the Faculty of Business and Economics, Universiti Malaya — focusing on incentives, market structure, monetary institutions, and resource allocation. Expected to graduate in 2028.
-          </p>
-        </Prose>
-        <LinkRow>
-          <TextLink href="/archive/education">Education & Direction</TextLink>
-        </LinkRow>
-      </Section>
-
-      <Section label="Lab" title="Chainstox Lab research systems">
-        <Prose>
-          <p>
-            Refining the Market Valuation Engine, On-Chain Market Intelligence pipeline, and SGD-NEER Shadow Model to test market expectations and liquidity conditions.
-          </p>
-        </Prose>
-        <LinkRow>
-          <TextLink href="/research">Research collection</TextLink>
-          <TextLink href="/lab">Chainstox Lab</TextLink>
-        </LinkRow>
-      </Section>
-
-      <Section label="Next" title="Semiconductor industry & architecture">
-        <Prose>
-          <p>
-            Organizing research notes on mobile SoC evolution, chip architecture trade-offs, and the industrial economics of leading-edge semiconductor manufacturing.
-          </p>
-        </Prose>
-        <LinkRow>
-          <TextLink href="/research/semiconductors">Semiconductor research</TextLink>
-        </LinkRow>
-      </Section>
-
-      <Section label="Elsewhere" title="Classical guitar & field notes">
-        <Prose>
-          <p>
-            Continuing regular classical guitar practice and documenting field observations across cities, architecture, and everyday systems.
-          </p>
-        </Prose>
-        <LinkRow>
-          <TextLink href="/archive/elsewhere">Elsewhere</TextLink>
-        </LinkRow>
-      </Section>
+      <section data-shortcut="Board" className="mx-auto w-full max-w-[1240px] scroll-mt-24 px-5 md:px-8">
+        <div className="border-t border-white/[0.08] pt-8">
+          <NowBoard />
+        </div>
+      </section>
 
       <NextRoom href="/contact" label="Want to talk about any of it?" title="Contact" />
     </PageShell>

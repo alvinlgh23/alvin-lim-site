@@ -7,16 +7,20 @@ export function Reveal({
   children,
   className = "",
   delay = 0,
-  id
+  id,
+  shortcut
 }: {
   children: React.ReactNode;
   className?: string;
   delay?: number;
   id?: string;
+  /** Label for number-key navigation. */
+  shortcut?: string;
 }) {
   return (
     <motion.section
       id={id}
+      data-shortcut={shortcut}
       initial={{ opacity: 0, y: 40, filter: "blur(10px)" }}
       whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
       viewport={{ once: true, margin: "-12% 0px" }}

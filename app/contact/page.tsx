@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { PageIntro, PageShell, Section } from "@/components/Gallery";
 import { VERIFIED_DESTINATIONS } from "@/lib/archive-data";
+import { ContactForm } from "@/components/site/ContactForm";
 
 export const metadata: Metadata = {
   title: "Contact | Alvin Lim — A Personal Archive",
@@ -33,6 +34,10 @@ export default function ContactPage() {
           {VERIFIED_DESTINATIONS.email}
         </a>
       </PageIntro>
+
+      <Section id="message" label="Write to me" title="Pick a topic, say hello.">
+        <ContactForm email={VERIFIED_DESTINATIONS.email} />
+      </Section>
 
       <Section label="Elsewhere">
         {CHANNELS.map((channel) => (

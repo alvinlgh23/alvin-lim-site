@@ -40,7 +40,7 @@ export function PageIntro({
   children?: ReactNode;
 }) {
   return (
-    <header className="relative overflow-hidden">
+    <header data-shortcut="Top" className="relative overflow-hidden">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute left-1/2 top-0 h-[520px] w-[900px] -translate-x-1/2 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.07),transparent_65%)]"
@@ -88,12 +88,12 @@ export function Section({
   children: ReactNode;
 }) {
   return (
-    <section id={id} className={`${WRAP} scroll-mt-24 pt-16 md:pt-24`}>
+    <section id={id} data-shortcut={label} className={`${WRAP} scroll-mt-24 pt-16 md:pt-24`}>
       <div className="grid gap-6 border-t border-white/[0.08] pt-8 lg:grid-cols-12 lg:gap-10">
         <div className="lg:col-span-3">
           <p className="text-[13px] font-medium text-white/45 lg:sticky lg:top-24">{label}</p>
         </div>
-        <div className="lg:col-span-9">
+        <div className="min-w-0 lg:col-span-9">
           {title ? (
             <h2 className="max-w-[24ch] text-3xl font-medium leading-[1.08] tracking-[-0.035em] text-[#F7F8F8] md:text-[2.75rem]">
               {title}

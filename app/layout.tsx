@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Instrument_Sans, Inter_Tight, Newsreader } from "next/font/google";
 import "./globals.css";
+import { Shortcuts } from "@/components/site/Shortcuts";
 
 const display = Newsreader({
   subsets: ["latin"],
@@ -32,6 +33,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="en" className={`${display.variable} ${body.variable} ${grotesk.variable}`}>
       <body className="antialiased selection:bg-ink selection:text-ivory">
         {children}
+        <Shortcuts />
       </body>
     </html>
   );

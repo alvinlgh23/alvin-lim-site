@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { motion, useMotionValue, useReducedMotion, useSpring, useTransform } from "framer-motion";
 
 const ROUTES = [
   { label: "For recruiters", href: "#glance" },
@@ -11,6 +11,7 @@ const ROUTES = [
 
 /* A black mark lit from behind — the site's own sign: a rising line inside a rounded square. */
 function GlowMark() {
+  const reduced = useReducedMotion();
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
   const sx = useSpring(mx, { stiffness: 60, damping: 18 });
@@ -43,18 +44,46 @@ function GlowMark() {
         className="relative h-[46%] w-[46%] rounded-[22%] bg-black shadow-[0_0_0_1px_rgba(255,255,255,0.35),0_0_40px_6px_rgba(255,255,255,0.35),0_0_120px_30px_rgba(255,255,255,0.18)]"
       >
         <svg viewBox="0 0 100 100" className="absolute inset-0 h-full w-full" aria-hidden="true">
+          {/* Draws in once, then keeps ticking like a live feed: the last two points drift,
+              and the end point pulses. Purely visual. */}
           <motion.path
-            d="M22 68 L42 48 L56 60 L78 34"
             fill="none"
             stroke="white"
             strokeWidth="4"
             strokeLinecap="round"
             strokeLinejoin="round"
-            initial={{ pathLength: 0 }}
-            animate={{ pathLength: 1 }}
-            transition={{ delay: 0.6, duration: 1.6, ease: "easeInOut" }}
+            initial={{ pathLength: 0, d: "M22 68 L42 48 L56 60 L78 34" }}
+            animate={{
+              pathLength: 1,
+              d: ["M22 68 L42 48 L56 60 L78 34", "M22 68 L42 48 L56 57 L78 30", "M22 68 L42 48 L56 62 L78 37", "M22 68 L42 48 L56 59 L78 32"]
+            }}
+            transition={{
+              pathLength: { delay: 0.6, duration: 1.6, ease: "easeInOut" },
+              d: { delay: 2.4, duration: 5, repeat: reduced ? 0 : Infinity, repeatType: "mirror", ease: "easeInOut" }
+            }}
           />
-          <motion.circle cx="78" cy="34" r="4.5" fill="white" initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 2.1 }} />
+          <motion.circle
+            r="4.5"
+            fill="white"
+            cx="78"
+            initial={{ scale: 0, cy: 34 }}
+            animate={{ scale: 1, cy: [34, 30, 37, 32] }}
+            transition={{ scale: { delay: 2.1 }, cy: { delay: 2.4, duration: 5, repeat: reduced ? 0 : Infinity, repeatType: "mirror", ease: "easeInOut" } }}
+          />
+          {reduced ? null : <motion.circle
+            r="4.5"
+            fill="none"
+            stroke="white"
+            strokeWidth="1.5"
+            cx="78"
+            initial={{ opacity: 0, cy: 34 }}
+            animate={{ opacity: [0, 0.8, 0], r: [4.5, 4.5, 13], cy: [34, 30, 37, 32] }}
+            transition={{
+              opacity: { delay: 2.4, duration: 1.8, repeat: Infinity, ease: "easeOut" },
+              r: { delay: 2.4, duration: 1.8, repeat: Infinity, ease: "easeOut" },
+              cy: { delay: 2.4, duration: 5, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" }
+            }}
+          />}
         </svg>
       </motion.div>
     </div>
@@ -63,7 +92,7 @@ function GlowMark() {
 
 export function HomeHero() {
   return (
-    <section className="relative mx-auto grid min-h-[calc(100svh-64px)] max-w-[1240px] items-center gap-10 px-5 pb-16 pt-10 md:px-8 lg:grid-cols-[1.15fr_1fr_0.7fr] lg:gap-6">
+    <section data-shortcut="Top" className="relative mx-auto grid min-h-[calc(100svh-64px)] max-w-[1240px] items-center gap-10 px-5 pb-16 pt-10 md:px-8 lg:grid-cols-[1.15fr_1fr_0.7fr] lg:gap-6">
       <div className="order-2 lg:order-1">
         <p style={{ animationDelay: "0.1s" }} className="rise-in text-[15px] text-white/50">
           Alvin Lim · Economics, Universiti Malaya
