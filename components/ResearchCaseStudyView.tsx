@@ -13,6 +13,7 @@ import {
   TextLink
 } from "@/components/Gallery";
 import type { ResearchCaseStudyRecord } from "@/lib/archive-data";
+import { NeerBandChart } from "@/components/lab/NeerBandChart";
 
 export function ResearchCaseStudyView({ study }: { study: ResearchCaseStudyRecord }) {
   return (
@@ -28,6 +29,14 @@ export function ResearchCaseStudyView({ study }: { study: ResearchCaseStudyRecor
           {study.githubUrl ? <TextLink href={study.githubUrl}>Source on GitHub</TextLink> : null}
         </LinkRow>
       </PageIntro>
+
+      {study.slug === "sgd-neer" ? (
+        <Section label="Live model" title="Hover any day. Change the band.">
+          <div className="rounded-[28px] bg-black p-6 md:p-10">
+            <NeerBandChart />
+          </div>
+        </Section>
+      ) : null}
 
       <Section label="The question">
         <Quote>“{study.researchQuestion}”</Quote>

@@ -40,3 +40,7 @@ test-results/
 # misc caches
 .turbo/
 .eslintcache
+
+# Source project folders (own repos; KOSPI has secrets in .env)
+/NEER/
+/KOSPI/

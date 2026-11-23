@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import { DemoPanel } from "@/components/DemoPanel";
 import { MisProductShowcase } from "@/components/MisProductShowcase";
 import { MotionSection } from "@/components/MotionSection";
+import { ExportsChart } from "@/components/lab/ExportsChart";
+import { NeerBandChart } from "@/components/lab/NeerBandChart";
 import { getProject, projects } from "@/lib/projects";
 
 type ProjectPageProps = {
@@ -188,6 +190,18 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           </div>
         </aside>
       </MotionSection>
+
+      {project.slug === "sgd-neer-shadow-model" || project.slug === "kospi-signal-monitor" ? (
+        <MotionSection className="mx-auto max-w-7xl py-12" id="live">
+          <p className="lab-eyebrow text-xs text-bone/38">Live model</p>
+          <h2 className="lab-section-title mt-3 text-3xl text-bone">
+            {project.slug === "sgd-neer-shadow-model" ? "The band, recomputed in your browser." : "Korea's exports, month by month."}
+          </h2>
+          <div className="mt-6 rounded-[28px] border border-white/[0.08] bg-black p-6 font-sans md:p-10">
+            {project.slug === "sgd-neer-shadow-model" ? <NeerBandChart /> : <ExportsChart />}
+          </div>
+        </MotionSection>
+      ) : null}
 
       <div className="lab-hairline mx-auto h-px max-w-7xl" />
 
