@@ -251,29 +251,47 @@ a {
   letter-spacing: 0.08em;
 }
 
-/* ===== Site-wide editorial-tech skin (everything except Chainstox Lab) =====
-   One grotesk for everything, monochrome, square edges. Pages opt in with .site. */
+/* ===== Site-wide skin (everything except Chainstox Lab) =====
+   Linear/Vercel-like: near-black canvas, one grotesk, quiet greys, hairline borders.
+   Pages opt in with .site; legacy colour utilities inside page files are remapped here. */
 .site {
+  --fg: #F7F8F8;
+  --fg-2: rgba(247, 248, 248, 0.68);
+  --fg-3: rgba(247, 248, 248, 0.45);
+  --line: rgba(255, 255, 255, 0.08);
   font-family: var(--font-grotesk), "Helvetica Neue", Arial, sans-serif;
-  background: #EDEDED;
-  color: #111111;
+  background: #08090A;
+  color: var(--fg);
 }
+.site ::selection { background: #F7F8F8; color: #08090A; }
 .site .editorial-serif {
   font-family: var(--font-grotesk), "Helvetica Neue", Arial, sans-serif;
   font-style: normal;
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: -0.035em;
 }
 .site .archival-mono {
   font-family: var(--font-grotesk), "Helvetica Neue", Arial, sans-serif;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.04em;
   font-weight: 500;
 }
-.site .text-ember { color: #111111; }
-.site .hover\:text-ember:hover { color: #555555; }
-.site .hover\:border-ember:hover { border-color: #111111; }
+.site .text-ink, .site .text-ember { color: var(--fg); }
+.site .text-charcoal { color: rgba(247, 248, 248, 0.78); }
+.site .text-graphite { color: var(--fg-2); }
+.site .text-muted { color: var(--fg-3); }
+.site .border-rule, .site .border-ink\/10, .site .border-ink\/15 { border-color: var(--line); }
+.site .border-ink { border-color: rgba(255, 255, 255, 0.35); }
+.site .hover\:text-ember:hover, .site .group:hover .group-hover\:text-ember { color: var(--fg-2); }
+.site .hover\:border-ember:hover { border-color: var(--fg); }
 
 @keyframes kenburns {
   from { transform: scale(1.04) translate3d(0, 0, 0); }
   to { transform: scale(1.16) translate3d(-1.5%, -1%, 0); }
 }
+
+/* Entrance that needs no JavaScript: content is in the HTML and simply fades up */
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(18px); filter: blur(6px); }
+  to { opacity: 1; transform: none; filter: blur(0); }
+}
+.rise-in { animation: rise-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) both; }

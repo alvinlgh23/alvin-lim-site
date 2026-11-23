@@ -1,104 +1,110 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 
-const SLIDES = [
-  { src: "/photos/behind-the-scenes/pre-show-stage.webp", pos: "50% 45%" },
-  { src: "/photos/campus-election/speech.webp", pos: "50% 35%" },
-  { src: "/photos/elsewhere/guitar-performance.webp", pos: "50% 40%" },
-  { src: "/photos/campus-election/lecture-theatre-session.webp", pos: "50% 40%" }
+const ROUTES = [
+  { label: "For recruiters", href: "#glance" },
+  { label: "For research", href: "#work" },
+  { label: "For everyone else", href: "#life" }
 ];
 
-/* Full-bleed moving picture: slow push-in on each photograph, crossfading. Pausable. */
-export function HomeHero() {
-  const [i, setI] = useState(0);
-  const [paused, setPaused] = useState(false);
 
-  useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) setPaused(true);
-  }, []);
-  useEffect(() => {
-    if (paused) return;
-    const id = setInterval(() => setI((v) => (v + 1) % SLIDES.length), 6500);
-    return () => clearInterval(id);
-  }, [paused]);
+/* A black mark lit from behind — the site's own sign: a rising line inside a rounded square. */
+function GlowMark() {
+  const mx = useMotionValue(0);
+  const my = useMotionValue(0);
+  const sx = useSpring(mx, { stiffness: 60, damping: 18 });
+  const sy = useSpring(my, { stiffness: 60, damping: 18 });
+  const rx = useTransform(sy, [-1, 1], [10, -10]);
+  const ry = useTransform(sx, [-1, 1], [-14, 14]);
 
   return (
-    <section className="relative h-[100svh] min-h-[560px] overflow-hidden bg-black text-white">
-      <AnimatePresence initial={false}>
-        <motion.img
-          key={SLIDES[i].src}
-          src={SLIDES[i].src}
-          alt=""
-          aria-hidden="true"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.72 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 1.6, ease: "easeInOut" }}
-          className={`absolute inset-0 h-full w-full object-cover ${paused ? "" : "animate-[kenburns_8s_linear_both]"}`}
-          style={{ objectPosition: SLIDES[i].pos }}
-        />
-      </AnimatePresence>
-      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-black/45" />
+    <div
+      className="relative flex h-[300px] w-[300px] items-center justify-center [perspective:900px] md:h-[420px] md:w-[420px]"
+      onPointerMove={(e) => {
+        if (e.pointerType !== "mouse") return;
+        const r = e.currentTarget.getBoundingClientRect();
+        mx.set(((e.clientX - r.left) / r.width) * 2 - 1);
+        my.set(((e.clientY - r.top) / r.height) * 2 - 1);
+      }}
+      onPointerLeave={() => {
+        mx.set(0);
+        my.set(0);
+      }}
+    >
+      <motion.div
+        aria-hidden="true"
+        className="absolute h-[70%] w-[70%] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.55),rgba(255,255,255,0.12)_40%,transparent_70%)] blur-2xl"
+        animate={{ opacity: [0.75, 1, 0.75], scale: [0.96, 1.04, 0.96] }}
+        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        style={{ rotateX: rx, rotateY: ry }}
+        className="relative h-[46%] w-[46%] rounded-[22%] bg-black shadow-[0_0_0_1px_rgba(255,255,255,0.35),0_0_40px_6px_rgba(255,255,255,0.35),0_0_120px_30px_rgba(255,255,255,0.18)]"
+      >
+        <svg viewBox="0 0 100 100" className="absolute inset-0 h-full w-full" aria-hidden="true">
+          <motion.path
+            d="M22 68 L42 48 L56 60 L78 34"
+            fill="none"
+            stroke="white"
+            strokeWidth="4"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: 1 }}
+            transition={{ delay: 0.6, duration: 1.6, ease: "easeInOut" }}
+          />
+          <motion.circle cx="78" cy="34" r="4.5" fill="white" initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 2.1 }} />
+        </svg>
+      </motion.div>
+    </div>
+  );
+}
 
-      <div className="relative mx-auto flex h-full max-w-[1600px] flex-col justify-end px-5 pb-24 md:px-10 md:pb-28">
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-sm uppercase tracking-[0.1em] text-white/75"
-        >
-          Economics · Universiti Malaya · Kuala Lumpur
-        </motion.p>
-        <motion.h1
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-4 max-w-[14ch] text-[3.4rem] font-normal leading-[0.94] tracking-[-0.045em] sm:text-7xl md:text-[7.5rem] xl:text-[9rem]"
+export function HomeHero() {
+  return (
+    <section className="relative mx-auto grid min-h-[calc(100svh-64px)] max-w-[1240px] items-center gap-10 px-5 pb-16 pt-10 md:px-8 lg:grid-cols-[1.15fr_1fr_0.7fr] lg:gap-6">
+      <div className="order-2 lg:order-1">
+        <p style={{ animationDelay: "0.1s" }} className="rise-in text-[15px] text-white/50">
+          Alvin Lim · Economics, Universiti Malaya
+        </p>
+        <h1
+          style={{ animationDelay: "0.2s" }}
+          className="rise-in mt-5 text-[3rem] font-medium leading-[0.98] tracking-[-0.05em] text-[#F7F8F8] sm:text-6xl lg:text-[4.6rem]"
         >
           I build my own tools for reading markets.
-        </motion.h1>
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          className="mt-8 flex gap-2 sm:hidden"
-        >
-          <a href="/cv/Alvin-Lim-CV.pdf" download="Alvin-Lim-CV.pdf" className="bg-white px-6 py-3.5 text-[15px] font-medium text-black">
-            Download CV ↓
+        </h1>
+        <div style={{ animationDelay: "0.35s" }} className="rise-in mt-9 flex flex-wrap gap-3">
+          <a
+            href="/cv/Alvin-Lim-CV.pdf"
+            download="Alvin-Lim-CV.pdf"
+            className="rounded-full bg-[#F7F8F8] px-6 py-3 text-[16px] font-medium text-[#08090A] transition hover:bg-white"
+          >
+            Download CV
           </a>
-          <a href="#explore" className="border border-white/70 px-6 py-3.5 text-[15px] text-white">
-            Explore
+          <a
+            href="#work"
+            className="rounded-full border border-white/15 bg-white/[0.03] px-6 py-3 text-[16px] text-[#F7F8F8] transition hover:border-white/30 hover:bg-white/[0.07]"
+          >
+            See my work
           </a>
-        </motion.div>
+        </div>
       </div>
 
-      <a
-        href="#explore"
-        aria-label="Scroll down"
-        className="absolute bottom-7 left-1/2 flex h-11 w-11 -translate-x-1/2 items-center justify-center rounded-full border border-white/70 transition hover:bg-white hover:text-black"
-      >
-        <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
-          <path d="M12 5v14M6 13l6 6 6-6" fill="none" stroke="currentColor" strokeWidth="1.8" />
-        </svg>
-      </a>
-      <button
-        type="button"
-        onClick={() => setPaused((p) => !p)}
-        aria-label={paused ? "Play background" : "Pause background"}
-        className="absolute bottom-8 right-5 flex h-9 w-9 items-center justify-center rounded-full border border-white/70 transition hover:bg-white hover:text-black md:right-10"
-      >
-        {paused ? (
-          <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true">
-            <path d="M8 5v14l11-7z" fill="currentColor" />
-          </svg>
-        ) : (
-          <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true">
-            <path d="M8 5h3v14H8zM13 5h3v14h-3z" fill="currentColor" />
-          </svg>
-        )}
-      </button>
+      <div style={{ animationDelay: "0.15s" }} className="rise-in order-1 flex justify-center lg:order-2">
+        <GlowMark />
+      </div>
+
+      <ul style={{ animationDelay: "0.45s" }} className="rise-in order-3 hidden space-y-4 lg:block">
+        {ROUTES.map((r) => (
+          <li key={r.href}>
+            <a href={r.href} className="group inline-flex items-center gap-2 text-[17px] text-[#F7F8F8]/85 transition hover:text-white">
+              {r.label}
+              <span className="text-white/35 opacity-0 transition group-hover:translate-x-0.5 group-hover:opacity-100">→</span>
+            </a>
+          </li>
+        ))}
+      </ul>
     </section>
   );
 }

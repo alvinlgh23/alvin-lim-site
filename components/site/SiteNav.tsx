@@ -5,41 +5,27 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const MENU = [
-  {
-    heading: "Work",
-    links: [
-      { label: "Research", href: "/research", note: "FX, Korea, on-chain, valuation" },
-      { label: "Chainstox Lab", href: "/lab", note: "The systems, running live" },
-      { label: "SGD-NEER Shadow Model", href: "/research/sgd-neer", note: "Singapore's hidden band" }
-    ]
-  },
-  {
-    heading: "Life",
-    links: [
-      { label: "Journey", href: "/journey", note: "Law, economics, and what came between" },
-      { label: "Campus Election", href: "/archive/campus-election", note: "Universiti Malaya, 2024" },
-      { label: "Behind the Scenes", href: "/archive/behind-the-scenes", note: "Concert crew and a music video" },
-      { label: "Elsewhere", href: "/archive/elsewhere", note: "Atlantic City, guitar" },
-      { label: "Education", href: "/archive/education", note: "UKM to UM" }
-    ]
-  },
-  {
-    heading: "Alvin",
-    links: [
-      { label: "Now", href: "/now", note: "What I'm working on" },
-      { label: "Thoughts", href: "/thoughts", note: "Notes and essays" },
-      { label: "Archive", href: "/archive", note: "Everything, in one place" },
-      { label: "Contact", href: "/contact", note: "Email, LinkedIn, GitHub" }
-    ]
-  }
+const LINKS = [
+  { label: "Research", href: "/research" },
+  { label: "Lab", href: "/lab" },
+  { label: "Journey", href: "/journey" },
+  { label: "Archive", href: "/archive" },
+  { label: "Now", href: "/now" },
+  { label: "Contact", href: "/contact" }
 ];
 
 export function SiteNav() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => setOpen(false), [pathname]);
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
   useEffect(() => {
     document.documentElement.style.overflow = open ? "hidden" : "";
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
@@ -50,43 +36,55 @@ export function SiteNav() {
     };
   }, [open]);
 
+  const active = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
+
   return (
     <>
-      <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 md:px-4 md:pt-4">
-        <div className="mx-auto flex max-w-[1600px] items-center justify-between gap-3 bg-[#2A2A2A]/55 py-2.5 pl-4 pr-2.5 text-white backdrop-blur-xl md:py-3 md:pl-6 md:pr-3">
-          <Link href="/" className="flex items-center gap-2.5" aria-label="Alvin Lim, home">
-            <span className="flex h-6 w-6 items-center justify-center border border-white/80 text-[11px] font-semibold tracking-tight">
-              AL
-            </span>
-            <span className="text-[19px] font-medium tracking-[-0.02em] md:text-[21px]">Alvin Lim</span>
+      <header
+        className={`sticky top-0 z-50 border-b transition-colors duration-300 ${
+          scrolled || open ? "border-white/[0.08] bg-[#08090A]/80 backdrop-blur-xl" : "border-transparent bg-transparent"
+        }`}
+      >
+        <div className="mx-auto flex h-16 max-w-[1240px] items-center justify-between px-5 md:px-8">
+          <Link href="/" className="flex items-center gap-2.5 text-[#F7F8F8]" aria-label="Alvin Lim, home">
+            <svg viewBox="0 0 24 24" className="h-[22px] w-[22px]" aria-hidden="true">
+              <rect x="1" y="1" width="22" height="22" rx="6" fill="#F7F8F8" />
+              <path d="M6 16 L10.5 11.5 L13.5 14 L18 8.5" fill="none" stroke="#08090A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            <span className="text-[17px] font-semibold tracking-[-0.02em]">Alvin Lim</span>
           </Link>
-          <div className="flex items-stretch gap-2">
+
+          <nav className="hidden items-center gap-1 md:flex" aria-label="Primary">
+            {LINKS.map((l) => (
+              <Link
+                key={l.href}
+                href={l.href}
+                className={`rounded-full px-3.5 py-1.5 text-[14px] transition ${
+                  active(l.href) ? "text-[#F7F8F8]" : "text-white/55 hover:text-[#F7F8F8]"
+                }`}
+              >
+                {l.label}
+              </Link>
+            ))}
+          </nav>
+
+          <div className="flex items-center gap-2">
             <a
               href="/cv/Alvin-Lim-CV.pdf"
               download="Alvin-Lim-CV.pdf"
-              className="hidden items-center bg-white px-5 text-[15px] font-medium text-black transition hover:bg-white/85 sm:flex md:px-12"
+              className="rounded-full bg-[#F7F8F8] px-4 py-2 text-[14px] font-medium text-[#08090A] transition hover:bg-white"
             >
               Download CV
             </a>
-            <Link
-              href="/contact"
-              aria-label="Contact"
-              className="hidden h-11 w-11 items-center justify-center border border-white/60 bg-white text-black transition hover:bg-white/85 md:flex"
-            >
-              <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
-                <path d="M3 6h18v12H3z M3 7l9 6 9-6" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
-              </svg>
-            </Link>
             <button
               type="button"
               onClick={() => setOpen((v) => !v)}
               aria-expanded={open}
               aria-label={open ? "Close menu" : "Open menu"}
-              className="relative flex h-11 w-11 items-center justify-center bg-white text-black transition hover:bg-white/85"
+              className="relative flex h-9 w-9 items-center justify-center rounded-full border border-white/15 md:hidden"
             >
-              <span className={`absolute h-[1.5px] w-5 bg-black transition ${open ? "rotate-45" : "-translate-y-[6px]"}`} />
-              <span className={`absolute h-[1.5px] w-5 bg-black transition ${open ? "opacity-0" : ""}`} />
-              <span className={`absolute h-[1.5px] w-5 bg-black transition ${open ? "-rotate-45" : "translate-y-[6px]"}`} />
+              <span className={`absolute h-[1.5px] w-4 bg-white transition ${open ? "rotate-45" : "-translate-y-[4px]"}`} />
+              <span className={`absolute h-[1.5px] w-4 bg-white transition ${open ? "-rotate-45" : "translate-y-[4px]"}`} />
             </button>
           </div>
         </div>
@@ -94,40 +92,22 @@ export function SiteNav() {
 
       <AnimatePresence>
         {open ? (
-          <motion.div
+          <motion.nav
             key="menu"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-40 overflow-y-auto bg-[#111111] text-white"
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.25 }}
+            className="fixed inset-x-0 bottom-0 top-16 z-40 bg-[#08090A] px-5 pt-4 md:hidden"
+            aria-label="Menu"
           >
-            <div className="mx-auto grid max-w-[1600px] gap-12 px-6 pb-16 pt-32 md:grid-cols-3 md:px-10 md:pt-40">
-              {MENU.map((col, c) => (
-                <motion.div
-                  key={col.heading}
-                  initial={{ opacity: 0, y: 24 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.08 * c, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                >
-                  <p className="border-b border-white/20 pb-3 text-sm uppercase tracking-[0.08em] text-white/50">{col.heading}</p>
-                  <ul className="mt-2">
-                    {col.links.map((l) => (
-                      <li key={l.href}>
-                        <Link href={l.href} className="group block border-b border-white/10 py-4">
-                          <span className="flex items-center justify-between text-2xl tracking-[-0.02em] md:text-[1.7rem]">
-                            {l.label}
-                            <span className="text-lg text-white/40 transition group-hover:translate-x-1 group-hover:text-white">→</span>
-                          </span>
-                          <span className="mt-1 block text-sm text-white/45">{l.note}</span>
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
+            {[{ label: "Home", href: "/" }, ...LINKS].map((l) => (
+              <Link key={l.href} href={l.href} className="flex items-center justify-between border-b border-white/[0.08] py-4 text-2xl tracking-[-0.02em] text-[#F7F8F8]">
+                {l.label}
+                <span className="text-white/35">→</span>
+              </Link>
+            ))}
+          </motion.nav>
         ) : null}
       </AnimatePresence>
     </>

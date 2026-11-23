@@ -23,7 +23,7 @@ const COLS = [
     ]
   },
   {
-    heading: "Alvin",
+    heading: "More",
     links: [
       ["Now", "/now"],
       ["Thoughts", "/thoughts"],
@@ -35,37 +35,22 @@ const COLS = [
 
 export function SiteFooter() {
   return (
-    <footer className="bg-[#111111] text-white">
-      <div className="mx-auto max-w-[1600px] px-6 pb-10 pt-20 md:px-10">
-        <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
+    <footer className="border-t border-white/[0.08] bg-[#08090A] text-[#F7F8F8]">
+      <div className="mx-auto max-w-[1240px] px-5 pb-10 pt-16 md:px-8">
+        <div className="grid gap-12 md:grid-cols-[1.5fr_1fr_1fr_1fr]">
           <div>
-            <p className="text-[clamp(2.5rem,6vw,5rem)] font-medium leading-[0.95] tracking-[-0.04em]">Alvin Lim</p>
-            <p className="mt-5 max-w-sm text-white/55">
+            <p className="text-[17px] font-semibold tracking-[-0.02em]">Alvin Lim</p>
+            <p className="mt-3 max-w-xs text-sm leading-relaxed text-white/50">
               Economics at Universiti Malaya. I build my own tools for reading markets.
             </p>
-            <div className="mt-8 flex flex-wrap gap-2">
-              <a
-                href="/cv/Alvin-Lim-CV.pdf"
-                download="Alvin-Lim-CV.pdf"
-                className="bg-white px-6 py-3 text-sm font-medium text-black transition hover:bg-white/85"
-              >
-                Download CV
-              </a>
-              <a
-                href={`mailto:${VERIFIED_DESTINATIONS.email}`}
-                className="border border-white/30 px-6 py-3 text-sm transition hover:border-white"
-              >
-                Email
-              </a>
-            </div>
           </div>
           {COLS.map((col) => (
             <div key={col.heading}>
-              <p className="border-b border-white/15 pb-3 text-xs uppercase tracking-[0.08em] text-white/45">{col.heading}</p>
-              <ul className="mt-4 space-y-3">
+              <p className="text-[13px] font-medium text-[#F7F8F8]">{col.heading}</p>
+              <ul className="mt-4 space-y-2.5">
                 {col.links.map(([label, href]) => (
                   <li key={href}>
-                    <Link href={href} className="text-white/80 transition hover:text-white">
+                    <Link href={href} className="text-sm text-white/50 transition hover:text-[#F7F8F8]">
                       {label}
                     </Link>
                   </li>
@@ -74,14 +59,17 @@ export function SiteFooter() {
             </div>
           ))}
         </div>
-        <div className="mt-20 flex flex-wrap items-center justify-between gap-4 border-t border-white/10 pt-6 text-sm text-white/40">
+        <div className="mt-16 flex flex-wrap items-center justify-between gap-4 text-[13px] text-white/40">
           <p>© {new Date().getFullYear()} Alvin Lim · Kuala Lumpur</p>
-          <div className="flex gap-6">
+          <div className="flex gap-5">
+            <a href={`mailto:${VERIFIED_DESTINATIONS.email}`} className="transition hover:text-white">
+              Email
+            </a>
             <a href={VERIFIED_DESTINATIONS.linkedinProfile} target="_blank" rel="noreferrer" className="transition hover:text-white">
-              LinkedIn ↗
+              LinkedIn
             </a>
             <a href={VERIFIED_DESTINATIONS.githubProfile} target="_blank" rel="noreferrer" className="transition hover:text-white">
-              GitHub ↗
+              GitHub
             </a>
           </div>
         </div>
