@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { YouTubeEmbed } from "@/components/site/YouTubeEmbed";
 import {
   Entry,
   Facts,
@@ -164,6 +165,9 @@ export default function ElsewherePage() {
                 caption: "Trinity College London, Grade 5 Classical Guitar — with Distinction, January 2026."
               }}
             />
+          </div>
+          <div className="pt-3">
+            <YouTubeEmbed id="ieBaJSxs0Ys" title="The Grade 5 exam performance, recorded for Trinity" duration="6:43" />
           </div>
         </Entry>
         <Entry meta="Hardware" title="Devices & repair">
