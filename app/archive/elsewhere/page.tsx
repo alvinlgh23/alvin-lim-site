@@ -24,8 +24,9 @@ export default function ElsewherePage() {
   return (
     <PageShell>
       <PageIntro
-        image="/photos/atlantic-city/board-wok.webp"
-        imagePosition="50% 35%"
+        image="/photos/elsewhere/hollywood.webp"
+        imagePosition="50% 60%"
+        imageTall
         back={{ href: "/archive", label: "Archive" }}
         eyebrow="Elsewhere"
         title="Elsewhere, for a while."

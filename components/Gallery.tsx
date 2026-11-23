@@ -26,6 +26,7 @@ export function PageIntro({
   back,
   image,
   imagePosition = "50% 40%",
+  imageTall = false,
   children
 }: {
   eyebrow: string;
@@ -34,6 +35,8 @@ export function PageIntro({
   back?: { href: string; label: string };
   image?: string;
   imagePosition?: string;
+  /** For portrait photographs: give the hero picture more height. */
+  imageTall?: boolean;
   children?: ReactNode;
 }) {
   return (
@@ -62,7 +65,7 @@ export function PageIntro({
                 src={image}
                 alt=""
                 aria-hidden="true"
-                className="block h-[min(52vh,520px)] w-full rounded-[12px] object-cover"
+                className={`block w-full rounded-[12px] object-cover ${imageTall ? "h-[min(78vh,760px)]" : "h-[min(52vh,520px)]"}`}
                 style={{ objectPosition: imagePosition }}
               />
             </div>
