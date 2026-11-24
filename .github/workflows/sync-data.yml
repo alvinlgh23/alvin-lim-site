@@ -1,0 +1,41 @@
+name: Sync model data
+
+# The SGD-NEER repo refreshes its data at 23:00 UTC on weekdays. This runs 90 minutes
+# later, copies the new output into public/data, and commits it; Cloudflare Pages
+# then redeploys the site with the fresh numbers.
+on:
+  schedule:
+    - cron: "30 0 * * 2-6"   # 00:30 UTC Tue–Sat = 08:30 SGT, after each weekday refresh
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-data
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Pull latest SGD-NEER output
+        run: python scripts/sync_neer.py
+
+      - name: Commit if the data changed
+        run: |
+          if git diff --quiet -- public/data; then
+            echo "Nothing to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/data
+          git commit -m "Sync model data ($(date -u +%Y-%m-%d))"
+          git push
